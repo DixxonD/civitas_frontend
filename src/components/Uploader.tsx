@@ -1,13 +1,6 @@
 
-
 import React, {useState, useEffect} from 'react'
-import {Uppy, UppyFile} from '@uppy/core'
-//import Uppy = require('@uppy/core')
-//import Tus = require('@uppy/tus')
-import Tus from '@uppy/tus'
-import {Dashboard, DashboardModal, DragDrop, ProgressBar, useUppy} from '@uppy/react'
-
-import {tus, server} from '../config/config'
+import {Dashboard} from '@uppy/react'
 
 import '@uppy/core/dist/style.css'
 import '@uppy/dashboard/dist/style.css'
@@ -15,20 +8,13 @@ import '@uppy/drag-drop/dist/style.css'
 import '@uppy/progress-bar/dist/style.css'
 import '@uppy/dashboard/dist/style.css'
 
-import {Title, Text } from "@mantine/core";
-
-
-
-
+import {Text } from "@mantine/core";
+import {useUploader} from "./UploadContext";
 
 
 function Uploader(){
     const [progress, setProgress] = useState(0)
-    const [uppy, setUppy] = useState(() => {
-        return new Uppy({
-            autoProceed: true
-        }).use(Tus, { endpoint: `${server.addr}:${server.port}${tus.endpoint}` })
-    })
+    const uppy = useUploader()
 
     useEffect(() => {
         //return () => {uppy.close()}
@@ -42,7 +28,6 @@ function Uploader(){
         // const url = result.successful[0].uploadURL
         console.log(result)
          //console.log("complete!", result.successful[0].uploadURL)
-
     })
 
     uppy.on("progress", (progress) => {

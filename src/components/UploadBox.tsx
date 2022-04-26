@@ -4,9 +4,7 @@ import {useTus} from "use-tus";
 import {Group, Text, MantineTheme, useMantineTheme, Button} from "@mantine/core";
 import { Upload, Photo, X, Icon as TablerIcon } from 'tabler-icons-react';
 import {Dropzone, DropzoneStatus, FullScreenDropzone, IMAGE_MIME_TYPE} from '@mantine/dropzone';
-import files from "../pages/Files";
 import {server} from "../config/config";
-import {UppyFile} from "@uppy/core";
 
 
 function getIconColor(status: DropzoneStatus, theme: MantineTheme){
