@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router} from "react-router-dom";
+import { NotificationsProvider } from '@mantine/notifications';
 
 import './styles/App.css'
 
@@ -12,12 +13,14 @@ function App() {
   return (
     <>
         <Router>
+            <NotificationsProvider>
             <UploadProvider>
                 <div className="content">
                     <AppMenu/>
                     <AppRouter/>
                 </div>
             </UploadProvider>
+            </NotificationsProvider>
         </Router>
     </>
   );
