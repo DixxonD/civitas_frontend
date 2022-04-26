@@ -4,8 +4,12 @@ interface ServerConfig {
 }
 
 const server: ServerConfig = {
-    addr: 'http://localhost',
-    port: 3000
+    addr: 'http://192.168.1.130',
+    port: 5000
 }
 
-export {server}
+const tus = {
+    endpoint: '/api/upload'
+}
+
+export {server, tus}

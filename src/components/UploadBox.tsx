@@ -1,7 +1,12 @@
-import React from "react";
-import {Group, Text, MantineTheme, useMantineTheme} from "@mantine/core";
+import React, {useCallback} from "react";
+import {useTus} from "use-tus";
+
+import {Group, Text, MantineTheme, useMantineTheme, Button} from "@mantine/core";
 import { Upload, Photo, X, Icon as TablerIcon } from 'tabler-icons-react';
 import {Dropzone, DropzoneStatus, FullScreenDropzone, IMAGE_MIME_TYPE} from '@mantine/dropzone';
+import files from "../pages/Files";
+import {server} from "../config/config";
+import {UppyFile} from "@uppy/core";
 
 
 function getIconColor(status: DropzoneStatus, theme: MantineTheme){
@@ -39,7 +44,7 @@ const dropzoneChildren = (status: DropzoneStatus, theme: MantineTheme) => (
         />
         <div>
             <Text size="xl" inline>
-                Drag images here or click to select files
+                Drag files here or click to select files
             </Text>
             <Text size="sm" color="dimmed" inline mt={7}>
                 Attach as many files as you like
@@ -49,16 +54,47 @@ const dropzoneChildren = (status: DropzoneStatus, theme: MantineTheme) => (
 )
 
 
+
 function UploadBox(){
     const theme = useMantineTheme()
+    const {upload, setUpload} = useTus()
+
+
+
+    const handleSetUpload = useCallback((files: File[]) => {
+        files.forEach(file => {
+            setUpload(file, {
+                endpoint: `${server.addr}:${server.port}/api/upload`,
+                metadata: {
+                    filename: file.name,
+                    filetype: file.type
+                }
+            })
+            console.log(file.name)
+        })
+        console.log("setUpload")
+
+    }, [setUpload] )
+
+    const handleStart = useCallback(() => {
+        if (!upload) {
+            return;
+        }
+        upload.start()
+    }, [upload]);
+
 
     return(
-        <Dropzone
-            onDrop={(files) => console.log("accepted files", files)}
-            onReject={(files) => console.log("rejected files", files)}
-        >
-            {(status => dropzoneChildren(status, theme))}
-        </Dropzone>
+        <div>
+            <Dropzone
+                onDrop={(files) => {}}
+                onReject={(files) => console.log("rejected files", files)}
+            >
+                {(status => dropzoneChildren(status, theme))}
+            </Dropzone>
+
+
+        </div>
     )
 }
 
