@@ -1,12 +1,11 @@
-import React, {useEffect, useState} from 'react';
-import './styles/App.css'
-import AppMenu from "./components/navigation/AppMenu";
+import React from 'react';
+import { BrowserRouter as Router} from "react-router-dom";
 
-import {
-    BrowserRouter as Router,
-} from "react-router-dom";
+import './styles/App.css'
+
+import AppMenu from "./components/navigation/AppMenu";
 import AppRouter from "./components/navigation/AppRouter";
-import {UploadProvider} from "./components/UploadContext";
+import {UploadProvider} from "./components/upload/UploadContext";
 
 
 function App() {

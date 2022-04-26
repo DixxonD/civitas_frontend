@@ -1,5 +1,6 @@
 import React from 'react'
-import { Text, Title,  Code } from '@mantine/core';
+import {Title} from '@mantine/core';
+
 function Files(){
     return (
         <div>

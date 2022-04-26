@@ -1,11 +1,13 @@
 import React, {useState} from 'react'
-import logo from "../../res/images/logo.svg";
-import '../../styles/App.css';
-import 'bootstrap/dist/css/bootstrap.css'
 import {Nav, Navbar} from "react-bootstrap";
 import {Link} from "react-router-dom"
 import {Text} from "@mantine/core";
-import {useUploader} from "../UploadContext";
+
+import '../../styles/App.css';
+import 'bootstrap/dist/css/bootstrap.css'
+import logo from "../../res/images/logo.svg";
+
+import {useUploader} from "../upload/UploadContext";
 
 
 function AppMenu(){

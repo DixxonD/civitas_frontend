@@ -1,7 +1,7 @@
 import React, {useContext, useState} from "react";
 import {Uppy} from "@uppy/core";
 import Tus from "@uppy/tus";
-import {server, tus} from "../config/config";
+import {server, tus} from "../../config/config";
 
 const UploadContext = React.createContext(new Uppy())
 
