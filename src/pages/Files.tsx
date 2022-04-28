@@ -6,14 +6,16 @@ import {DashboardModal} from "@uppy/react";
 
 // @ts-ignore
 import FileBrowser from "react-keyed-file-browser"
-import Explorer from "../components/fileExplorer/Explorer";
+import ExplorerTable from "../components/fileExplorer/ExplorerTable";
 import ExplorerAccordion from "../components/fileExplorer/ExplorerAccordion";
-import ExplorerBreadcrumbs from "../components/fileExplorer/ExplorerBreadcrumbs";
+import Explorer from "../components/fileExplorer/Explorer";
 
 function Files(){
     const [showModal, setShowModal] = useState(false)
 
     const files = JSON.parse('[{"type":"file","name":"emptyFile1"},{"type":"directory","name":"subfolder","contents":[{"type":"file","name":"emptyFile2"},{"type":"directory","name":"subsubfolder","contents":[{"type":"file","name":"emptyFile3"},{"type":"file","name":"emptyFile4"}]}]}]')
+
+    //const files = JSON.parse('[{"type":"file","name":"emptyFile1"}]')
 
     const uppy = useUploader()
     return (
@@ -25,11 +27,13 @@ function Files(){
                 disabled={false}
                 hideUploadButton={true}
             />
+
+
             <Explorer files={files}/>
-            <ExplorerAccordion files={files}/>
-            <ExplorerBreadcrumbs files={files}/>
         </div>
     )
 }
 
 export default Files
+//<ExplorerAccordion files={files}/>
+// <ExplorerTable files={files}/>
