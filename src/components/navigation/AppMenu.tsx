@@ -14,8 +14,10 @@ function AppMenu(){
 
     const uploader = useUploader()
     const [progress, setProgress] = useState(0)
+    const [showProgress, setShowProgress] = useState(false)
 
     uploader.on("progress", (p) => {
+        setShowProgress(p > 0 && p < 100)
         setProgress(p)
     })
 
@@ -38,7 +40,7 @@ function AppMenu(){
                         <Nav.Link eventKey={1} as={Link} to="/">Home</Nav.Link>
                         <Nav.Link eventKey={2} as={Link} to="/files">Files</Nav.Link>
                         <Nav.Link eventKey={3} as={Link} to="/upload">Upload</Nav.Link>
-                        <Text size="sm" color="grey">{progress}%</Text>
+                        {showProgress && <Text size="sm" color="grey">{progress}%</Text>}
                     </Nav>
                 </Navbar.Collapse>
             </Navbar>

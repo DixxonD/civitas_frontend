@@ -28,6 +28,7 @@ function Uploader(){
 
     uppy.on('complete', function (result){
         const numberFiles = result.successful.length
+        if(numberFiles < 1){return}
         const fileStr = numberFiles === 1 ? 'file was ' : 'files were'
         updateNotification({
             id: "upload",
@@ -40,10 +41,7 @@ function Uploader(){
             color: 'green',
             style: { backgroundColor: 'white' },
         })
-
-
     })
-
 
     return (
         <div>
