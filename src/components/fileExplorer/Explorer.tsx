@@ -1,15 +1,16 @@
 import React, {useState, useEffect} from "react";
-import { Text } from '@mantine/core';
+import { Badge } from '@mantine/core';
 import ExplorerElement from "./ExplorerElement";
 import ExplorerHeader from "./ExplorerHeader";
 import {FileDescription} from "../../config/types";
 
 
-type Props = {
-    files: FileDescription[]
+interface Props  {
+    files: FileDescription[],
+    onRefresh(): void
 }
 
-function Explorer({files}: Props){
+function Explorer({files, onRefresh}: Props){
 
     const [path, setPath] = useState<string[]>([])
     const [allFiles, setAllFiles] = useState<FileDescription[]>( files)
@@ -79,15 +80,19 @@ function Explorer({files}: Props){
             <ExplorerHeader
                 onBack={goBack}
                 onClick={goBackTo}
+                onRefresh={onRefresh}
                 showBackButton={showBackButton}
                 path={path}
             />
             <table width={'100%'} >
                 <tbody>{content}</tbody>
+                { content.length === 0 &&
+                    <div style={{display: 'flex', width: '100%', justifyContent: 'center'}}>
+                    <Badge color="gray" size="xl" radius="lg"> Empty Directory</Badge>
+                    </div>
+                }
             </table>
-
-            <Text onClick={goBack}>back</Text>
-        </>
+            </>
     )
 }
 
