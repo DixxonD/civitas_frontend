@@ -2,13 +2,10 @@ import React, {useState, useEffect} from "react";
 import { Text } from '@mantine/core';
 import ExplorerElement from "./ExplorerElement";
 import ExplorerHeader from "./ExplorerHeader";
+import {FileDescription} from "../../config/types";
 
 
-export type FileDescription = {
-    type: string,
-    name: "directory" | "file",
-    contents?: FileDescription[]
-}
+
 
 type Props = {
     files: FileDescription[]
@@ -39,6 +36,11 @@ function Explorer({files}: Props){
     useEffect(() => {
         setShowBackButton(path.length > 0)
     }, [path])
+
+    useEffect(() => {
+        setAllFiles(files)
+        setPath([])
+    }, [files])
 
     function sortFileDescriptions(a: FileDescription, b: FileDescription): number {
         if(a.type === b.type){

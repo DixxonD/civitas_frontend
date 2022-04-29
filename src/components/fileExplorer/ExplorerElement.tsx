@@ -1,7 +1,8 @@
 import React, {useState} from "react";
 import {Box, CSSObject, MantineTheme, Text} from '@mantine/core';
-import {FileDescription} from "./Explorer";
+
 import {BsDownload, BsFillTrashFill, BsFolder} from 'react-icons/bs'
+import {FileDescription} from "../../config/types";
 
 
 interface Prop {
@@ -12,7 +13,7 @@ interface Prop {
 function ExplorerElement({fileDescription, onClick}: Prop){
 
     const [file, setFile] = useState<FileDescription>(fileDescription)
-    
+
     return(
         <div
             style={{marginTop: '5px'}}
