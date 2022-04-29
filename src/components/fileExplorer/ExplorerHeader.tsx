@@ -1,6 +1,7 @@
-import React, {useEffect, useState} from "react";
+import React, {CSSProperties, MouseEventHandler, useEffect, useState} from "react";
 import {BsFillCaretLeftFill} from 'react-icons/bs'
-import {Text, Anchor, Breadcrumbs, Space} from '@mantine/core';
+import {Text} from '@mantine/core';
+import Breadcrumb from "react-bootstrap/Breadcrumb";
 
 
 interface Prop {
@@ -14,10 +15,10 @@ interface Prop {
 function ExplorerHeader({onBack, onClick, showBackButton, path}: Prop){
 
     const [showBack, setShowBack] = useState<boolean>(showBackButton)
-    const [elements, setElements] = useState<JSX.Element[]>( () => renderPathElements(path))
+    const [breadcrumbItems, setBreadcrumbItems] = useState<JSX.Element[]>(() => renderBreadcrumbElements(path))
 
     useEffect(() => {
-        setElements(() => renderPathElements(getPathList(path)))
+        setBreadcrumbItems(() => renderBreadcrumbElements(getPathList(path)))
     }, [path])
 
     useEffect(() => {
@@ -25,15 +26,19 @@ function ExplorerHeader({onBack, onClick, showBackButton, path}: Prop){
     }, [showBackButton])
 
 
-
-    function renderPathElements(pathElements: string[]){
-        return pathElements.map((item, index) => (
-            <Anchor href='#' key={index}>
-                <div onClick={() => onClick(index)}>
-                {item}
-                </div>
-            </Anchor>
-        ))
+    function renderBreadcrumbElements(pathElements: string[])  {
+        const lastElement = pathElements.length - 1
+        return pathElements.map((item, index) =>{
+            const isLastElement = lastElement===index
+            return (
+                <Breadcrumb.Item
+                    active={isLastElement}
+                    key={index}
+                    onClick={isLastElement ? () => {} : () => onClick(index)}
+                >
+                        {item}
+                </Breadcrumb.Item>
+        )})
     }
 
     function getPathList(path: string[]): string[]{
@@ -41,25 +46,50 @@ function ExplorerHeader({onBack, onClick, showBackButton, path}: Prop){
     }
 
     return (
-        <div style={{display: "flex", flexDirection: 'row'}}>
-            { showBack && <BackButton onBack={onBack}/>}
-            <Breadcrumbs style={{marginLeft: '15px'}}>{elements}</Breadcrumbs>
-        </div>
+        <>
+
+            <div style={{display: "flex", flexDirection: 'row'}}>
+                 <BackButton onBack={onBack} disabled={!showBack}/>
+                <Breadcrumb style={
+                    {marginLeft: '20px'}
+                }>{breadcrumbItems}</Breadcrumb>
+            </div>
+        </>
     )
 }
 
+
+
 interface PropBackButton {
+    disabled: boolean,
     onBack(): void
 }
 
-const  BackButton = ({onBack}: PropBackButton) => (
-    <div
-        onClick={onBack}
-        style={{display: 'flex', flexDirection: 'row', cursor: 'pointer'}}
-    >
-        <BsFillCaretLeftFill  size={'1em'}/>
-        <Text>Back</Text>
-    </div>
-)
+const  BackButton = ({onBack, disabled}: PropBackButton) => {
 
+    const [isDisabled, setIsDisabled] = useState<boolean>(disabled)
+
+    useEffect(() => {
+        setIsDisabled(disabled)
+    }, [disabled])
+
+    const style: CSSProperties = isDisabled ?
+        {display: 'flex', flexDirection: 'row', }
+        :
+        {display: 'flex', flexDirection: 'row', cursor: 'pointer'}
+
+    const color: string = isDisabled ? 'gray' : 'black'
+
+    const onClick = isDisabled ? () => {} : onBack
+
+    return (
+        <div
+            onClick={onClick}
+            style={style}
+        >
+            <BsFillCaretLeftFill color={color} size={'1em'}/>
+            <Text color={color} >Back</Text>
+        </div>
+    )
+}
 export default ExplorerHeader

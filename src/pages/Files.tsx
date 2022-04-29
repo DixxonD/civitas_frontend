@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import {Button, Title} from '@mantine/core';
 import {server} from '../config/config'
 import {useUploader} from "../components/upload/UploadContext";
@@ -14,10 +14,13 @@ function Files(){
     const [showModal, setShowModal] = useState(false)
     const [files, setFiles] = useState<FileDescription[]>([]);
 
+    useEffect( () => {
+        updateFiles()
+    }, [])
+
     async function fetchFileStructure(): Promise<FileDescription[]>{
         try{
             const result = await axios.get(`${server.addr}:${server.port}/api/files`)
-            console.log(result.data)
             return result.data
         }catch (error){
             throw error
@@ -39,6 +42,7 @@ function Files(){
     const uppy = useUploader()
     return (
         <div>
+
             <Title order={1}>Files</Title>
             <Button onClick={updateFiles}>Refresh</Button>
             <DashboardModal

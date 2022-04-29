@@ -5,8 +5,6 @@ import ExplorerHeader from "./ExplorerHeader";
 import {FileDescription} from "../../config/types";
 
 
-
-
 type Props = {
     files: FileDescription[]
 }
@@ -75,8 +73,6 @@ function Explorer({files}: Props){
             setPath(oldPathArr => [...oldPathArr, file.name])
         }
     }
-
-
 
     return (
         <>

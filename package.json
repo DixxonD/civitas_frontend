@@ -17,6 +17,7 @@
     "@uppy/golden-retriever": "^2.0.6",
     "@uppy/react": "^2.1.2",
     "@uppy/tus": "^2.2.2",
+    "antd": "^4.20.1",
     "axios": "^0.27.2",
     "bootstrap": "^5.1.3",
     "react": "^18.0.0",
