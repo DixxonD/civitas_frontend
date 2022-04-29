@@ -53,7 +53,7 @@ function Explorer({files, onRefresh}: Props){
         return files.sort(sortFileDescriptions)
             .map(file => (
             <tr key={file.name}>
-                <td ><ExplorerElement fileDescription={file} onClick={onItemClick}/></td>
+                <td ><ExplorerElement fileDescription={file} onClick={onItemClick} path={path}/></td>
             </tr>
         ))
     }

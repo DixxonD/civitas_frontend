@@ -2,14 +2,13 @@ import React, {useEffect, useState} from 'react'
 import {Title} from '@mantine/core';
 import {server} from '../config/config'
 import {useUploader} from "../components/upload/UploadContext";
+import {Skeleton} from "@mantine/core";
 import {DashboardModal} from "@uppy/react";
 
-// @ts-ignore
-import FileBrowser from "react-keyed-file-browser"
 import Explorer from "../components/fileExplorer/Explorer";
 import axios from "axios";
 import {FileDescription} from "../config/types";
-import {closeNotification, showLoadingNotification, showErrorNotification} from "../components/AppNotificationProvider";
+import {closeNotification, showErrorNotification, showLoadingNotification} from "../services/AppNotificationProvider";
 
 function Files(){
     const [showModal, setShowModal] = useState(false)
@@ -54,7 +53,7 @@ function Files(){
 
     const uppy = useUploader()
     return (
-        <div>
+        <div className='content'>
 
             <Title order={1}>Files</Title>
             <DashboardModal
@@ -63,7 +62,9 @@ function Files(){
                 disabled={false}
                 hideUploadButton={true}
             />
-            <Explorer files={files} onRefresh={updateFiles}/>
+            <Skeleton visible={isUpdating}>
+                <Explorer files={files} onRefresh={updateFiles}/>
+            </Skeleton>
         </div>
     )
 }

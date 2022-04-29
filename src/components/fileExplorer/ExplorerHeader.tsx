@@ -1,6 +1,8 @@
 import React, {CSSProperties, useEffect, useState} from "react";
 import {BsFillCaretLeftFill} from 'react-icons/bs'
 import Breadcrumb from "react-bootstrap/Breadcrumb";
+import { Badge} from '@mantine/core';
+
 import {FiRefreshCw} from 'react-icons/fi'
 
 interface Prop {
@@ -45,6 +47,12 @@ function ExplorerHeader({onBack, onClick, onRefresh, showBackButton, path}: Prop
         return ['root', ...path]
     }
 
+    const badgeStyle = {
+        marginRight: '5px',
+        cursor: 'pointer',
+
+    }
+
     return (
         <>
 
@@ -64,7 +72,12 @@ function ExplorerHeader({onBack, onClick, onRefresh, showBackButton, path}: Prop
                     {breadcrumbItems}
                 </Breadcrumb>
             </div>
-
+            <Badge style={badgeStyle} onClick={() => {}} color="gray" variant='filled'>
+                Add File
+            </Badge>
+            <Badge style={badgeStyle} onClick={() => {}} color="gray" variant='filled'>
+                Add Subdirectory
+            </Badge>
 
         </>
     )
