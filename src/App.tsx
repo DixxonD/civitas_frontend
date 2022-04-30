@@ -7,6 +7,7 @@ import './styles/App.css'
 import AppMenu from "./components/navigation/AppMenu";
 import AppRouter from "./components/navigation/AppRouter";
 import {UploadProvider} from "./components/upload/UploadContext";
+import {ExplorerProvider} from "./components/fileExplorer/ExplorerContext";
 
 
 function App() {
@@ -15,10 +16,12 @@ function App() {
         <Router>
             <NotificationsProvider>
             <UploadProvider>
-                <div className="content">
-                    <AppMenu/>
-                    <AppRouter/>
-                </div>
+                <ExplorerProvider>
+                    <div className="content">
+                        <AppMenu/>
+                        <AppRouter/>
+                    </div>
+                </ExplorerProvider>
             </UploadProvider>
             </NotificationsProvider>
         </Router>

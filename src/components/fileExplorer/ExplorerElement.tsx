@@ -84,10 +84,9 @@ function ExplorerElement({fileDescription, onClick, path}: Prop){
 function ExplorerElementFile({fileName}: PropFile){
     return (
         <Box
-            style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between', width: '100%'}}
+            style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between', width: '100%', padding: '8px'}}
             sx={(theme) => ({
                 backgroundColor:  theme.colors.gray[2],
-                padding: theme.spacing.xs,
                 borderRadius: theme.radius.md,
             })}
         >
@@ -110,7 +109,6 @@ function ExplorerElementDirectory({dirName, onClick, menuElement}: PropDir){
             sx={(theme) => ({
                 backgroundColor:  theme.colors.gray[3],
                 textAlign: 'left',
-                padding: theme.spacing.xs,
                 borderRadius: theme.radius.md,
                 cursor: 'pointer',
                 '&:hover': {
@@ -118,16 +116,17 @@ function ExplorerElementDirectory({dirName, onClick, menuElement}: PropDir){
                 },
             })}
         >
-            <div
-                style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start',width: '100%'}}
-                onClick={onClick}
-            >
-                <BsFolder  style={styleIcon} size={iconSize}/>
-                <Text>{dirName}</Text>
-            </div>
-            <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-end'}}>
-                {menuElement}
-            </div>
+                <div
+                    style={{ padding: '8px',display: 'flex', flexDirection: 'row', justifyContent: 'flex-start',width: '100%'}}
+                    onClick={onClick}
+                >
+                    <BsFolder  style={styleIcon} size={iconSize}/>
+                    <Text>{dirName}</Text>
+                </div>
+                <div style={{padding: '8px', display: 'flex', flexDirection: 'row', justifyContent: 'flex-end'}}>
+                    {menuElement}
+                </div>
+
         </Box>
     )
 }

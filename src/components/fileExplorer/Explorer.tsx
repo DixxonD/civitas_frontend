@@ -3,6 +3,7 @@ import { Badge } from '@mantine/core';
 import ExplorerElement from "./ExplorerElement";
 import ExplorerHeader from "./ExplorerHeader";
 import {FileDescription} from "../../config/types";
+import {useFileStructure, useSelectedPath, useSelectedPathUpdate} from "./ExplorerContext";
 
 
 interface Props  {
@@ -12,34 +13,40 @@ interface Props  {
 
 function Explorer({files, onRefresh}: Props){
 
-    const [path, setPath] = useState<string[]>([])
+    //const [path, setPath] = useState<string[]>([])
+    const path = useSelectedPath()
+    const setPath = useSelectedPathUpdate()
+
     const [allFiles, setAllFiles] = useState<FileDescription[]>( files)
     const [content, setContent] = useState<React.ReactElement[]>(() => {return renderList(files)})
     const [showBackButton, setShowBackButton] = useState<boolean>(false)
 
     useEffect(() => {
-        if(path.length === 0){
-            setContent(renderList(allFiles))
-        }
-        let subSet = allFiles
-        path.forEach(dir => {
-            const data =  subSet.filter(element => element.name === dir)
-            if(data.length > 0){
-                // @ts-ignore
-                subSet = data[0].contents
-            }
-            setContent(renderList(subSet))
-        })
-    }, [path])
-
-    useEffect(() => {
+        updateView()
         setShowBackButton(path.length > 0)
     }, [path])
 
+
     useEffect(() => {
         setAllFiles(files)
-        setPath([])
-    }, [files])
+        updateView()
+     }, [files])
+
+    function updateView(){
+        if(path.length === 0){
+            setContent(renderList(allFiles))
+        }
+
+        let subSet: FileDescription[] = allFiles
+        path.forEach(dir => {
+            const data =  subSet.filter(element => element.name === dir)
+            if(data.length > 0){
+                const contents = data[0].contents
+                subSet = contents ? contents : []
+            }
+            setContent(renderList(subSet))
+        })
+    }
 
     function sortFileDescriptions(a: FileDescription, b: FileDescription): number {
         if(a.type === b.type){
