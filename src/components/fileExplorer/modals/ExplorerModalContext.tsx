@@ -2,6 +2,8 @@ import React, {useState, useContext} from "react";
 import ModalChangeFileStructure from "./ModalChangeFileStructure";
 import {useSelectedPath} from "../ExplorerContext";
 import {Text} from "@mantine/core";
+import FromAddDirectory from '../modals/FromAddDirectory'
+import {FormValuesAddFile} from "../../../config/types";
 
 interface Prop {
     children: JSX.Element
@@ -20,6 +22,15 @@ export function ExplorerModalProvider({children}: Prop){
     const [deleteDirVisible, setDeleteDirVisible] = useState<boolean>(false)
     const [selectedDirectory, setSelectedDirectory] = useState<string>("")
 
+    function getBasePath(): string{
+        return '/'.concat(path.join('/').concat(selectedDirectory))
+    }
+
+    function onCreateNewDirectory(values: FormValuesAddFile){
+        console.log(values)
+    }
+
+
 
     return (
         <SelectedDirectoryUpdate.Provider value={setSelectedDirectory}>
@@ -27,24 +38,29 @@ export function ExplorerModalProvider({children}: Prop){
                 <DeleteDirVisibleUpdateContext.Provider value={setDeleteDirVisible}>
                     <AddFileVisibleUpdateContext.Provider value={setAddFileVisible}>
                         <ModalChangeFileStructure
-                            visible={addDirVisible}
                             title="Add Folder"
+                            visible={addDirVisible}
                             onClose={() => {setAddDirVisible(false)}}
                             content={(
-                                <Text>{`${path.toString()}/${selectedDirectory}`}</Text>
+                                <FromAddDirectory
+                                    basePath={getBasePath()}
+                                    label="Folder name"
+                                    placeholder="Name of new folder"
+                                    onSubmit={onCreateNewDirectory}
+                                />
                             )}
                         />
                         <ModalChangeFileStructure
-                            visible={deleteDirVisible}
                             title="Delete Folder"
+                            visible={deleteDirVisible}
                             onClose={() => {setDeleteDirVisible(false)}}
                             content={(
                                 <Text>{`${path.toString()}/${selectedDirectory}`}</Text>
                             )}
                         />
                         <ModalChangeFileStructure
+                            title="Upload Files"
                             visible={addFileVisible}
-                            title="Add File"
                             onClose={() => {setAddFileVisible(false)}}
                             content={(
                                 <Text>{`${path.toString()}/${selectedDirectory}`}</Text>
