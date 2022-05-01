@@ -8,6 +8,7 @@ import AppMenu from "./components/navigation/AppMenu";
 import AppRouter from "./components/navigation/AppRouter";
 import {UploadProvider} from "./components/upload/UploadContext";
 import {ExplorerProvider} from "./components/fileExplorer/ExplorerContext";
+import {ExplorerModalProvider} from "./components/fileExplorer/modals/ExplorerModalContext";
 
 
 function App() {
@@ -17,10 +18,12 @@ function App() {
             <NotificationsProvider>
             <UploadProvider>
                 <ExplorerProvider>
+                    <ExplorerModalProvider>
                     <div className="content">
                         <AppMenu/>
                         <AppRouter/>
                     </div>
+                    </ExplorerModalProvider>
                 </ExplorerProvider>
             </UploadProvider>
             </NotificationsProvider>

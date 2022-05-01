@@ -4,6 +4,11 @@ import Breadcrumb from "react-bootstrap/Breadcrumb";
 import { Badge} from '@mantine/core';
 
 import {FiRefreshCw} from 'react-icons/fi'
+import {
+    useAddDirVisibleUpdate,
+    useAddFileVisibleUpdate,
+    useSelectedDirectoryUpdate
+} from "./modals/ExplorerModalContext";
 
 interface Prop {
     showBackButton: boolean,
@@ -15,6 +20,10 @@ interface Prop {
 }
 
 function ExplorerHeader({onBack, onClick, onRefresh, showBackButton, path}: Prop){
+
+    const setAddDirVisible = useAddDirVisibleUpdate()
+    const setAddFileVisible = useAddFileVisibleUpdate()
+    const setSelectedDirectory = useSelectedDirectoryUpdate()
 
     const [showBack, setShowBack] = useState<boolean>(showBackButton)
     const [breadcrumbItems, setBreadcrumbItems] = useState<JSX.Element[]>(() => renderBreadcrumbElements(path))
@@ -72,10 +81,20 @@ function ExplorerHeader({onBack, onClick, onRefresh, showBackButton, path}: Prop
                     {breadcrumbItems}
                 </Breadcrumb>
             </div>
-            <Badge style={badgeStyle} onClick={() => {}} color="gray" variant='filled'>
+            <Badge style={badgeStyle} onClick={() => {
+                    setAddFileVisible(true)
+                    setSelectedDirectory("")
+            }}
+                   color="gray"
+                   variant='filled'>
                 Add File
             </Badge>
-            <Badge style={badgeStyle} onClick={() => {}} color="gray" variant='filled'>
+            <Badge style={badgeStyle} onClick={() =>{
+                setAddDirVisible(true)
+                setSelectedDirectory("")
+            }}
+                   color="gray"
+                   variant='filled'>
                 Add Subdirectory
             </Badge>
 

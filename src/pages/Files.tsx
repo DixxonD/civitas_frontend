@@ -1,29 +1,20 @@
 import React, {useEffect, useState} from 'react'
 import {Title} from '@mantine/core';
-import {server} from '../config/config'
-import {useUploader} from "../components/upload/UploadContext";
 import {Skeleton} from "@mantine/core";
-import {DashboardModal} from "@uppy/react";
 
 import Explorer from "../components/fileExplorer/Explorer";
-import axios from "axios";
-import {FileDescription} from "../config/types";
+
 import {closeNotification, showErrorNotification, showLoadingNotification} from "../services/AppNotificationProvider";
 import {
     useFileStructure,
     useFileStructureUpdate,
-    useIsUpdating, useIsUpdatingUpdate
 } from "../components/fileExplorer/ExplorerContext";
 import {fetchFileStructure} from "../services/FileManipulator";
 
 function Files(){
-    const [showModal, setShowModal] = useState(false)
-   // const [files, setFiles] = useState<FileDescription[]>([]);
     const [isUpdating, setIsUpdating] = useState<boolean>(false)
     const files = useFileStructure()
     const setFiles = useFileStructureUpdate()
-    //const isUpdating = useIsUpdating()
-    //const setIsUpdating = useIsUpdatingUpdate()
 
     useEffect( () => {
         if(files.length === 0){
@@ -48,7 +39,7 @@ function Files(){
             .then(response => {
                 setFiles(response.data)
                 setIsUpdating(false)
-            }).catch(error  => {
+            }).catch(()  => {
             setIsUpdating(false)
             showErrorNotification('Sorry!', 'Something went wrong')
             setFiles([])
@@ -85,17 +76,10 @@ function Files(){
 
 
 
-    const uppy = useUploader()
     return (
         <div className='content'>
 
             <Title order={1}>Files</Title>
-            <DashboardModal
-                uppy={uppy}
-                open={showModal}
-                disabled={false}
-                hideUploadButton={true}
-            />
             <Skeleton visible={isUpdating}>
                 <Explorer files={files} onRefresh={updateFileStructure}/>
             </Skeleton>

@@ -3,7 +3,7 @@ import { Badge } from '@mantine/core';
 import ExplorerElement from "./ExplorerElement";
 import ExplorerHeader from "./ExplorerHeader";
 import {FileDescription} from "../../config/types";
-import {useFileStructure, useSelectedPath, useSelectedPathUpdate} from "./ExplorerContext";
+import {useSelectedPath, useSelectedPathUpdate} from "./ExplorerContext";
 
 
 interface Props  {
@@ -12,32 +12,29 @@ interface Props  {
 }
 
 function Explorer({files, onRefresh}: Props){
-
-    //const [path, setPath] = useState<string[]>([])
     const path = useSelectedPath()
     const setPath = useSelectedPathUpdate()
 
-    const [allFiles, setAllFiles] = useState<FileDescription[]>( files)
     const [content, setContent] = useState<React.ReactElement[]>(() => {return renderList(files)})
     const [showBackButton, setShowBackButton] = useState<boolean>(false)
 
     useEffect(() => {
-        updateView()
+        updateView(files)
         setShowBackButton(path.length > 0)
     }, [path])
 
 
     useEffect(() => {
-        setAllFiles(files)
-        updateView()
+        updateView(files)
      }, [files])
 
-    function updateView(){
+    function updateView(files: FileDescription[]){
+
         if(path.length === 0){
-            setContent(renderList(allFiles))
+            setContent(renderList(files))
         }
 
-        let subSet: FileDescription[] = allFiles
+        let subSet: FileDescription[] = files
         path.forEach(dir => {
             const data =  subSet.filter(element => element.name === dir)
             if(data.length > 0){
@@ -60,7 +57,7 @@ function Explorer({files, onRefresh}: Props){
         return files.sort(sortFileDescriptions)
             .map(file => (
             <tr key={file.name}>
-                <td ><ExplorerElement fileDescription={file} onClick={onItemClick} path={path}/></td>
+                <td ><ExplorerElement fileDescription={file} onClick={onItemClick} /></td>
             </tr>
         ))
     }

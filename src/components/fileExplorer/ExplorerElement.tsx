@@ -1,18 +1,14 @@
 import React, {useState} from "react";
-import {Box, Modal, Text} from '@mantine/core';
+import {Box, Text} from '@mantine/core';
 
 import {BsDownload, BsFillTrashFill, BsFolder} from 'react-icons/bs'
 import {FileDescription} from "../../config/types";
 import ExplorerElementMenu from "./ExplorerElementMenu";
-import ModalAddDirectory from "./modals/ModalAddDirectory";
-import ModalDeleteDirectory from "./modals/ModalDeleteDirectory";
-import ModalUploadFiles from "./modals/ModalUploadFiles";
 
 
 interface Prop {
     fileDescription: FileDescription,
     onClick(file: FileDescription): void,
-    path: string[]
 }
 
 interface PropFile {
@@ -28,28 +24,9 @@ interface PropDir {
 const styleIcon = {marginRight: '1em', cursor: 'pointer'}
 const iconSize = '1.8em'
 
-function ExplorerElement({fileDescription, onClick, path}: Prop){
+function ExplorerElement({fileDescription, onClick}: Prop){
 
     const [file, setFile] = useState<FileDescription>(fileDescription)
-    const [showCreateDirectory, setShowCreateDirectory] = useState<boolean>(false)
-    const [showDeleteDirectory, setShowDeleteDirectory] = useState<boolean>(false)
-    const [showUploadFiles, setShowUploadFiles] = useState<boolean>(false)
-    const [selectedDirectory, setSelectedDirectory] = useState<string>("")
-
-    function onCreateDirectory(dirName: string){
-        setSelectedDirectory(dirName)
-        setShowCreateDirectory(true)
-    }
-
-    function onDeleteDirectory(dirName: string){
-        setSelectedDirectory(dirName)
-        setShowDeleteDirectory(true)
-    }
-
-    function onUploadFiles(dirName: string){
-        setSelectedDirectory(dirName)
-        setShowUploadFiles(true)
-    }
 
     function getExplorerElement(file: FileDescription){
         return file.type === 'directory' ?
@@ -57,11 +34,7 @@ function ExplorerElement({fileDescription, onClick, path}: Prop){
                 dirName={file.name}
                 onClick={() => onClick(file)}
                 menuElement={(
-                    <ExplorerElementMenu
-                        dirName={file.name}
-                        onUploadFiles={onUploadFiles}
-                        onDeleteDirectory={onDeleteDirectory}
-                        onCreateDirectory={onCreateDirectory}/>
+                    <ExplorerElementMenu dirName={file.name}/>
                 )}
             /> :
             <ExplorerElementFile fileName={file.name}/>
@@ -69,9 +42,6 @@ function ExplorerElement({fileDescription, onClick, path}: Prop){
 
     return(
         <>
-            <ModalAddDirectory visible={showCreateDirectory} basePath={path} dirName={selectedDirectory}/>
-            <ModalDeleteDirectory visible={showDeleteDirectory} basePath={path} dirName={selectedDirectory}/>
-            <ModalUploadFiles visible={showUploadFiles} basePath={path} dirName={selectedDirectory}/>
             <div style={{marginTop: '5px', flexDirection: 'row', display: 'flex', width: '100%'}}>
                 {getExplorerElement(file)}
             </div>

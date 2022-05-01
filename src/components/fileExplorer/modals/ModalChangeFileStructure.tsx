@@ -1,32 +1,34 @@
 import React, {useEffect, useState} from "react";
-import { Text, Modal } from '@mantine/core';
+import { Modal } from '@mantine/core';
 
 interface Prop {
     visible: boolean,
-    basePath: string[],
-    dirName: string
+    title: string,
+    onClose(): void,
+    content: JSX.Element
 }
 
-function ModalDeleteDirectory({visible, basePath, dirName}:Prop){
+function ModalChangeFileStructure({visible, title, onClose, content}:Prop){
     const [opened, setOpened] = useState<boolean>(false)
 
     useEffect(() => {
         setOpened(visible)
     }, [visible])
 
+
     return (
         <>
             <Modal
                 opened={opened}
-                onClose={() => setOpened(false)}
-                title={"Delete Folder"}
+                onClose={onClose}
+                title={title}
                 centered
             >
-                <Text>{`${basePath.toString()}/${dirName}`}</Text>
+                {content}
             </Modal>
         </>
     )
 
 }
 
-export default ModalDeleteDirectory
+export default ModalChangeFileStructure
