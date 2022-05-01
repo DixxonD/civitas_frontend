@@ -3,7 +3,7 @@ export type FileDescription = {
     name: "directory" | "file",
     contents?: FileDescription[]
 }
-export interface FormValuesAddFile{
+export interface DirectoryManipulation {
     name: string,
     basePath: string
 }

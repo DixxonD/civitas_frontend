@@ -83,7 +83,7 @@ function ExplorerHeader({onBack, onClick, onRefresh, showBackButton, path}: Prop
             </div>
             <Badge style={badgeStyle} onClick={() => {
                     setAddFileVisible(true)
-                    setSelectedDirectory("")
+                    setSelectedDirectory('')
             }}
                    color="gray"
                    variant='filled'>

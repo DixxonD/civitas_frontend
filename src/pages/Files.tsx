@@ -5,10 +5,7 @@ import {Skeleton} from "@mantine/core";
 import Explorer from "../components/fileExplorer/Explorer";
 
 import {closeNotification, showErrorNotification, showLoadingNotification} from "../services/AppNotificationProvider";
-import {
-    useFileStructure,
-    useFileStructureUpdate,
-} from "../components/fileExplorer/ExplorerContext";
+import {useFileStructure, useFileStructureUpdate,} from "../components/fileExplorer/ExplorerContext";
 import {fetchFileStructure} from "../services/FileManipulator";
 
 function Files(){
@@ -21,7 +18,6 @@ function Files(){
             updateFileStructure()
         }
     }, [])
-
 
 
     useEffect(() => {
@@ -37,14 +33,16 @@ function Files(){
         setIsUpdating(true)
         fetchFileStructure()
             .then(response => {
-                setFiles(response.data)
+                setFiles(response)
                 setIsUpdating(false)
             }).catch(()  => {
-            setIsUpdating(false)
-            showErrorNotification('Sorry!', 'Something went wrong')
-            setFiles([])
+                setIsUpdating(false)
+                showErrorNotification('Sorry!', 'Something went wrong')
+                setFiles([])
         })
     }
+
+
 
 
     /*

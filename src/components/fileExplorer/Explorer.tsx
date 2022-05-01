@@ -9,6 +9,7 @@ import {useSelectedPath, useSelectedPathUpdate} from "./ExplorerContext";
 interface Props  {
     files: FileDescription[],
     onRefresh(): void
+
 }
 
 function Explorer({files, onRefresh}: Props){
