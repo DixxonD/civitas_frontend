@@ -7,6 +7,7 @@ import '@uppy/dashboard/dist/style.css'
 import {useUploader} from "./UploadContext";
 import {showNotification, updateNotification} from "@mantine/notifications";
 import {Check} from "tabler-icons-react";
+import {getPathForUpload} from "../fileExplorer/modals/ExplorerModalContext";
 
 
 function Uploader(){
@@ -40,6 +41,12 @@ function Uploader(){
             autoClose: 4000,
             color: 'green',
             style: { backgroundColor: 'white' },
+        })
+    })
+
+    uppy.on('file-added', (file) => {
+        uppy.setFileMeta(file.id, {
+            relativePath: getPathForUpload()
         })
     })
 
