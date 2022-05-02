@@ -3,43 +3,48 @@ import { Badge } from '@mantine/core';
 import ExplorerElement from "./ExplorerElement";
 import ExplorerHeader from "./ExplorerHeader";
 import {FileDescription} from "../../config/types";
+import {useSelectedPath, useSelectedPathUpdate} from "./ExplorerContext";
 
 
 interface Props  {
     files: FileDescription[],
     onRefresh(): void
+
 }
 
 function Explorer({files, onRefresh}: Props){
+    const path = useSelectedPath()
+    const setPath = useSelectedPathUpdate()
 
-    const [path, setPath] = useState<string[]>([])
-    const [allFiles, setAllFiles] = useState<FileDescription[]>( files)
     const [content, setContent] = useState<React.ReactElement[]>(() => {return renderList(files)})
     const [showBackButton, setShowBackButton] = useState<boolean>(false)
 
     useEffect(() => {
-        if(path.length === 0){
-            setContent(renderList(allFiles))
-        }
-        let subSet = allFiles
-        path.forEach(dir => {
-            const data =  subSet.filter(element => element.name === dir)
-            if(data.length > 0){
-                // @ts-ignore
-                subSet = data[0].contents
-            }
-            setContent(renderList(subSet))
-        })
-    }, [path])
-
-    useEffect(() => {
+        updateView(files)
         setShowBackButton(path.length > 0)
     }, [path])
 
+
     useEffect(() => {
-        setAllFiles(files)
-        setPath([])
-    }, [files])
+        updateView(files)
+     }, [files])
+
+    function updateView(files: FileDescription[]){
+
+        if(path.length === 0){
+            setContent(renderList(files))
+        }
+
+        let subSet: FileDescription[] = files
+        path.forEach(dir => {
+            const data =  subSet.filter(element => element.name === dir)
+            if(data.length > 0){
+                const contents = data[0].contents
+                subSet = contents ? contents : []
+            }
+            setContent(renderList(subSet))
+        })
+    }
 
     function sortFileDescriptions(a: FileDescription, b: FileDescription): number {
         if(a.type === b.type){
@@ -53,7 +58,7 @@ function Explorer({files, onRefresh}: Props){
         return files.sort(sortFileDescriptions)
             .map(file => (
             <tr key={file.name}>
-                <td ><ExplorerElement fileDescription={file} onClick={onItemClick}/></td>
+                <td ><ExplorerElement fileDescription={file} onClick={onItemClick} /></td>
             </tr>
         ))
     }

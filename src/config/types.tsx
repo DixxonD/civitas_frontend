@@ -3,3 +3,11 @@ export type FileDescription = {
     name: "directory" | "file",
     contents?: FileDescription[]
 }
+export interface DirectoryManipulation {
+    name: string,
+    basePath: string
+}
+
+export interface SimpleAxiosError{
+    response: {data: string}
+}

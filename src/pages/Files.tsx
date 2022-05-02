@@ -1,24 +1,24 @@
 import React, {useEffect, useState} from 'react'
 import {Title} from '@mantine/core';
-import {server} from '../config/config'
-import {useUploader} from "../components/upload/UploadContext";
-import {DashboardModal} from "@uppy/react";
+import {Skeleton} from "@mantine/core";
 
-// @ts-ignore
-import FileBrowser from "react-keyed-file-browser"
 import Explorer from "../components/fileExplorer/Explorer";
-import axios from "axios";
-import {FileDescription} from "../config/types";
-import {closeNotification, showLoadingNotification, showErrorNotification} from "../components/AppNotificationProvider";
+
+import {closeNotification, showErrorNotification, showLoadingNotification} from "../services/AppNotificationProvider";
+import {useFileStructure, useFileStructureUpdate,} from "../components/fileExplorer/ExplorerContext";
+import {fetchFileStructure} from "../services/FileManipulator";
 
 function Files(){
-    const [showModal, setShowModal] = useState(false)
-    const [files, setFiles] = useState<FileDescription[]>([]);
     const [isUpdating, setIsUpdating] = useState<boolean>(false)
+    const files = useFileStructure()
+    const setFiles = useFileStructureUpdate()
 
     useEffect( () => {
-        updateFiles()
+        if(files.length === 0){
+            updateFileStructure()
+        }
     }, [])
+
 
     useEffect(() => {
         if(isUpdating){
@@ -28,18 +28,38 @@ function Files(){
         }
     }, [isUpdating])
 
-    async function fetchFileStructure(): Promise<FileDescription[]>{
-        try{
-            setIsUpdating(true)
-            const result = await axios.get(`${server.addr}:${server.port}/api/files`)
-            setIsUpdating(false)
-            return result.data
-        }catch (error){
-            throw error
-        }
 
+    function updateFileStructure(){
+        setIsUpdating(true)
+        fetchFileStructure()
+            .then(response => {
+                setFiles(response)
+                setIsUpdating(false)
+            }).catch(()  => {
+                setIsUpdating(false)
+                showErrorNotification('Sorry!', 'Something went wrong')
+                setFiles([])
+        })
     }
 
+
+
+
+    /*
+        async function fetchFileStructure(): Promise<FileDescription[]>{
+            try{
+                setIsUpdating(true)
+                const result = await axios.get(`${server.addr}:${server.port}/api/files`)
+                setIsUpdating(false)
+                return result.data
+            }catch (error){
+                throw error
+            }
+
+        }
+
+     */
+/*
     function updateFiles(){
         fetchFileStructure().then(result => {
             setFiles(result)
@@ -50,20 +70,17 @@ function Files(){
         })
     }
 
+ */
 
 
-    const uppy = useUploader()
+
     return (
-        <div>
+        <div className='content'>
 
             <Title order={1}>Files</Title>
-            <DashboardModal
-                uppy={uppy}
-                open={showModal}
-                disabled={false}
-                hideUploadButton={true}
-            />
-            <Explorer files={files} onRefresh={updateFiles}/>
+            <Skeleton visible={isUpdating}>
+                <Explorer files={files} onRefresh={updateFileStructure}/>
+            </Skeleton>
         </div>
     )
 }

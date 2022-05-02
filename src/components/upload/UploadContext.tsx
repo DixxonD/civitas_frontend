@@ -1,8 +1,9 @@
 import React, {useContext, useState} from "react";
-import {Uppy} from "@uppy/core";
+import {BasePlugin, Uppy} from "@uppy/core";
 import Tus from "@uppy/tus";
 import GoldenRetriever from "@uppy/golden-retriever";
 import {server, tus} from "../../config/config";
+import FileTargetPlugin from "./FileTargetPlugin";
 
 const UploadContext = React.createContext(new Uppy())
 
@@ -17,9 +18,12 @@ type Props = {
 export function UploadProvider({children}: Props){
 
     const [uppy, setUppy] = useState(() => {
+
         return new Uppy({
             autoProceed: false
         })
+            // @ts-ignore
+            .use(FileTargetPlugin, {})
             .use(Tus, { endpoint: `${server.addr}:${server.port}${tus.endpoint}` })
             //.use(GoldenRetriever, {serviceWorker: false})
     })
