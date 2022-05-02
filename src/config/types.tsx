@@ -7,3 +7,7 @@ export interface DirectoryManipulation {
     name: string,
     basePath: string
 }
+
+export interface SimpleAxiosError{
+    response: {data: string}
+}

@@ -3,16 +3,28 @@ import axios from "axios";
 import {server} from "../config/config";
 import {DirectoryManipulation} from "../config/types";
 
+const baseURL = `${server.addr}:${server.port}`
+
 function createDirectory(values: DirectoryManipulation){
     console.log("create a new Folder at", values.basePath, values.name)
-    return axios.post(`${server.addr}:${server.port}/api/directory`,values)
+    return axios.post(`${baseURL}/api/directory`,values)
 
+}
+
+async  function deleteDirectory(basePath: string){
+    console.log("delete folder at", basePath)
+    return axios.delete(`${baseURL}/api/directory`, {
+        data: {
+            basePath: basePath
+        }
+    })
 }
 
 async function fetchFileStructure(){
-    return (await axios.get(`${server.addr}:${server.port}/api/files`)).data
+    return (await axios.get(`${baseURL}/api/files`)).data
 }
 
 
 
-export {fetchFileStructure, createDirectory}
+
+export {fetchFileStructure, createDirectory, deleteDirectory}

@@ -3,9 +3,9 @@ import ModalChangeFileStructure from "./ModalChangeFileStructure";
 import {useFileStructureUpdate, useSelectedPath} from "../ExplorerContext";
 import {LoadingOverlay, Text} from "@mantine/core";
 import FromAddDirectory from '../modals/FromAddDirectory'
-import {DirectoryManipulation} from "../../../config/types";
+import {DirectoryManipulation, SimpleAxiosError} from "../../../config/types";
 import FormDeleteDirectory from "./FormDeleteDirectory";
-import {createDirectory, fetchFileStructure} from "../../../services/FileManipulator";
+import {createDirectory, deleteDirectory, fetchFileStructure} from "../../../services/FileManipulator";
 import {showErrorNotification} from "../../../services/AppNotificationProvider";
 
 interface Prop {
@@ -46,7 +46,15 @@ export function ExplorerModalProvider({children}: Prop){
     }
 
     function onDeleteDirectory(basePath: string){
-       // setIsLoading(true)
+        setDeleteDirVisible(false)
+        setIsLoading(true)
+        deleteDirectory(basePath)
+            .then(() => {
+                updateView()
+            }).catch((error: SimpleAxiosError) => {
+                showErrorNotification('Sorry!', error.response.data)
+                setIsLoading(false)
+        })
     }
 
     function onAbort(){
