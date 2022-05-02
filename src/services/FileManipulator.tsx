@@ -24,7 +24,9 @@ async function fetchFileStructure(){
     return (await axios.get(`${baseURL}/api/files`)).data
 }
 
+async function setUploadDirectory(target: string){
+    return await axios.post(`${baseURL}/api/uploadDir`, {target: target})
+}
 
 
-
-export {fetchFileStructure, createDirectory, deleteDirectory}
+export {fetchFileStructure, createDirectory, deleteDirectory, setUploadDirectory}

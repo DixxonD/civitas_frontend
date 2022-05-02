@@ -8,9 +8,11 @@ function UploadCenter(){
     return (
         <div>
             <Title order={1}>Upload Center</Title>
-            <Uploader/>
+
         </div>
     )
 }
 
 export default UploadCenter
+
+/* <Uploader/>*/

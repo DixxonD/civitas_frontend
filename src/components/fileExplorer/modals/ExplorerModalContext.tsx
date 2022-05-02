@@ -1,4 +1,4 @@
-import React, {useState, useContext} from "react";
+import React, {useState, useContext, useEffect} from "react";
 import ModalChangeFileStructure from "./ModalChangeFileStructure";
 import {useFileStructureUpdate, useSelectedPath} from "../ExplorerContext";
 import {LoadingOverlay, Text} from "@mantine/core";
@@ -7,6 +7,8 @@ import {DirectoryManipulation, SimpleAxiosError} from "../../../config/types";
 import FormDeleteDirectory from "./FormDeleteDirectory";
 import {createDirectory, deleteDirectory, fetchFileStructure} from "../../../services/FileManipulator";
 import {showErrorNotification} from "../../../services/AppNotificationProvider";
+import Uploader from "../../upload/Uploader";
+import PathView from "./PathView";
 
 interface Prop {
     children: JSX.Element
@@ -28,10 +30,19 @@ export function ExplorerModalProvider({children}: Prop){
 
     const [isLoading, setIsLoading] = useState<boolean>(false)
 
+
+    useEffect(() => {
+        if(addFileVisible){
+            pathForUpload = getBasePath()
+            return
+        }
+    }, [addFileVisible])
+
     function getBasePath(): string{
         const firstSlash = path.length === 0 ? '' : '/'
         return firstSlash + path.join('/').concat('/' + selectedDirectory)
     }
+
 
     function onCreateNewDirectory(values: DirectoryManipulation){
         setAddDirVisible(false)
@@ -56,6 +67,7 @@ export function ExplorerModalProvider({children}: Prop){
                 setIsLoading(false)
         })
     }
+
 
     function onAbort(){
         setDeleteDirVisible(false)
@@ -109,9 +121,14 @@ export function ExplorerModalProvider({children}: Prop){
                         <ModalChangeFileStructure
                             title="Upload Files"
                             visible={addFileVisible}
-                            onClose={() => {setAddFileVisible(false)}}
+                            onClose={() => {
+                                updateView()
+                                setAddFileVisible(false)}}
                             content={(
-                                <Text>{`${path.toString()}/${selectedDirectory}`}</Text>
+                                <>
+                                    <PathView title="Upload Path:" basePath={getBasePath()}/>
+                                    <Uploader />
+                                </>
                             )}
                         />
                             {children}
@@ -136,4 +153,9 @@ export function useAddFileVisibleUpdate(){
 
 export function useDeleteDirVisibleUpdate(){
     return useContext(DeleteDirVisibleUpdateContext)
+}
+
+let pathForUpload = ''
+export function getPathForUpload(){
+    return pathForUpload
 }
