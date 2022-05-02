@@ -1,5 +1,5 @@
 import {BasePlugin} from "@uppy/core";
-import {DefaultPluginOptions, UIPlugin, Uppy} from "@uppy/core";
+import {Uppy} from "@uppy/core";
 import {getPathForUpload} from "../fileExplorer/modals/ExplorerModalContext";
 import {setUploadDirectory} from "../../services/FileManipulator";
 

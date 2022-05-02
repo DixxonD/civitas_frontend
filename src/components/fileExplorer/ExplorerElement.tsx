@@ -9,10 +9,12 @@ import ExplorerElementMenu from "./ExplorerElementMenu";
 interface Prop {
     fileDescription: FileDescription,
     onClick(file: FileDescription): void,
+    onDownload(file: FileDescription): void
 }
 
 interface PropFile {
-    fileName: string
+    fileName: string,
+    onDownload(): void
 }
 
 interface PropDir {
@@ -24,7 +26,7 @@ interface PropDir {
 const styleIcon = {marginRight: '1em', cursor: 'pointer'}
 const iconSize = '1.8em'
 
-function ExplorerElement({fileDescription, onClick}: Prop){
+function ExplorerElement({fileDescription, onClick, onDownload}: Prop){
 
     const [file, setFile] = useState<FileDescription>(fileDescription)
 
@@ -37,7 +39,7 @@ function ExplorerElement({fileDescription, onClick}: Prop){
                     <ExplorerElementMenu dirName={file.name}/>
                 )}
             /> :
-            <ExplorerElementFile fileName={file.name}/>
+            <ExplorerElementFile fileName={file.name} onDownload={() => onDownload(file)}/>
     }
 
     return(
@@ -51,7 +53,7 @@ function ExplorerElement({fileDescription, onClick}: Prop){
 
 
 
-function ExplorerElementFile({fileName}: PropFile){
+function ExplorerElementFile({fileName, onDownload}: PropFile){
     return (
         <Box
             style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between', width: '100%', padding: '8px'}}
@@ -64,7 +66,7 @@ function ExplorerElementFile({fileName}: PropFile){
                 {fileName}
             </Text>
             <div>
-                <BsDownload style={styleIcon} size={iconSize}/>
+                <BsDownload onClick={onDownload} style={styleIcon} size={iconSize}/>
                 <BsFillTrashFill style={styleIcon} size={iconSize}/>
 
             </div>

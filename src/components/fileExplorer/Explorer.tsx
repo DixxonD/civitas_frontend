@@ -4,7 +4,8 @@ import ExplorerElement from "./ExplorerElement";
 import ExplorerHeader from "./ExplorerHeader";
 import {FileDescription} from "../../config/types";
 import {useSelectedPath, useSelectedPathUpdate} from "./ExplorerContext";
-
+import {fetchFile} from "../../services/FileManipulator";
+import fileDownload from 'js-file-download';
 
 interface Props  {
     files: FileDescription[],
@@ -58,7 +59,11 @@ function Explorer({files, onRefresh}: Props){
         return files.sort(sortFileDescriptions)
             .map(file => (
             <tr key={file.name}>
-                <td ><ExplorerElement fileDescription={file} onClick={onItemClick} /></td>
+                <td><ExplorerElement
+                    fileDescription={file}
+                    onClick={onItemClick}
+                    onDownload={onFileDownload}
+                /></td>
             </tr>
         ))
     }
@@ -78,6 +83,13 @@ function Explorer({files, onRefresh}: Props){
         if(file.type === 'directory'){
             setPath(oldPathArr => [...oldPathArr, file.name])
         }
+    }
+
+    function onFileDownload(file: FileDescription){
+        const pathToFile = [...path, file.name].join('/')
+        fetchFile(pathToFile).then((response) => {
+            fileDownload(response.data, file.name)
+        })
     }
 
     return (
