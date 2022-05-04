@@ -6,6 +6,7 @@ import {FileDescription} from "../../config/types";
 import {useSelectedPath, useSelectedPathUpdate} from "./ExplorerContext";
 import {fetchFile} from "../../services/FileManipulator";
 import fileDownload from 'js-file-download';
+import {useDeleteFileVisibleUpdate, useSelectedDirectoryUpdate} from "./modals/ExplorerModalContext";
 
 interface Props  {
     files: FileDescription[],
@@ -16,6 +17,8 @@ interface Props  {
 function Explorer({files, onRefresh}: Props){
     const path = useSelectedPath()
     const setPath = useSelectedPathUpdate()
+    const setDeleteFileVisible = useDeleteFileVisibleUpdate()
+    const setSelectedDir = useSelectedDirectoryUpdate()
 
     const [content, setContent] = useState<React.ReactElement[]>(() => {return renderList(files)})
     const [showBackButton, setShowBackButton] = useState<boolean>(false)
@@ -63,11 +66,11 @@ function Explorer({files, onRefresh}: Props){
                     fileDescription={file}
                     onClick={onItemClick}
                     onDownload={onFileDownload}
+                    onDelete={onFileDelete}
                 /></td>
             </tr>
         ))
     }
-
 
     function goBack(): void{
         const currPath = [...path]
@@ -90,6 +93,11 @@ function Explorer({files, onRefresh}: Props){
         fetchFile(pathToFile).then((response) => {
             fileDownload(response.data, file.name)
         })
+    }
+
+    function onFileDelete(file: FileDescription){
+        setSelectedDir(file.name)
+        setDeleteFileVisible(true)
     }
 
     return (

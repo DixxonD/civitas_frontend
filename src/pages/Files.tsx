@@ -24,7 +24,7 @@ function Files(){
         if(isUpdating){
             showLoadingNotification('data-load', 'One moment please', 'The latest data is downloaded from the node')
         }else{
-            closeNotification('data-load', 'Done')
+            closeNotification('data-load')
         }
     }, [isUpdating])
 
@@ -42,38 +42,6 @@ function Files(){
         })
     }
 
-
-
-
-    /*
-        async function fetchFileStructure(): Promise<FileDescription[]>{
-            try{
-                setIsUpdating(true)
-                const result = await axios.get(`${server.addr}:${server.port}/api/files`)
-                setIsUpdating(false)
-                return result.data
-            }catch (error){
-                throw error
-            }
-
-        }
-
-     */
-/*
-    function updateFiles(){
-        fetchFileStructure().then(result => {
-            setFiles(result)
-        }).catch(() => {
-            setIsUpdating(false)
-            showErrorNotification('Sorry!', 'Something went wrong')
-            setFiles([])
-        })
-    }
-
- */
-
-
-
     return (
         <div className='content'>
 
@@ -86,5 +54,3 @@ function Files(){
 }
 
 export default Files
-//<ExplorerAccordion files={files}/>
-// <ExplorerTable files={files}/>

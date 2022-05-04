@@ -32,5 +32,8 @@ async function fetchFile(target: string){
     return axios.get(`${baseURL}/api/file/${target}`,{responseType: 'blob'})
 }
 
+async function deleteFile(target: string){
+    return axios.delete(`${baseURL}/api/file`, {data: {target: target}})
+}
 
-export {fetchFileStructure, fetchFile, createDirectory, deleteDirectory, setUploadDirectory}
+export {fetchFileStructure, fetchFile, createDirectory, deleteDirectory, setUploadDirectory, deleteFile}

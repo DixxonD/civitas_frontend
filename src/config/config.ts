@@ -4,7 +4,7 @@ interface ServerConfig {
 }
 
 const server: ServerConfig = {
-    addr: 'http://192.168.1.130',
+    addr:/* process.env.BACKEND_IP ||*/ 'http://192.168.1.130',
     port: 5000
 }
 

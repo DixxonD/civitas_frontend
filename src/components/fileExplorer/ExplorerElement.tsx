@@ -9,12 +9,14 @@ import ExplorerElementMenu from "./ExplorerElementMenu";
 interface Prop {
     fileDescription: FileDescription,
     onClick(file: FileDescription): void,
-    onDownload(file: FileDescription): void
+    onDownload(file: FileDescription): void,
+    onDelete(file: FileDescription): void
 }
 
 interface PropFile {
     fileName: string,
-    onDownload(): void
+    onDownload(): void,
+    onDelete(): void
 }
 
 interface PropDir {
@@ -26,7 +28,7 @@ interface PropDir {
 const styleIcon = {marginRight: '1em', cursor: 'pointer'}
 const iconSize = '1.8em'
 
-function ExplorerElement({fileDescription, onClick, onDownload}: Prop){
+function ExplorerElement({fileDescription, onClick, onDownload, onDelete}: Prop){
 
     const [file, setFile] = useState<FileDescription>(fileDescription)
 
@@ -39,7 +41,11 @@ function ExplorerElement({fileDescription, onClick, onDownload}: Prop){
                     <ExplorerElementMenu dirName={file.name}/>
                 )}
             /> :
-            <ExplorerElementFile fileName={file.name} onDownload={() => onDownload(file)}/>
+            <ExplorerElementFile
+                fileName={file.name}
+                onDownload={() => onDownload(file)}
+                onDelete={() => onDelete(file)}
+            />
     }
 
     return(
@@ -53,7 +59,7 @@ function ExplorerElement({fileDescription, onClick, onDownload}: Prop){
 
 
 
-function ExplorerElementFile({fileName, onDownload}: PropFile){
+function ExplorerElementFile({fileName, onDownload, onDelete}: PropFile){
     return (
         <Box
             style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between', width: '100%', padding: '8px'}}
@@ -67,7 +73,7 @@ function ExplorerElementFile({fileName, onDownload}: PropFile){
             </Text>
             <div>
                 <BsDownload onClick={onDownload} style={styleIcon} size={iconSize}/>
-                <BsFillTrashFill style={styleIcon} size={iconSize}/>
+                <BsFillTrashFill onClick={onDelete} style={styleIcon} size={iconSize}/>
 
             </div>
         </Box>

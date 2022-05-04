@@ -14,7 +14,7 @@ export function showLoadingNotification(id: string, title: string, message: stri
     })
 }
 
-export function closeNotification(id: string, title="", message=""){
+export function closeNotification(id: string, title="Done", message=""){
     updateNotification({
         id: id,
         autoClose: 0,

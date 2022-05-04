@@ -1,14 +1,15 @@
 import React, {useState, useContext, useEffect} from "react";
 import ModalChangeFileStructure from "./ModalChangeFileStructure";
 import {useFileStructureUpdate, useSelectedPath} from "../ExplorerContext";
-import {LoadingOverlay, Text} from "@mantine/core";
+import {LoadingOverlay} from "@mantine/core";
 import FromAddDirectory from '../modals/FromAddDirectory'
 import {DirectoryManipulation, SimpleAxiosError} from "../../../config/types";
-import FormDeleteDirectory from "./FormDeleteDirectory";
-import {createDirectory, deleteDirectory, fetchFileStructure} from "../../../services/FileManipulator";
+import FormDeleteFile from "./FormDeleteFile"
+import {createDirectory, deleteDirectory, deleteFile, fetchFileStructure} from "../../../services/FileManipulator";
 import {showErrorNotification} from "../../../services/AppNotificationProvider";
 import Uploader from "../../upload/Uploader";
 import PathView from "./PathView";
+
 
 interface Prop {
     children: JSX.Element
@@ -17,7 +18,9 @@ interface Prop {
 const AddDirectoryVisibleUpdateContext = React.createContext<Function>(() => {})
 const AddFileVisibleUpdateContext = React.createContext<Function>(() => {})
 const DeleteDirVisibleUpdateContext = React.createContext<Function>(() => {})
+const DeleteFileVisibleUpdateContext = React.createContext<Function>(() => {})
 const SelectedDirectoryUpdate = React.createContext<Function>(() => {})
+
 
 
 export function ExplorerModalProvider({children}: Prop){
@@ -26,6 +29,7 @@ export function ExplorerModalProvider({children}: Prop){
     const [addDirVisible, setAddDirVisible] = useState<boolean>(false)
     const [addFileVisible, setAddFileVisible] = useState<boolean>(false)
     const [deleteDirVisible, setDeleteDirVisible] = useState<boolean>(false)
+    const [deleteFileVisible, setDeleteFileVisible] = useState<boolean>(false)
     const [selectedDirectory, setSelectedDirectory] = useState<string>("")
 
     const [isLoading, setIsLoading] = useState<boolean>(false)
@@ -68,9 +72,21 @@ export function ExplorerModalProvider({children}: Prop){
         })
     }
 
+    function onDeleteFile(path: string){
+        setDeleteFileVisible(false)
+        deleteFile(path)
+            .then(() => {
+                updateView()
+            }).catch((error: SimpleAxiosError) => {
+                showErrorNotification('Sorry!', error.response.data)
+                setIsLoading(false)
+        })
+    }
+
 
     function onAbort(){
         setDeleteDirVisible(false)
+        setDeleteFileVisible(false)
         setAddDirVisible(false)
     }
 
@@ -90,49 +106,69 @@ export function ExplorerModalProvider({children}: Prop){
         <SelectedDirectoryUpdate.Provider value={setSelectedDirectory}>
             <AddDirectoryVisibleUpdateContext.Provider value={setAddDirVisible}>
                 <DeleteDirVisibleUpdateContext.Provider value={setDeleteDirVisible}>
-                    <AddFileVisibleUpdateContext.Provider value={setAddFileVisible}>
-                        <LoadingOverlay visible={isLoading}/>
-                        <ModalChangeFileStructure
-                            title="Add Folder"
-                            visible={addDirVisible}
-                            onClose={() => {setAddDirVisible(false)}}
-                            content={(
-                                <FromAddDirectory
-                                    basePath={getBasePath()}
-                                    label="Folder name"
-                                    placeholder="Name of new folder"
-                                    onSubmit={onCreateNewDirectory}
-                                    onAbort={onAbort}
-                                />
-                            )}
-                        />
-                        <ModalChangeFileStructure
-                            title="Delete Folder"
-                            visible={deleteDirVisible}
-                            onClose={() => {setDeleteDirVisible(false)}}
-                            content={(
-                                <FormDeleteDirectory
-                                    basePath={getBasePath()}
-                                    onDelete={onDeleteDirectory}
-                                    onAbort={onAbort}
-                                />
-                            )}
-                        />
-                        <ModalChangeFileStructure
-                            title="Upload Files"
-                            visible={addFileVisible}
-                            onClose={() => {
-                                updateView()
-                                setAddFileVisible(false)}}
-                            content={(
-                                <>
-                                    <PathView title="Upload Path:" basePath={getBasePath()}/>
-                                    <Uploader />
-                                </>
-                            )}
-                        />
-                            {children}
+                    <DeleteFileVisibleUpdateContext.Provider value={setDeleteFileVisible}>
+                        <AddFileVisibleUpdateContext.Provider value={setAddFileVisible}>
+                            <LoadingOverlay visible={isLoading}/>
+                            <ModalChangeFileStructure
+                                title="Add Folder"
+                                visible={addDirVisible}
+                                onClose={() => {setAddDirVisible(false)}}
+                                content={(
+                                    <FromAddDirectory
+                                        basePath={getBasePath()}
+                                        label="Folder name"
+                                        placeholder="Name of new folder"
+                                        onSubmit={onCreateNewDirectory}
+                                        onAbort={onAbort}
+                                    />
+                                )}
+                            />
+                            <ModalChangeFileStructure
+                                title="Delete Folder"
+                                visible={deleteDirVisible}
+                                onClose={() => {setDeleteDirVisible(false)}}
+                                content={(
+                                    <FormDeleteFile
+                                        basePath={getBasePath()}
+                                        onDelete={onDeleteDirectory}
+                                        onAbort={onAbort}
+                                        isDirectory
+                                    />
+                                )}
+                            />
+                            <ModalChangeFileStructure
+                                title="Upload Files"
+                                visible={addFileVisible}
+                                onClose={() => {
+                                    updateView()
+                                    setAddFileVisible(false)}}
+                                content={(
+                                    <>
+                                        <PathView title="Upload Path:" basePath={getBasePath()}/>
+                                        <Uploader />
+                                    </>
+                                )}
+                            />
+                            <ModalChangeFileStructure
+                                title="Delete File"
+                                visible={deleteFileVisible}
+                                onClose={() => {
+                                    updateView()
+                                    setDeleteFileVisible(false)
+                                }}
+                                content={(
+                                    <FormDeleteFile
+                                        basePath={getBasePath()}
+                                        isDirectory={false}
+                                        onDelete={onDeleteFile}
+                                        onAbort={onAbort}
+                                    />
+
+                                )}
+                            />
+                                {children}
                         </AddFileVisibleUpdateContext.Provider>
+                    </DeleteFileVisibleUpdateContext.Provider>
                 </DeleteDirVisibleUpdateContext.Provider>
             </AddDirectoryVisibleUpdateContext.Provider>
         </SelectedDirectoryUpdate.Provider>
@@ -153,6 +189,10 @@ export function useAddFileVisibleUpdate(){
 
 export function useDeleteDirVisibleUpdate(){
     return useContext(DeleteDirVisibleUpdateContext)
+}
+
+export function useDeleteFileVisibleUpdate(){
+    return useContext(DeleteFileVisibleUpdateContext)
 }
 
 let pathForUpload = ''

@@ -1,6 +1,6 @@
 export type FileDescription = {
-    type: string,
-    name: "directory" | "file",
+    name: string,
+    type: "directory" | "file",
     contents?: FileDescription[]
 }
 export interface DirectoryManipulation {
