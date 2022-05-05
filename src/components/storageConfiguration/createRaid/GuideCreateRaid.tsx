@@ -76,7 +76,10 @@ function GuideCreateRaid(){
                         onNext={afterSelection}
                         isLoading={isLoading}
                     >
-                        <StepDiskSelection onSelectionUpdate={onDiskSelectionUpdate}/>
+                        <StepDiskSelection
+                            onSelectionUpdate={onDiskSelectionUpdate}
+                            registeredDisks={registeredDisks}
+                        />
                     </AppStep>
 
                 </Stepper.Step>

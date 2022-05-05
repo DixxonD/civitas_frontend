@@ -3,14 +3,35 @@ import {Box, Text, Stack, Grid, Center} from "@mantine/core";
 import {StorageDeviceDescription} from "../../../config/types";
 
 interface Prop{
+    registeredDisks: StorageDeviceDescription[],
     onSelectionUpdate(diskIDs: string[]):void
 }
 
-function StepDiskSelection({onSelectionUpdate}: Prop){
 
+function StepDiskSelection({onSelectionUpdate, registeredDisks}: Prop){
 
+    const [content, setContent] = useState<JSX.Element[]>(() => renderDisks())
     const [diskPair, setDiskPair] = useState<DiskPair>(new DiskPair())
     const [selectedDiskIDs, setSelectedDiskIDs] = useState<string[]>([])
+
+    useEffect(() => {
+        const selectedIDs: string[] = []
+        diskPair.getDisks().forEach(disk => selectedIDs.push(disk.id))
+        setSelectedDiskIDs(selectedIDs)
+        onSelectionUpdate(selectedIDs)
+    }, [diskPair])
+
+    useEffect(() => {
+        setContent(() => renderDisks())
+    }, [registeredDisks])
+
+    function renderDisks(): JSX.Element[]{
+        return registeredDisks.map(disk => (
+            <Grid.Col span={4}>
+                <DiskSelectionBox diskDescription={disk} selectedDisks={selectedDiskIDs} onSelect={onSelectDisk} onUnselect={onUnselectDisk}/>
+            </Grid.Col>
+        ))
+    }
 
     function onSelectDisk(disk: StorageDeviceDescription){
         const newDiskPair = diskPair.addDisk(disk)
@@ -23,39 +44,10 @@ function StepDiskSelection({onSelectionUpdate}: Prop){
 
     }
 
-    useEffect(() => {
-        const selectedIDs: string[] = []
-        diskPair.getDisks().forEach(disk => selectedIDs.push(disk.id))
-        setSelectedDiskIDs(selectedIDs)
-        onSelectionUpdate(selectedIDs)
-    }, [diskPair])
 
     return (
         <Grid>
-            <Grid.Col span={4}>
-                <DiskSelectionBox
-                    onSelect={onSelectDisk}
-                    onUnselect={onUnselectDisk}
-                    selectedDisks={selectedDiskIDs}
-                    diskDescription={{name: "numero uno", mountPoint: '/blah', id: '1', size: '300GB'}}/>
-            </Grid.Col>
-            <Grid.Col span={4}>
-                <DiskSelectionBox
-                    onSelect={onSelectDisk}
-                    onUnselect={onUnselectDisk}
-                    selectedDisks={selectedDiskIDs}
-                    diskDescription={{name: "numero due", mountPoint: '/blah', id: '2', size: '300GB'}}/>
-            </Grid.Col>
-
-            <Grid.Col span={4}>
-                <DiskSelectionBox
-                    onSelect={onSelectDisk}
-                    onUnselect={onUnselectDisk}
-                    selectedDisks={selectedDiskIDs}
-                    diskDescription={{name: "numero drüüü", mountPoint: '/blah', id: '3', size: '300GB'}}/>
-            </Grid.Col>
-
-
+            {content}
         </Grid>
     )
 
@@ -157,3 +149,28 @@ class DiskPair{
     }
 
 }
+
+/*
+            <Grid.Col span={4}>
+                <DiskSelectionBox
+                    onSelect={onSelectDisk}
+                    onUnselect={onUnselectDisk}
+                    selectedDisks={selectedDiskIDs}
+                    diskDescription={{name: "numero uno", mountPoint: '/blah', id: '1', size: '300GB'}}/>
+            </Grid.Col>
+            <Grid.Col span={4}>
+                <DiskSelectionBox
+                    onSelect={onSelectDisk}
+                    onUnselect={onUnselectDisk}
+                    selectedDisks={selectedDiskIDs}
+                    diskDescription={{name: "numero due", mountPoint: '/blah', id: '2', size: '300GB'}}/>
+            </Grid.Col>
+
+            <Grid.Col span={4}>
+                <DiskSelectionBox
+                    onSelect={onSelectDisk}
+                    onUnselect={onUnselectDisk}
+                    selectedDisks={selectedDiskIDs}
+                    diskDescription={{name: "numero drüüü", mountPoint: '/blah', id: '3', size: '300GB'}}/>
+            </Grid.Col>
+ */
