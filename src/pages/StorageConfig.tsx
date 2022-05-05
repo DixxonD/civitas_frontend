@@ -52,7 +52,7 @@ function StorageConfig(){
 
     return (
         <div className='content'>
-            <Title >Initialize Storage Device</Title>
+            <Title >Add Storage Device</Title>
             <Stepper style={{margin: '10px', marginTop:'30px'}} active={active}  breakpoint='sm' >
 
                 <Stepper.Step label="Start" description="">
