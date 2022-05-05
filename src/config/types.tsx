@@ -13,6 +13,7 @@ export interface SimpleAxiosError{
 }
 
 export interface StorageDeviceDescription{
+    id: string,
     size: string,
     name: string,
     mountPoint: string

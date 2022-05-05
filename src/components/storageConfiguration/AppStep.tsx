@@ -5,12 +5,13 @@ import React, {useEffect, useState} from "react";
 interface Prop {
     children: JSX.Element,
     title: string,
+    buttonText?: string,
     isLoading: boolean,
     onNext(): void,
     abortButton?: JSX.Element
 }
 
-function AppStep({title, children, onNext, isLoading, abortButton=(<></>) }: Prop){
+function AppStep({title, children, onNext, isLoading, abortButton=(<></>), buttonText='Next Step' }: Prop){
 
     const [showOverlay, setShowOverlay] = useState<boolean>(isLoading)
     useEffect(() => {setShowOverlay(isLoading)}, [isLoading])
@@ -25,7 +26,7 @@ function AppStep({title, children, onNext, isLoading, abortButton=(<></>) }: Pro
             </Paper>
 
             {abortButton}
-            <Button onClick={() => onNext()}>Next Step</Button>
+            <Button onClick={() => onNext()}>{buttonText}</Button>
 
         </div>
     )

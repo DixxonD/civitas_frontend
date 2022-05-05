@@ -1,6 +1,6 @@
 import React from "react";
 import {Space, Text} from "@mantine/core";
-import deviceInitialisationStrings from "./deviceInitialisationStrings";
+import deviceInitialisationStrings from "../deviceInitialisationStrings";
 
 function StepUnplugDevice(){
     return (
