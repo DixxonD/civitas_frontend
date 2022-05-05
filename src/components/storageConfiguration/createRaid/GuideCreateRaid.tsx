@@ -2,14 +2,16 @@ import React, {useState} from "react";
 import {Stepper, Text} from "@mantine/core";
 import AppStep from "../AppStep";
 import deviceInitialisationStrings from "../deviceInitialisationStrings";
-import {getRegisteredDisks} from "../../../services/DeviceInitialisation";
+import {buildRaid, getRegisteredDisks} from "../../../services/DeviceInitialisation";
 import {StorageDeviceDescription} from "../../../config/types";
 import StepDiskSelection from "./StepDiskSelection";
+import {showErrorNotification} from "../../../services/AppNotificationProvider";
 
 function GuideCreateRaid(){
     const [active, setActive] = useState<number>(0)
     const [isLoading, setIsLoading] = useState<boolean>(false)
     const [registeredDisks, setRegisteredDisks] = useState<StorageDeviceDescription[]>([])
+    const [selectedDisks, setSelectedDisks] = useState<string[]>([])
 
 
     function goToNextStep(){
@@ -31,6 +33,22 @@ function GuideCreateRaid(){
             setIsLoading(false)
             goToNextStep()
         })
+    }
+
+    function afterSelection(){
+        if(selectedDisks.length !== 2){
+            showErrorNotification("Selection Error", "Please select two Storage Devices.")
+            return
+        }
+        setIsLoading(true)
+        buildRaid(selectedDisks).then(() => {
+            setIsLoading(false)
+            goToNextStep()
+        })
+    }
+
+    function onDiskSelectionUpdate(diskIDs: string[]){
+        setSelectedDisks(diskIDs)
     }
 
     return (
@@ -55,11 +73,10 @@ function GuideCreateRaid(){
 
                     <AppStep
                         title='Start'
-                        onNext={goToNextStep}
+                        onNext={afterSelection}
                         isLoading={isLoading}
-                        buttonText="Let's start"
                     >
-                        <StepDiskSelection/>
+                        <StepDiskSelection onSelectionUpdate={onDiskSelectionUpdate}/>
                     </AppStep>
 
                 </Stepper.Step>

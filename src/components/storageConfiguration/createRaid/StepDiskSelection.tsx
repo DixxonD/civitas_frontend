@@ -2,26 +2,32 @@ import React, {useEffect, useState} from "react";
 import {Box, Text, Stack, Grid, Center} from "@mantine/core";
 import {StorageDeviceDescription} from "../../../config/types";
 
+interface Prop{
+    onSelectionUpdate(diskIDs: string[]):void
+}
 
-function StepDiskSelection(){
+function StepDiskSelection({onSelectionUpdate}: Prop){
 
 
     const [diskPair, setDiskPair] = useState<DiskPair>(new DiskPair())
-    const [selectedDisks, setSelectedDisks] = useState<string[]>([])
+    const [selectedDiskIDs, setSelectedDiskIDs] = useState<string[]>([])
 
     function onSelectDisk(disk: StorageDeviceDescription){
-       setDiskPair(diskPair =>  diskPair.addDisk(disk))
+        const newDiskPair = diskPair.addDisk(disk)
+        setDiskPair(newDiskPair)
     }
 
     function onUnselectDisk(disk: StorageDeviceDescription){
-        setDiskPair(diskPair => diskPair.removeDisk(disk))
+        const newDiskPair = diskPair.removeDisk(disk)
+        setDiskPair(newDiskPair)
 
     }
 
     useEffect(() => {
-        const selected: string[] = []
-        diskPair.getDisks().forEach(disk => selected.push(disk.id))
-        setSelectedDisks(selected)
+        const selectedIDs: string[] = []
+        diskPair.getDisks().forEach(disk => selectedIDs.push(disk.id))
+        setSelectedDiskIDs(selectedIDs)
+        onSelectionUpdate(selectedIDs)
     }, [diskPair])
 
     return (
@@ -30,14 +36,14 @@ function StepDiskSelection(){
                 <DiskSelectionBox
                     onSelect={onSelectDisk}
                     onUnselect={onUnselectDisk}
-                    selectedDisks={selectedDisks}
+                    selectedDisks={selectedDiskIDs}
                     diskDescription={{name: "numero uno", mountPoint: '/blah', id: '1', size: '300GB'}}/>
             </Grid.Col>
             <Grid.Col span={4}>
                 <DiskSelectionBox
                     onSelect={onSelectDisk}
                     onUnselect={onUnselectDisk}
-                    selectedDisks={selectedDisks}
+                    selectedDisks={selectedDiskIDs}
                     diskDescription={{name: "numero due", mountPoint: '/blah', id: '2', size: '300GB'}}/>
             </Grid.Col>
 
@@ -45,7 +51,7 @@ function StepDiskSelection(){
                 <DiskSelectionBox
                     onSelect={onSelectDisk}
                     onUnselect={onUnselectDisk}
-                    selectedDisks={selectedDisks}
+                    selectedDisks={selectedDiskIDs}
                     diskDescription={{name: "numero drüüü", mountPoint: '/blah', id: '3', size: '300GB'}}/>
             </Grid.Col>
 
@@ -57,14 +63,14 @@ function StepDiskSelection(){
 
 export default StepDiskSelection
 
-interface Prop{
+interface PropSelectionBox{
     diskDescription: StorageDeviceDescription,
     selectedDisks: string[],
     onSelect(selectedDisk: StorageDeviceDescription): void,
     onUnselect(unselectedDisk: StorageDeviceDescription): void
 }
 
-function DiskSelectionBox({diskDescription, onSelect, onUnselect, selectedDisks}: Prop){
+function DiskSelectionBox({diskDescription, onSelect, onUnselect, selectedDisks}: PropSelectionBox){
 
     const selectedColor = 'blue'
     const defaultColor = 'gray'

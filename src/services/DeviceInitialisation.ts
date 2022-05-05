@@ -25,3 +25,8 @@ export async function getRegisteredDisks(): Promise<StorageDeviceDescription[]>{
     await sleep(100)
     return Promise.resolve([])
 }
+
+export async function buildRaid(selectedIDs: string[]){
+    await sleep(100)
+    return Promise.resolve()
+}
