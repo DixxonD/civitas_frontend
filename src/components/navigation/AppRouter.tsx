@@ -8,6 +8,7 @@ import {
     Route,
 } from "react-router-dom";
 import UploadCenter from "../../pages/UploadCenter";
+import StorageConfig from "../../pages/StorageConfig";
 
 
 function AppRouter(){
@@ -16,6 +17,7 @@ function AppRouter(){
             <Route  path='/' element={<Home/>}/>
             <Route  path='/files' element={<Files/>}/>
             <Route  path='/upload' element={<UploadCenter/>}/>
+            <Route  path='/storageDevice' element={<StorageConfig/>}/>
             <Route  path='*' element={<NotFound/>}/>
         </Routes>
     )

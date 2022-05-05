@@ -11,3 +11,9 @@ export interface DirectoryManipulation {
 export interface SimpleAxiosError{
     response: {data: string}
 }
+
+export interface StorageDeviceDescription{
+    size: string,
+    name: string,
+    mountPoint: string
+}
