@@ -6,16 +6,21 @@ interface Prop {
     children: JSX.Element,
     title: string,
     buttonText?: string,
+    buttonDisabled?: boolean,
+    buttonLoading?: boolean,
     isLoading: boolean,
     onNext(): void,
     abortButton?: JSX.Element
 }
 
-function AppStep({title, children, onNext, isLoading, abortButton=(<></>), buttonText='Next Step' }: Prop){
+function AppStep({title, children, onNext, isLoading, abortButton=(<></>), buttonText='Next Step', buttonDisabled=false, buttonLoading=false }: Prop){
 
     const [showOverlay, setShowOverlay] = useState<boolean>(isLoading)
     useEffect(() => {setShowOverlay(isLoading)}, [isLoading])
-
+    const [buttonIsDisabled, setButtonIsDisabled] = useState<boolean>(buttonDisabled)
+    useEffect(() => {setButtonIsDisabled(buttonDisabled)}, [buttonDisabled])
+    const [buttonIsLoading, setButtonIsLoading] = useState<boolean>(buttonLoading)
+    useEffect(() => {setButtonIsLoading(buttonLoading)}, [buttonLoading])
 
     return (
         <div  style={{marginTop: '30px', position:'relative'}} >
@@ -24,9 +29,14 @@ function AppStep({title, children, onNext, isLoading, abortButton=(<></>), butto
                 <Title order={3}>{title}</Title>
                 {children}
             </Paper>
-
             {abortButton}
-            <Button onClick={() => onNext()}>{buttonText}</Button>
+            <Button
+                loading={buttonIsLoading}
+                disabled={buttonIsDisabled}
+                onClick={() => onNext()}
+            >
+                {buttonText}
+            </Button>
 
         </div>
     )

@@ -22,11 +22,11 @@ function StepDiskSelection({onSelectionUpdate, registeredDisks}: Prop){
 
 
     function renderDisks(registeredDisks:  StorageDeviceDescription[], selectedDiskIDs: string[]): JSX.Element[]{
-        if(registeredDisks.length < 2){
-            return ([<Text style={{margin: '10px'}}>{deviceInitialisationStrings.atLeastToDevices} </Text>])
+        if(registeredDisks.length < 1){
+            return ([<Text key={0} style={{margin: '10px'}}>{deviceInitialisationStrings.atLeastToDevices} </Text>])
         }
         return registeredDisks.map(disk => (
-            <Grid.Col span={4}>
+            <Grid.Col span={4} key={disk.id}>
                 <DiskSelectionBox diskDescription={disk} selectedDisks={selectedDiskIDs} onSelect={onSelectDisk} onUnselect={onUnselectDisk}/>
             </Grid.Col>
         ))
@@ -62,8 +62,8 @@ interface PropSelectionBox{
 
 function DiskSelectionBox({diskDescription, onSelect, onUnselect, selectedDisks}: PropSelectionBox){
 
-    const selectedColor = 'blue'
-    const defaultColor = 'gray'
+    const selectedColor = 'gray'
+    const defaultColor = 'gainsboro'
 
     const [selected, setSelected] = useState<boolean>(false)
     const [color, setColor] = useState<string>(defaultColor)

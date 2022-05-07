@@ -18,3 +18,9 @@ export interface StorageDeviceDescription{
     name: string,
     mountPoint: string
 }
+
+export interface BuildProgress{
+    building: boolean,
+    progress: number,
+    path: string | null
+}

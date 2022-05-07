@@ -10,9 +10,12 @@ import StepConfirmDevice from "./StepConfirmDevice";
 import StepComplete from "../StepComplete";
 import {showErrorNotification} from "../../../services/AppNotificationProvider";
 
+const START_STEP = 0
+const PREPARE_STEP = 1
+
 function GuideAddingStorage(){
 
-    const [active, setActive] = useState<number>(0)
+    const [active, setActive] = useState<number>(START_STEP)
     const [isLoading, setIsLoading] = useState<boolean>(false)
     const [selectedDeviceDescription, setSelectedDeviceDescription] = useState<StorageDeviceDescription>()
 
@@ -21,11 +24,11 @@ function GuideAddingStorage(){
     }
 
     function goToStart(){
-        setActive(0)
+        setActive(START_STEP)
     }
 
     function onAbort(){
-        setActive(1)
+        setActive(PREPARE_STEP)
     }
 
     function afterUnplugDevice(){
@@ -43,13 +46,12 @@ function GuideAddingStorage(){
         setIsLoading(true)
         callAfterState().then(deviceDescription => {
             setIsLoading(false)
-            console.log("hiii!¨")
-            console.log(deviceDescription)
             setSelectedDeviceDescription(deviceDescription)
             goToNextStep()
         }).catch(error => {
             setIsLoading(false)
             showErrorNotification('Sorry!', error.message)
+            onAbort()
         })
     }
 
@@ -62,6 +64,7 @@ function GuideAddingStorage(){
             }).catch((error) => {
                 setIsLoading(false)
                 showErrorNotification('Sorry!', error.message)
+                onAbort()
             })
         }else{
             showErrorNotification()
@@ -114,6 +117,7 @@ function GuideAddingStorage(){
                         title='Confirm your selection'
                         onNext={afterDiskConfirmation}
                         isLoading={isLoading}
+                        buttonText={"Add Storage Device"}
                         abortButton={(
                             <Button
                                 style={{marginRight: '10px'}}

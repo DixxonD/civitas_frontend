@@ -1,10 +1,8 @@
 import {server} from "../config/config";
-import {StorageDeviceDescription} from "../config/types";
+import {BuildProgress, StorageDeviceDescription} from "../config/types";
 import axios from "axios";
 
 const baseURL = `http://${server.addr}:${server.port}`
-
-const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
 
 export async function callBeforeState(){
     try {
@@ -17,9 +15,11 @@ export async function callBeforeState(){
 
 export async function callAfterState(): Promise<StorageDeviceDescription>{
     try {
+        console.log("call after state")
         const response = await axios.get(`${baseURL}/api/addDrive/after`)
         return response.data
     } catch (error ) {
+        console.log("throw error")
         throw handleAxiosError(error)
     }
 
@@ -27,7 +27,7 @@ export async function callAfterState(): Promise<StorageDeviceDescription>{
 
 export async function registerDisk(selectedDisk: StorageDeviceDescription){
     try{
-        return axios.post(`${baseURL}/api/addDrive/register`,selectedDisk )
+        await axios.post(`${baseURL}/api/addDrive/register`,selectedDisk )
     }catch (error) {
         throw handleAxiosError(error)
     }
@@ -35,17 +35,37 @@ export async function registerDisk(selectedDisk: StorageDeviceDescription){
 }
 
 export async function getRegisteredDisks(): Promise<StorageDeviceDescription[]>{
-    await sleep(100)
+    try{
+        const result = await axios.get(`${baseURL}/api/createRaid/disks`)
+        return result.data
+    }catch (error){
+        throw handleAxiosError(error)
+    }
+    /*
     return Promise.resolve([
-        {name: "numero uno", mountPoint: '/blah', id: '1', size: '300GB'},
-        {name: "numero due", mountPoint: '/blah', id: '2', size: '300GB'},
-        {name: "numero drüüü", mountPoint: '/blah', id: '3', size: '300GB'},
+        {name: "numero uno", mountPoint: '/blah/a', id: '1', size: '300GB'},
+        {name: "numero due", mountPoint: '/blah/b', id: '2', size: '300GB'},
+        {name: "numero drüüü", mountPoint: '/blah/c', id: '3', size: '300GB'},
     ])
+
+     */
 }
 
 export async function buildRaid(selectedIDs: string[]){
-    await sleep(100)
-    return Promise.resolve()
+    try{
+        await axios.post(`${baseURL}/api/createRaid/build`, selectedIDs)
+    }catch (error){
+        throw handleAxiosError(error)
+    }
+}
+
+export async function getBuildProgress(): Promise<BuildProgress>{
+    try{
+        const result = await axios.get(`${baseURL}/api/createRaid/progress`)
+        return result.data
+    }catch (error ){
+        throw handleAxiosError(error)
+    }
 }
 
 function handleAxiosError(error: unknown): Error{

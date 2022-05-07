@@ -6,12 +6,19 @@ import {buildRaid, getRegisteredDisks} from "../../../services/DeviceInitialisat
 import {StorageDeviceDescription} from "../../../config/types";
 import StepDiskSelection from "./StepDiskSelection";
 import {showErrorNotification} from "../../../services/AppNotificationProvider";
+import StepComplete from "../StepComplete";
+import StepCreatingRAID from "./StepCreatingRAID";
+
+const START_STEP = 0
 
 function GuideCreateRaid(){
-    const [active, setActive] = useState<number>(0)
+
+    const [active, setActive] = useState<number>(START_STEP)
     const [isLoading, setIsLoading] = useState<boolean>(false)
     const [registeredDisks, setRegisteredDisks] = useState<StorageDeviceDescription[]>([])
     const [selectedDisks, setSelectedDisks] = useState<string[]>([])
+    const [buttonIsDisabled, setButtonIsDisabled] = useState<boolean>(true)
+
 
 
     function goToNextStep(){
@@ -19,22 +26,20 @@ function GuideCreateRaid(){
     }
 
     function goToStart(){
-        setActive(0)
+        setActive(START_STEP)
     }
 
-    function onAbort(){
-        setActive(1)
-    }
 
     function afterStart(){
         setIsLoading(true)
         getRegisteredDisks().then(disks => {
-            setRegisteredDisks(disks)
+            setRegisteredDisks(removeDuplicates(disks, disk => disk.id))
             setIsLoading(false)
             goToNextStep()
         }).catch(error => {
             setIsLoading(false)
             showErrorNotification('Sorry!', error.message)
+            goToStart()
         })
     }
 
@@ -50,12 +55,20 @@ function GuideCreateRaid(){
         }).catch(error => {
             setIsLoading(false)
             showErrorNotification('Sorry!', error.message)
+            goToStart()
         })
+    }
+
+    function removeDuplicates<T>(list: T[], key: (element: T) => any){
+        return [...new Map(list.map(x => [key(x), x])).values()]
     }
 
     function onDiskSelectionUpdate(diskIDs: string[]){
         setSelectedDisks(diskIDs)
+        setButtonIsDisabled(diskIDs.length !== 2)
     }
+
+
 
     return (
         <div>
@@ -78,9 +91,10 @@ function GuideCreateRaid(){
                 <Stepper.Step label="Registered Devices" description="Select devices to mirror">
 
                     <AppStep
-                        title='Start'
+                        title='Select Disks'
                         onNext={afterDiskSelection}
                         isLoading={isLoading}
+                        buttonDisabled={buttonIsDisabled}
                         abortButton={(
                             <Button
                                 style={{marginRight: '10px'}}
@@ -97,7 +111,29 @@ function GuideCreateRaid(){
 
                 </Stepper.Step>
 
+                <Stepper.Step label="RAID" description="Creating the RAID">
+                    <AppStep
+                        title={'RAID is being created'}
+                        isLoading={isLoading}
+                        onNext={goToNextStep}
+                        buttonLoading={true}
+                        buttonText='Finish'
+                    >
+                        <StepCreatingRAID onComplete={goToNextStep} onFailed={goToStart}/>
+                    </AppStep>
 
+                </Stepper.Step>
+
+                <Stepper.Completed>
+                    <AppStep
+                        title=""
+                        isLoading={isLoading}
+                        onNext={goToStart}
+                        buttonText="Create new RAID"
+                    >
+                        <StepComplete/>
+                    </AppStep>
+                </Stepper.Completed>
 
 
             </Stepper>
