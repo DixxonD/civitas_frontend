@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {Box, Text, Stack, Grid, Center} from "@mantine/core";
 import {StorageDeviceDescription} from "../../../config/types";
+import deviceInitialisationStrings from "../deviceInitialisationStrings";
 
 interface Prop{
     registeredDisks: StorageDeviceDescription[],
@@ -9,8 +10,6 @@ interface Prop{
 
 
 function StepDiskSelection({onSelectionUpdate, registeredDisks}: Prop){
-
-    const [content, setContent] = useState<JSX.Element[]>(() => renderDisks())
     const [diskPair, setDiskPair] = useState<DiskPair>(new DiskPair())
     const [selectedDiskIDs, setSelectedDiskIDs] = useState<string[]>([])
 
@@ -21,11 +20,11 @@ function StepDiskSelection({onSelectionUpdate, registeredDisks}: Prop){
         onSelectionUpdate(selectedIDs)
     }, [diskPair])
 
-    useEffect(() => {
-        setContent(() => renderDisks())
-    }, [registeredDisks])
 
-    function renderDisks(): JSX.Element[]{
+    function renderDisks(registeredDisks:  StorageDeviceDescription[], selectedDiskIDs: string[]): JSX.Element[]{
+        if(registeredDisks.length < 2){
+            return ([<Text style={{margin: '10px'}}>{deviceInitialisationStrings.atLeastToDevices} </Text>])
+        }
         return registeredDisks.map(disk => (
             <Grid.Col span={4}>
                 <DiskSelectionBox diskDescription={disk} selectedDisks={selectedDiskIDs} onSelect={onSelectDisk} onUnselect={onUnselectDisk}/>
@@ -44,10 +43,9 @@ function StepDiskSelection({onSelectionUpdate, registeredDisks}: Prop){
 
     }
 
-
     return (
         <Grid>
-            {content}
+            {renderDisks(registeredDisks, selectedDiskIDs)}
         </Grid>
     )
 
@@ -86,8 +84,11 @@ function DiskSelectionBox({diskDescription, onSelect, onUnselect, selectedDisks}
     function onClick(){
         if(selected){
             onUnselect(disk)
+            setSelected(false)
         }else{
             onSelect(disk)
+            setSelected(true)
+
         }
     }
 

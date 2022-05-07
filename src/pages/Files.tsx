@@ -37,7 +37,7 @@ function Files(){
                 setIsUpdating(false)
             }).catch(()  => {
                 setIsUpdating(false)
-                showErrorNotification('Sorry!', 'Something went wrong')
+                showErrorNotification()
                 setFiles([])
         })
     }

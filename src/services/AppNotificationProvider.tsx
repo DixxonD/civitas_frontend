@@ -25,7 +25,7 @@ export function closeNotification(id: string, title="Done", message=""){
     })
 }
 
-export function showErrorNotification(title: string, message: string){
+export function showErrorNotification(title = 'Sorry!', message =  'An Error occurred.'){
     showNotification({
         title: title,
         message: message,

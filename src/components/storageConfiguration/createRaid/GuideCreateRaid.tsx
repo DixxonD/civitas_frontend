@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import {Stepper, Text} from "@mantine/core";
+import {Button, Stepper, Text} from "@mantine/core";
 import AppStep from "../AppStep";
 import deviceInitialisationStrings from "../deviceInitialisationStrings";
 import {buildRaid, getRegisteredDisks} from "../../../services/DeviceInitialisation";
@@ -32,10 +32,13 @@ function GuideCreateRaid(){
             setRegisteredDisks(disks)
             setIsLoading(false)
             goToNextStep()
+        }).catch(error => {
+            setIsLoading(false)
+            showErrorNotification('Sorry!', error.message)
         })
     }
 
-    function afterSelection(){
+    function afterDiskSelection(){
         if(selectedDisks.length !== 2){
             showErrorNotification("Selection Error", "Please select two Storage Devices.")
             return
@@ -44,6 +47,9 @@ function GuideCreateRaid(){
         buildRaid(selectedDisks).then(() => {
             setIsLoading(false)
             goToNextStep()
+        }).catch(error => {
+            setIsLoading(false)
+            showErrorNotification('Sorry!', error.message)
         })
     }
 
@@ -73,8 +79,15 @@ function GuideCreateRaid(){
 
                     <AppStep
                         title='Start'
-                        onNext={afterSelection}
+                        onNext={afterDiskSelection}
                         isLoading={isLoading}
+                        abortButton={(
+                            <Button
+                                style={{marginRight: '10px'}}
+                                variant='outline'
+                                onClick={() => goToStart()}
+                            >Cancel</Button>
+                        )}
                     >
                         <StepDiskSelection
                             onSelectionUpdate={onDiskSelectionUpdate}

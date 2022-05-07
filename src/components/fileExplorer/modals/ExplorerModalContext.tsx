@@ -97,7 +97,7 @@ export function ExplorerModalProvider({children}: Prop){
             setIsLoading(false)
         }).catch(() => {
             setIsLoading(false)
-            showErrorNotification('Sorry!', 'Something went wrong')
+            showErrorNotification()
             setFiles([])
         })
     }

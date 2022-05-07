@@ -1,13 +1,14 @@
 import React, {useState} from "react";
 import {StorageDeviceDescription} from "../../../config/types";
 import {callAfterState, callBeforeState, registerDisk} from "../../../services/DeviceInitialisation";
-import {Button, Stepper, Text, Title} from "@mantine/core";
+import {Button, Stepper, Text} from "@mantine/core";
 import AppStep from "../AppStep";
 import deviceInitialisationStrings from "../deviceInitialisationStrings";
 import StepUnplugDevice from "./StepUnplugDevice";
 import StepPlugDevice from "./StepPlugDevice";
 import StepConfirmDevice from "./StepConfirmDevice";
 import StepComplete from "../StepComplete";
+import {showErrorNotification} from "../../../services/AppNotificationProvider";
 
 function GuideAddingStorage(){
 
@@ -32,6 +33,9 @@ function GuideAddingStorage(){
         callBeforeState().then(() => {
             setIsLoading(false)
             goToNextStep()
+        }).catch(error => {
+            setIsLoading(false)
+            showErrorNotification('Sorry!', error.message)
         })
     }
 
@@ -39,17 +43,30 @@ function GuideAddingStorage(){
         setIsLoading(true)
         callAfterState().then(deviceDescription => {
             setIsLoading(false)
+            console.log("hiii!¨")
+            console.log(deviceDescription)
             setSelectedDeviceDescription(deviceDescription)
             goToNextStep()
+        }).catch(error => {
+            setIsLoading(false)
+            showErrorNotification('Sorry!', error.message)
         })
     }
 
     function afterDiskConfirmation(){
-        setIsLoading(true)
-        registerDisk().then( () => {
-            setIsLoading(false)
-            goToNextStep()
-        })
+        if(selectedDeviceDescription){
+            setIsLoading(true)
+            registerDisk(selectedDeviceDescription).then( () => {
+                setIsLoading(false)
+                goToNextStep()
+            }).catch((error) => {
+                setIsLoading(false)
+                showErrorNotification('Sorry!', error.message)
+            })
+        }else{
+            showErrorNotification()
+        }
+
     }
 
     return (
