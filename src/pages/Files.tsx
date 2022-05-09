@@ -1,21 +1,32 @@
 import React, {useEffect, useState} from 'react'
-import {Title} from '@mantine/core';
+import {Title, Alert} from '@mantine/core';
 import {Skeleton} from "@mantine/core";
 
 import Explorer from "../components/fileExplorer/Explorer";
 
 import {closeNotification, showErrorNotification, showLoadingNotification} from "../services/AppNotificationProvider";
 import {useFileStructure, useFileStructureUpdate,} from "../components/fileExplorer/ExplorerContext";
-import {fetchFileStructure} from "../services/FileManipulator";
+import {fetchFileStructure, isStorageInitialized} from "../services/FileManipulator";
+import {AlertCircle} from "tabler-icons-react";
 
 function Files(){
     const [isUpdating, setIsUpdating] = useState<boolean>(false)
+    const [isInitialized, setIsInitialized] = useState<boolean>(true)
     const files = useFileStructure()
     const setFiles = useFileStructureUpdate()
 
-    useEffect( () => {
+    useEffect(  () => {
         if(files.length === 0){
-            updateFileStructure()
+            setIsUpdating(true)
+            isStorageInitialized().then(isInitialized => {
+                if(isInitialized){
+                    setIsInitialized(true)
+                    updateFileStructure()
+                }else{
+                    setIsInitialized(false)
+                    setIsUpdating(false)
+                }
+            })
         }
     }, [])
 
@@ -47,10 +58,20 @@ function Files(){
 
             <Title order={1}>Files</Title>
             <Skeleton visible={isUpdating}>
-                <Explorer files={files} onRefresh={updateFileStructure}/>
+                { isInitialized ? <Explorer files={files} onRefresh={updateFileStructure}/> : <StorageNotInitialized/>}
             </Skeleton>
         </div>
     )
 }
 
 export default Files
+
+
+function StorageNotInitialized(){
+    return (
+        <Alert
+            icon={<AlertCircle size={24}/>} title='Storage not yet initialized' color='red'>
+            The primary memory is not yet initialized. Navigate to the Storage Configuration Section to add disks to the system.
+        </Alert>
+    )
+}

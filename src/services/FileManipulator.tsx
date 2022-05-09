@@ -5,6 +5,10 @@ import {DirectoryManipulation} from "../config/types";
 
 const baseURL = `${server.prefix}${server.addr}:${server.port}`
 
+async function isStorageInitialized(): Promise<boolean>{
+    return (await axios.get(`${baseURL}/api/storage`)).data.isInitialized
+}
+
 function createDirectory(values: DirectoryManipulation){
     return axios.post(`${baseURL}/api/directory`,values)
 }
@@ -33,4 +37,4 @@ async function deleteFile(target: string){
     return axios.delete(`${baseURL}/api/file`, {data: {path: target}})
 }
 
-export {fetchFileStructure, fetchFile, createDirectory, deleteDirectory, setUploadDirectory, deleteFile}
+export {fetchFileStructure, fetchFile, createDirectory, deleteDirectory, setUploadDirectory, deleteFile, isStorageInitialized}
