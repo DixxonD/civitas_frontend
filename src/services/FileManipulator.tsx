@@ -3,7 +3,7 @@ import axios from "axios";
 import {server} from "../config/config";
 import {DirectoryManipulation} from "../config/types";
 
-const baseURL = `http://${server.addr}:${server.port}`
+const baseURL = `${server.prefix}${server.addr}:${server.port}`
 
 function createDirectory(values: DirectoryManipulation){
     return axios.post(`${baseURL}/api/directory`,values)
@@ -12,7 +12,7 @@ function createDirectory(values: DirectoryManipulation){
 async  function deleteDirectory(basePath: string){
     return axios.delete(`${baseURL}/api/directory`, {
         data: {
-            basePath: basePath
+            path: basePath
         }
     })
 }
@@ -22,7 +22,7 @@ async function fetchFileStructure(){
 }
 
 async function setUploadDirectory(target: string){
-    return axios.post(`${baseURL}/api/uploadDir`, {target: target})
+    return axios.post(`${baseURL}/api/uploadDir`, {path: target})
 }
 
 async function fetchFile(target: string){
@@ -30,7 +30,7 @@ async function fetchFile(target: string){
 }
 
 async function deleteFile(target: string){
-    return axios.delete(`${baseURL}/api/file`, {data: {target: target}})
+    return axios.delete(`${baseURL}/api/file`, {data: {path: target}})
 }
 
 export {fetchFileStructure, fetchFile, createDirectory, deleteDirectory, setUploadDirectory, deleteFile}

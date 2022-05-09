@@ -2,7 +2,7 @@ import {server} from "../config/config";
 import {BuildProgress, StorageDeviceDescription} from "../config/types";
 import axios from "axios";
 
-const baseURL = `http://${server.addr}:${server.port}`
+const baseURL = `${server.prefix}${server.addr}:${server.port}`
 
 export async function callBeforeState(){
     try {
@@ -15,11 +15,9 @@ export async function callBeforeState(){
 
 export async function callAfterState(): Promise<StorageDeviceDescription>{
     try {
-        console.log("call after state")
         const response = await axios.get(`${baseURL}/api/addDrive/after`)
         return response.data
     } catch (error ) {
-        console.log("throw error")
         throw handleAxiosError(error)
     }
 

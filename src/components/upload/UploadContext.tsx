@@ -17,12 +17,15 @@ type Props = {
 export function UploadProvider({children}: Props){
 
     const [uppy, setUppy] = useState(() => {
+        console.log(server.addr)
+        console.log(server.port)
+        console.log(tus.endpoint)
 
         return new Uppy({
             autoProceed: false
         })
             .use(FileTargetPlugin, {})
-            .use(Tus, { endpoint: `${server.addr}:${server.port}${tus.endpoint}` })
+            .use(Tus, { endpoint: `${server.prefix}${server.addr}:${server.port}${tus.endpoint}` })
             //.use(GoldenRetriever, {serviceWorker: false})
     })
 
