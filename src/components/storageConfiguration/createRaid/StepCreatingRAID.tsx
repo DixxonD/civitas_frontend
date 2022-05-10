@@ -18,10 +18,12 @@ function StepCreatingRAID({onComplete, onFailed}: Prop){
                     clearInterval(interval)
                     showErrorNotification("RAID Failed", "The creation of the RAID failed. Please try again.")
                     onFailed()
+                    return
                 }
                 if (progress.progress >= 100) {
                     clearInterval(interval)
                     onComplete()
+                    return
                 }
                 if(!progress.building){
                     clearInterval(interval)

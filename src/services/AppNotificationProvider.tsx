@@ -30,6 +30,7 @@ export function showErrorNotification(title = 'Sorry!', message =  'An Error occ
         title: title,
         message: message,
         color: 'red',
+        autoClose: false,
         icon: <X size={20}/>
     })
 }

@@ -26,6 +26,9 @@ function Files(){
                     setIsInitialized(false)
                     setIsUpdating(false)
                 }
+            }).catch( error => {
+                showErrorNotification('Sorry!', error.message)
+                setIsUpdating(false)
             })
         }
     }, [])
