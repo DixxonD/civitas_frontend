@@ -6,7 +6,7 @@ OLDIP=$("cat ip")
 
 #load the current IP
 MYIP=$("ip -4 addr show eth0 | grep -oP '(?<=inet\s)\d+(\.\d+){3}'")
-if [ -z "$var" ]
+if [ -z "$MYIP" ]
 then
       MYIP=$("ip -4 addr show wlan0 | grep -oP '(?<=inet\s)\d+(\.\d+){3}'")
 fi
