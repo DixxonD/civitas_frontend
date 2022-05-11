@@ -11,7 +11,11 @@ import StepCreatingRAID from "./StepCreatingRAID";
 
 const START_STEP = 0
 
-function GuideCreateRaid(){
+interface Prop{
+    onComplete(): void
+}
+
+function GuideCreateRaid({onComplete}: Prop){
 
     const [active, setActive] = useState<number>(START_STEP)
     const [isLoading, setIsLoading] = useState<boolean>(false)
@@ -129,9 +133,9 @@ function GuideCreateRaid(){
                         title=""
                         isLoading={isLoading}
                         onNext={goToStart}
-                        buttonText="Create new RAID"
+                        buttonHide
                     >
-                        <StepComplete/>
+                        <StepComplete onComplete={onComplete}/>
                     </AppStep>
                 </Stepper.Completed>
 

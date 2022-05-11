@@ -24,3 +24,9 @@ export interface BuildProgress{
     progress: number,
     path: string | null
 }
+
+export interface RaidStatus{
+    exists: boolean,
+    state: string | null,
+    see: string | null
+}

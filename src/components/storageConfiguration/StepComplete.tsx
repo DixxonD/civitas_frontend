@@ -1,10 +1,19 @@
-import React from "react";
+import React, {useEffect} from "react";
 import {Check} from "tabler-icons-react";
-import {Center,Text, Paper, Space, Button} from "@mantine/core";
+import {Center,Text, Space} from "@mantine/core";
 import deviceInitialisationStrings from "./deviceInitialisationStrings";
 
+interface Prop{
+    onComplete?: Function | undefined
+}
 
-function StepComplete(){
+function StepComplete({onComplete}: Prop){
+
+    useEffect(() => {
+        if(onComplete){
+            onComplete()
+        }
+    }, [])
 
     return (
         <div>
