@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import {Button, Stepper, Text} from "@mantine/core";
 import AppStep from "../AppStep";
 import deviceInitialisationStrings from "../deviceInitialisationStrings";
-import {buildRaid, getRegisteredDisks} from "../../../services/DeviceInitialisation";
+import {buildRaid, getRegisteredDisks} from "../../../services/DeviceAPI";
 import {StorageDeviceDescription} from "../../../config/types";
 import StepDiskSelection from "./StepDiskSelection";
 import {showErrorNotification} from "../../../services/AppNotificationProvider";

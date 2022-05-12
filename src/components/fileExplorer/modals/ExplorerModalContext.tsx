@@ -5,7 +5,7 @@ import {LoadingOverlay} from "@mantine/core";
 import FromAddDirectory from '../modals/FromAddDirectory'
 import {DirectoryManipulation, SimpleAxiosError} from "../../../config/types";
 import FormDeleteFile from "./FormDeleteFile"
-import {createDirectory, deleteDirectory, deleteFile, fetchFileStructure} from "../../../services/FileManipulator";
+import {createDirectory, deleteDirectory, deleteFile, fetchFileStructure} from "../../../services/FileAPI";
 import {showErrorNotification} from "../../../services/AppNotificationProvider";
 import Uploader from "../../upload/Uploader";
 import PathView from "./PathView";

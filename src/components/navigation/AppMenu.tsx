@@ -37,7 +37,7 @@ function AppMenu(){
                 <Navbar.Toggle/>
                 <Navbar.Collapse>
                     <Nav>
-                        <Nav.Link eventKey={1} as={Link} to="/">Home</Nav.Link>
+                        <Nav.Link eventKey={1} as={Link} to="/">Cockpit</Nav.Link>
                         <Nav.Link eventKey={2} as={Link} to="/files">Files</Nav.Link>
                         <Nav.Link eventKey={3} as={Link} to="/storageDevice">Storage</Nav.Link>
                         {showProgress && <Text size="sm" color="grey">{progress}%</Text>}

@@ -6,7 +6,7 @@ import Explorer from "../components/fileExplorer/Explorer";
 
 import {closeNotification, showErrorNotification, showLoadingNotification} from "../services/AppNotificationProvider";
 import {useFileStructure, useFileStructureUpdate,} from "../components/fileExplorer/ExplorerContext";
-import {fetchFileStructure, isStorageInitialized} from "../services/FileManipulator";
+import {fetchFileStructure, isStorageInitialized} from "../services/FileAPI";
 import {AlertCircle} from "tabler-icons-react";
 
 function Files(){

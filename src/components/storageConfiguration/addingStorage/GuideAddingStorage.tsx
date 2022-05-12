@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import {StorageDeviceDescription} from "../../../config/types";
-import {callAfterState, callBeforeState, registerDisk} from "../../../services/DeviceInitialisation";
+import {callAfterState, callBeforeState, registerDisk} from "../../../services/DeviceAPI";
 import {Button, Stepper, Text} from "@mantine/core";
 import AppStep from "../AppStep";
 import deviceInitialisationStrings from "../deviceInitialisationStrings";

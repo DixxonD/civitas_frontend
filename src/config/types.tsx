@@ -27,6 +27,10 @@ export interface BuildProgress{
 
 export interface RaidStatus{
     exists: boolean,
-    state: string | null,
-    see: string | null
+    path: string | undefined,
+    state: string | undefined,
+    see: string | undefined,
+    free: number | undefined,
+    size: number | undefined
+
 }

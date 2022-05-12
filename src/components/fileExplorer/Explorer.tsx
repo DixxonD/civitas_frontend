@@ -4,7 +4,7 @@ import ExplorerElement from "./ExplorerElement";
 import ExplorerHeader from "./ExplorerHeader";
 import {FileDescription} from "../../config/types";
 import {useSelectedPath, useSelectedPathUpdate} from "./ExplorerContext";
-import {fetchFile} from "../../services/FileManipulator";
+import {fetchFile} from "../../services/FileAPI";
 import fileDownload from 'js-file-download';
 import {useDeleteFileVisibleUpdate, useSelectedDirectoryUpdate} from "./modals/ExplorerModalContext";
 

@@ -3,7 +3,7 @@ import GuideAddingStorage from "../components/storageConfiguration/addingStorage
 import {Accordion, Title, Text, Badge} from "@mantine/core";
 import GuideCreateRaid from "../components/storageConfiguration/createRaid/GuideCreateRaid";
 import StepComplete from "../components/storageConfiguration/StepComplete";
-import {getRaidStatus} from "../services/DeviceInitialisation";
+import {getPrimaryRaidStatus} from "../services/DeviceAPI";
 import {showErrorNotification} from "../services/AppNotificationProvider";
 
 function StorageConfig(){
@@ -26,7 +26,7 @@ function StorageConfig(){
     }
 
     function updateRaidIsDone(){
-        getRaidStatus().then((result) => {
+        getPrimaryRaidStatus().then((result) => {
             setRaidIsDone(result.exists)
         }).catch(error => {
             showErrorNotification('Sorry!', error.message)

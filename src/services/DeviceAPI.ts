@@ -1,6 +1,7 @@
 import {server} from "../config/config";
 import {BuildProgress, RaidStatus, StorageDeviceDescription} from "../config/types";
 import axios from "axios";
+import {handleAxiosError} from "./utils";
 
 const baseURL = `${server.prefix}${server.addr}:${server.port}`
 
@@ -58,7 +59,7 @@ export async function getBuildProgress(): Promise<BuildProgress>{
     }
 }
 
-export async function getRaidStatus(): Promise<RaidStatus>{
+export async function getPrimaryRaidStatus(): Promise<RaidStatus>{
     try{
         const {data: result} = await axios.get(`${baseURL}/api/createRaid/status`)
         return result
@@ -67,14 +68,3 @@ export async function getRaidStatus(): Promise<RaidStatus>{
     }
 }
 
-function handleAxiosError(error: unknown): Error{
-    if(axios.isAxiosError(error)){
-        if(error.response){
-            if(error.response.status < 500){
-                return new Error(`${error.response.data}`)
-            }
-            return new Error("An error occurred in the node.")
-        }
-    }
-    return new Error('The node could not respond')
-}
