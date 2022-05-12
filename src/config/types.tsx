@@ -25,12 +25,21 @@ export interface BuildProgress{
     path: string | null
 }
 
+export interface Disk{
+    name: string,
+    state: string,
+    read: number,
+    write: number,
+    checksum: number
+}
+
 export interface RaidStatus{
     exists: boolean,
     path: string | undefined,
     state: string | undefined,
     see: string | undefined,
     free: number | undefined,
-    size: number | undefined
+    size: number | undefined,
+    disks: Disk[]
 
 }

@@ -1,44 +1,54 @@
-import React, {useEffect, useState} from "react";
-import { RingProgress, Text} from "@mantine/core";
+import React, {useState} from "react";
+import {RingProgress, Text, Tooltip} from "@mantine/core";
+import {RaidStatus} from "../../../config/types";
+
 
 interface Prop{
-    label: string,
-    utilised: number,
-    capacity: number,
-    unit: string
+    pool: RaidStatus
 }
 
-function StorageSpaceIndicator({label, utilised, capacity, unit}: Prop){
+function StorageSpaceIndicator({pool}: Prop){
 
-    const [usedSpace, setUsedSpace] = useState<number>(utilised)
-    const [fullCapacity, setFullCapacity] = useState<number>(capacity)
-    const [percentage, setPercentage] = useState<number>(() => calcPercentage(usedSpace, fullCapacity))
-    const [availableSpace, setAvailableSpace] = useState<string>(() => `${utilised}/${capacity} ${unit}`)
+    const [showTooltip, setShowTooltip] = useState<boolean>(false)
 
 
-    useEffect(() => {setUsedSpace(utilised)}, [utilised])
-    useEffect(() => {setFullCapacity(capacity)}, [capacity])
-    useEffect(() => {
-        setPercentage(() => calcPercentage(usedSpace, capacity))
-        setAvailableSpace(() =>  `${utilised}/${capacity} ${unit}`)
-    }, [utilised, capacity])
+    function renderRingProgress(){
+        if(!(pool.size && pool.free)){
+            return (<></>)
+        }
+
+    const used = pool.size - pool.free
+    const percentage = calcPercentage(used, pool.size)
+
+        return (
+
+            <Tooltip
+                opened={showTooltip}
+                label={`${used} / ${pool.size} GB`}
+                withArrow
+                color='blue'
+            >
+                <RingProgress
+                    onMouseEnter={() => setShowTooltip(true)}
+                    onMouseLeave={() => setShowTooltip(false)}
+                    size={150}
+                    thickness={20}
+                    label={<Text color='blue' size='md' weight={700} align='center'>{percentage}%</Text>}
+                    sections={[
+                        {value: percentage, color: 'blue'},
+                    ]}
+                />
+            </Tooltip>
+        )
+
+    }
+
+
 
     function calcPercentage(used: number, capacity: number){ return Number(((used / capacity) * 100).toFixed(1))}
 
-    return (
-        <div   style={{display: 'flex', flexDirection: 'column',alignItems:'center', width: 150}}>
-            <RingProgress
-                size={150}
-                thickness={20}
-                label={<Text color='blue' size='md' weight={700} align='center'>{percentage}%</Text>}
-                sections={[
-                {value: percentage, color: 'blue'},
-                ]}
-            />
-                <Text weight={550}>{label}</Text>
-                <Text >{availableSpace}</Text>
-        </div>
-    )
+    return renderRingProgress()
+
 }
 
 export default StorageSpaceIndicator

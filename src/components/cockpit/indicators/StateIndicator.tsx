@@ -1,7 +1,7 @@
-import React from "react";
-import {Center, RingProgress, ThemeIcon, Text, Group, Paper, Title} from "@mantine/core";
+import React, {useState} from "react";
+import {Center, RingProgress, ThemeIcon, Tooltip, Text} from "@mantine/core";
 import {Check, QuestionMark, X} from "tabler-icons-react";
-import {RaidStatus} from "../../../config/types";
+import {Disk, RaidStatus} from "../../../config/types";
 
 interface Prop{
     pool: RaidStatus
@@ -9,97 +9,80 @@ interface Prop{
 
 function StateIndicator({pool}:Prop){
 
-    function renderState(pool: RaidStatus){
-        if(!pool.state){
-            return (
-                <Group>
-                    <CustomRingState color='orange' icon={<QuestionMark size={22}/>}/>
-                    <UnknownDescription/>
-                </Group>
-            )
-        }
-
-        if(pool.state.toLocaleLowerCase() === 'online'){
-            return (
-                <Group>
-                    <CustomRingState color='teal' icon={<Check size={22}/>}/>
-                    <OkDescription/>
-                </Group>
-            )
-        }
-
+    function getToolTipContent(disks: Disk[]){
+        if(!disks){return <Text>No disks found</Text>}
         return (
-            <Group>
-                <CustomRingState color='red' icon={<X size={22}/>}/>
-                <ErrorDescription title={pool.state} link={pool.see}/>
-            </Group>
+            <>
+                {disks.map(disk => (<Text>{disk.name}: {disk.state}</Text>))}
+            </>
         )
     }
 
+    function renderState(pool: RaidStatus){
+        if(!pool.state){
+            return (
+                    <CustomRingState
+                        color='orange'
+                        icon={<QuestionMark size={22}/>}
+                        tooltipContent={getToolTipContent(pool.disks)}
+                    />
+        )}
 
-    return (
-        <div>
+        if(pool.state.toLocaleLowerCase() === 'online'){
+            return (
+                <CustomRingState
+                        color='teal'
+                        icon={<Check size={22}/>}
+                        tooltipContent={getToolTipContent(pool.disks)}
+                    />
+        )}
 
-            <Paper style={{marginBottom: '5px'}}  shadow="xs" p='md' >
-                <Title style={{marginLeft: '10px'}} order={4}>{pool.path}</Title>
-                {renderState( pool )}
-            </Paper>
-        </div>
-        )
+        return (
+            <CustomRingState
+                color='red'
+                icon={<X size={22}/>}
+                tooltipContent={getToolTipContent(pool.disks)}
+            />
+    )}
+
+    return renderState(pool)
+
 }
 
 interface StateProp{
     color: string,
+    tooltipContent: JSX.Element,
     icon: JSX.Element
 }
 
-function CustomRingState({color, icon}: StateProp){
-    return (<RingProgress
-        sections={[{value: 100, color: color}]}
-        label={
-            <Center>
-                <ThemeIcon color={color} variant='light' radius='xl' size='xl'>
-                    {icon}
-                </ThemeIcon>
-            </Center>
-        }
-    />)
-}
+function CustomRingState({color, icon, tooltipContent}: StateProp){
 
+    const [showTooltip, setShowTooltip] = useState<boolean>(false)
 
-interface ErrorProp{
-    title: string,
-    link: string | undefined
-}
-
-function ErrorDescription({title, link}: ErrorProp){
     return (
-        <div>
-            <Text weight={700}>{title}</Text>
-            {link ? (<div>
-                        <Text>The exact error description can be found here:</Text>
-                        <Text><a href={link} target='_blank' rel='noopener noreferrer'>{link}</a></Text>
-                     </div>
-                    ):  <Text>Unfortunately, no further info can be provided.</Text>
-            }
-        </div>
-    )
+        <Tooltip
+            opened={showTooltip}
+            label={tooltipContent}
+            withArrow
+            color={color}
+        >
+            <RingProgress
+                onMouseEnter={() => setShowTooltip(true)}
+                onMouseLeave={() => setShowTooltip(false)}
+                size={150}
+                thickness={15}
+                sections={[{value: 100, color: color}]}
+                label={
+                    <Center>
+                        <ThemeIcon color={color} variant='light' radius={60} size={60}>
+                            {icon}
+                        </ThemeIcon>
+                    </Center>
+                }
+        />
+        </Tooltip>)
 }
 
-function OkDescription(){
-    return (<div>
-        <Text weight={700}>Online</Text>
-        <Text>Everything is ok!</Text>
-    </div>)
-}
 
-function UnknownDescription(){
-    return (
-        <div>
-            <Text weight={700}>State unknown</Text>
-            <Text>Sorry, the exact state of the pool is unknown</Text>
-        </div>
-    )
-}
 
 export default StateIndicator
