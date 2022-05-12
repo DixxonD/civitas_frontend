@@ -8,7 +8,7 @@ interface Prop {
     content: JSX.Element
 }
 
-function ModalChangeFileStructure({visible, title, onClose, content}:Prop){
+function ModalTemplate({visible, title, onClose, content}:Prop){
     const [opened, setOpened] = useState<boolean>(false)
 
     useEffect(() => {
@@ -31,4 +31,4 @@ function ModalChangeFileStructure({visible, title, onClose, content}:Prop){
 
 }
 
-export default ModalChangeFileStructure
+export default ModalTemplate

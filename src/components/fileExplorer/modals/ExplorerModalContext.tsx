@@ -1,5 +1,5 @@
 import React, {useState, useContext, useEffect} from "react";
-import ModalChangeFileStructure from "./ModalChangeFileStructure";
+import ModalTemplate from "../../ModalTemplate";
 import {useFileStructureUpdate, useSelectedPath} from "../ExplorerContext";
 import {LoadingOverlay} from "@mantine/core";
 import FromAddDirectory from '../modals/FromAddDirectory'
@@ -109,7 +109,7 @@ export function ExplorerModalProvider({children}: Prop){
                     <DeleteFileVisibleUpdateContext.Provider value={setDeleteFileVisible}>
                         <AddFileVisibleUpdateContext.Provider value={setAddFileVisible}>
                             <LoadingOverlay visible={isLoading}/>
-                            <ModalChangeFileStructure
+                            <ModalTemplate
                                 title="Add Folder"
                                 visible={addDirVisible}
                                 onClose={() => {setAddDirVisible(false)}}
@@ -123,7 +123,7 @@ export function ExplorerModalProvider({children}: Prop){
                                     />
                                 )}
                             />
-                            <ModalChangeFileStructure
+                            <ModalTemplate
                                 title="Delete Folder"
                                 visible={deleteDirVisible}
                                 onClose={() => {setDeleteDirVisible(false)}}
@@ -136,7 +136,7 @@ export function ExplorerModalProvider({children}: Prop){
                                     />
                                 )}
                             />
-                            <ModalChangeFileStructure
+                            <ModalTemplate
                                 title="Upload Files"
                                 visible={addFileVisible}
                                 onClose={() => {
@@ -149,7 +149,7 @@ export function ExplorerModalProvider({children}: Prop){
                                     </>
                                 )}
                             />
-                            <ModalChangeFileStructure
+                            <ModalTemplate
                                 title="Delete File"
                                 visible={deleteFileVisible}
                                 onClose={() => {

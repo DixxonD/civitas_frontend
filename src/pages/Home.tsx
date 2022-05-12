@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react'
-import {Title, SimpleGrid} from '@mantine/core';
+import {Title, SimpleGrid, Badge} from '@mantine/core';
 import {getAllPools} from "../services/DashboardAPI";
 import {RaidStatus} from "../config/types";
 import PoolStatus from "../components/cockpit/PoolStatus";
@@ -14,6 +14,18 @@ function Home(){
         getAllPools().then(pools => setPools(pools.filter(pool => pool.exists)))
     }
 
+    function renderContent(pools: RaidStatus[]){
+        if(pools.length === 0){
+            return (
+                <div style={{marginTop: '10px', display: 'flex', width: '100%'}}>
+                    <Badge color="gray" size="xl" radius="lg">No disks are registered yet</Badge>
+                </div>
+            )
+        }
+
+        return pools.map(pool => <PoolStatus pool={pool}/>)
+    }
+
     return (
         <div className='content' >
             <Title order={1}>Cockpit</Title>
@@ -26,21 +38,10 @@ function Home(){
                     {maxWidth: 1800, cols: 3, spacing: 'md'},
                 ]}
             >
-                    {pools.map(pool => <PoolStatus pool={pool}/>)}
+                    {renderContent(pools)}
             </SimpleGrid>
-
         </div>
-
-
     )
 }
 
 export default Home
-
-/*
-          <Grid  columns={12} >
-                <Grid.Col span={4} >
-                    {pools.map(pool => <PoolStatus pool={pool}/>)}
-                </Grid.Col>
-            </Grid>
- */
