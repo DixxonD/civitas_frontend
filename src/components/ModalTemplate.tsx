@@ -5,10 +5,11 @@ interface Prop {
     visible: boolean,
     title: string,
     onClose(): void,
-    content: JSX.Element
+    content: JSX.Element,
+    fullSize?: boolean,
 }
 
-function ModalTemplate({visible, title, onClose, content}:Prop){
+function ModalTemplate({visible, title, onClose, content, fullSize=false}:Prop){
     const [opened, setOpened] = useState<boolean>(false)
 
     useEffect(() => {
@@ -19,6 +20,7 @@ function ModalTemplate({visible, title, onClose, content}:Prop){
     return (
         <>
             <Modal
+                {...(fullSize) ?  {size: '90%'}: {}}
                 opened={opened}
                 onClose={onClose}
                 title={title}

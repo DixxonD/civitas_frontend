@@ -2,6 +2,7 @@ import React, {useState} from "react";
 import {Center, RingProgress, ThemeIcon, Tooltip, Text} from "@mantine/core";
 import {Check, QuestionMark, X} from "tabler-icons-react";
 import {Disk, RaidStatus} from "../../../config/types";
+import KeyValueRow from "../../KeyValueRow";
 
 interface Prop{
     pool: RaidStatus
@@ -13,7 +14,7 @@ function StateIndicator({pool}:Prop){
         if(!disks){return <Text>No disks found</Text>}
         return (
             <>
-                {disks.map(disk => (<Text>{disk.name}: {disk.state}</Text>))}
+                {disks.map(disk => <KeyValueRow description={disk.name} value={disk.state}/>)}
             </>
         )
     }

@@ -7,17 +7,18 @@ import StateDescription from "./indicators/StateDescription";
 import PoolStatusMenu from "./PoolStatusMenu";
 
 interface Prop{
-    pool: RaidStatus
+    pool: RaidStatus,
+    onRefresh(): void
 }
 
-function PoolStatus({pool}:Prop){
+function PoolStatus({pool, onRefresh}:Prop){
 
     return (
         <Paper style={{marginTop: '30px', marginBottom: '20px'}}  shadow="xs" p='md'>
             <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start',width: '100%'}}>
                 <Title order={3} style={{marginLeft:'10px'}}>{pool.path}</Title>
                 <div style={{display: 'flex', justifyContent: 'flex-end',  width: '100%'}}>
-                    <PoolStatusMenu pool={pool}/>
+                    <PoolStatusMenu pool={pool} onRefresh={onRefresh}/>
                 </div>
 
             </div>

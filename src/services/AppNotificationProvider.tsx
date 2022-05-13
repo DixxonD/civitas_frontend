@@ -25,6 +25,16 @@ export function closeNotification(id: string, title="Done", message=""){
     })
 }
 
+export function showDoneNotification(message: string){
+    showNotification({
+        title: 'Done',
+        message: message,
+        icon: <Check size={20}/>,
+        color: 'green',
+        autoClose: true
+    })
+}
+
 export function showErrorNotification(title = 'Sorry!', message =  'An Error occurred.'){
     showNotification({
         title: title,

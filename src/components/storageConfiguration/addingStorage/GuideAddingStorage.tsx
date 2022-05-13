@@ -13,7 +13,11 @@ import {showErrorNotification} from "../../../services/AppNotificationProvider";
 const START_STEP = 0
 const PREPARE_STEP = 1
 
-function GuideAddingStorage(){
+interface Prop{
+    onLastStep?: Function
+}
+
+function GuideAddingStorage({onLastStep}: Prop){
 
     const [active, setActive] = useState<number>(START_STEP)
     const [isLoading, setIsLoading] = useState<boolean>(false)
@@ -60,6 +64,7 @@ function GuideAddingStorage(){
             setIsLoading(true)
             registerDisk(selectedDeviceDescription).then( () => {
                 setIsLoading(false)
+                if(onLastStep){onLastStep(); return}
                 goToNextStep()
             }).catch((error) => {
                 setIsLoading(false)

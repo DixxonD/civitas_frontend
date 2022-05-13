@@ -23,7 +23,7 @@ function Home(){
             )
         }
 
-        return pools.map(pool => <PoolStatus pool={pool}/>)
+        return pools.map(pool => <PoolStatus pool={pool} onRefresh={() => fetchPools()}/>)
     }
 
     return (

@@ -35,7 +35,7 @@ export async function registerDisk(selectedDisk: StorageDeviceDescription){
 
 export async function getRegisteredDisks(): Promise<StorageDeviceDescription[]>{
     try{
-        const {data: result}  = await axios.get(`${baseURL}/api/createRaid/disks`)
+        const {data: result}  = await axios.get(`${baseURL}/api/localRaid/disks`)
         return result
     }catch (error){
         throw handleAxiosError(error)
@@ -44,7 +44,7 @@ export async function getRegisteredDisks(): Promise<StorageDeviceDescription[]>{
 
 export async function buildRaid(selectedIDs: string[]){
     try{
-        await axios.post(`${baseURL}/api/createRaid/build`, selectedIDs)
+        await axios.post(`${baseURL}/api/localRaid/build`, selectedIDs)
     }catch (error){
         throw handleAxiosError(error)
     }
@@ -52,7 +52,7 @@ export async function buildRaid(selectedIDs: string[]){
 
 export async function getBuildProgress(): Promise<BuildProgress>{
     try{
-        const {data: result}  = await axios.get(`${baseURL}/api/createRaid/progress`)
+        const {data: result}  = await axios.get(`${baseURL}/api/localRaid/progress`)
         return result
     }catch (error ){
         throw handleAxiosError(error)
@@ -61,7 +61,7 @@ export async function getBuildProgress(): Promise<BuildProgress>{
 
 export async function getPrimaryRaidStatus(): Promise<RaidStatus>{
     try{
-        const {data: result} = await axios.get(`${baseURL}/api/createRaid/status`)
+        const {data: result} = await axios.get(`${baseURL}/api/localRaid/status`)
         return result
     }catch (error){
         throw handleAxiosError(error)
