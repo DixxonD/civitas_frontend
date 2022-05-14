@@ -17,7 +17,7 @@ function AppRouter(){
             <Route  path='/' element={<Home/>}/>
             <Route  path='/files' element={<Files/>}/>
             <Route  path='/upload' element={<UploadCenter/>}/>
-            <Route  path='/storageDevice' element={<StorageConfig/>}/>
+            <Route  path='/addLocalStorage' element={<StorageConfig/>}/>
             <Route  path='*' element={<NotFound/>}/>
         </Routes>
     )

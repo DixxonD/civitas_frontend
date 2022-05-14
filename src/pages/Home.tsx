@@ -1,28 +1,40 @@
 import React, {useEffect, useState} from 'react'
-import {Title, SimpleGrid} from '@mantine/core';
+import {useNavigate} from 'react-router-dom'
+import {Title, SimpleGrid, Text} from '@mantine/core';
 import {getAllPools} from "../services/DashboardAPI";
-import {RaidStatus} from "../config/types";
+import {Disk, RaidStatus} from "../config/types";
 import PoolStatus from "../components/cockpit/PoolStatus";
-import AddLocalStorage from "../components/cockpit/AddLocalStorage";
+import AddStorageBox from "../components/cockpit/AddStorageBox";
 
 function Home(){
 
     const [pools, setPools] = useState<RaidStatus[]>([])
+    const [remoteStorage, setRemoteStorage] = useState<Disk[]>([])
+    const navigate = useNavigate()
 
-    useEffect(() => {fetchPools()}, [])
+    useEffect(() => {fetchPools(); fetchRemoteStorage()}, [])
 
     function fetchPools(){
         getAllPools().then(pools => setPools(pools.filter(pool => pool.exists)))
     }
 
-    function renderContent(pools: RaidStatus[]){
+    function fetchRemoteStorage(){
+        //todo: fetch and save remote storage
+    }
+
+    function renderLocalStorage(pools: RaidStatus[]){
         if(pools.length === 0){
-            return (
-                <AddLocalStorage/>
-            )
+            return <AddStorageBox title='Add local storage' onClick={() => {navigate('addLocalStorage')}}/>
         }
 
         return pools.map(pool => <PoolStatus pool={pool} onRefresh={() => fetchPools()}/>)
+    }
+
+    function renderRemoteStorage(remoteStorage: Disk[]){
+        if(remoteStorage.length === 0){
+            return <AddStorageBox title='Add remote storage' onClick={() => {}}/>
+        }
+        return <Text>remote Storage</Text>
     }
 
     return (
@@ -38,7 +50,8 @@ function Home(){
                     {maxWidth: 1800, cols: 3, spacing: 'md'},
                 ]}
             >
-                    {renderContent(pools)}
+                    {renderLocalStorage(pools)}
+                    {renderRemoteStorage(remoteStorage)}
             </SimpleGrid>
         </div>
     )

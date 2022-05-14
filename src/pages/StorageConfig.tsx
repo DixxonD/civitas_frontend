@@ -5,6 +5,7 @@ import GuideCreateRaid from "../components/storageConfiguration/createRaid/Guide
 import StepComplete from "../components/storageConfiguration/StepComplete";
 import {getPrimaryRaidStatus} from "../services/DeviceAPI";
 import {showErrorNotification} from "../services/AppNotificationProvider";
+import SimpleBoxTemplate from "../components/SimpleBoxTemplate";
 
 function StorageConfig(){
 
@@ -36,8 +37,8 @@ function StorageConfig(){
 
     return (
         <div className='content'>
-            <Title order={1}>Storage Configurator</Title>
-
+            <Title order={1}>Add local storage</Title>
+            <SimpleBoxTemplate><Text>The local storage consists of two storage media, which are mirrored. Add at least two storage media first, and then mirror them in the second step.</Text></SimpleBoxTemplate>
             <Accordion >
 
                 <Accordion.Item label='Add Storage Device'>
