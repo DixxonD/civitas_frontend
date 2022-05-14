@@ -1,10 +1,11 @@
 import React from "react";
-import {Grid, Paper, Title} from "@mantine/core";
+import {Grid} from "@mantine/core";
 import StorageSpaceIndicator from "./indicators/StorageSpaceIndicator";
 import {RaidStatus} from "../../config/types";
 import StateIndicator from "./indicators/StateIndicator";
 import StateDescription from "./indicators/StateDescription";
 import PoolStatusMenu from "./PoolStatusMenu";
+import SimpleBoxTemplate from "../SimpleBoxTemplate";
 
 interface Prop{
     pool: RaidStatus,
@@ -14,15 +15,10 @@ interface Prop{
 function PoolStatus({pool, onRefresh}:Prop){
 
     return (
-        <Paper style={{marginTop: '30px', marginBottom: '20px'}}  shadow="xs" p='md'>
-            <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start',width: '100%'}}>
-                <Title order={3} style={{marginLeft:'10px'}}>{pool.path}</Title>
-                <div style={{display: 'flex', justifyContent: 'flex-end',  width: '100%'}}>
-                    <PoolStatusMenu pool={pool} onRefresh={onRefresh}/>
-                </div>
-
-            </div>
-
+        <SimpleBoxTemplate
+            title='Local Node'
+            menu={<PoolStatusMenu pool={pool} onRefresh={onRefresh}/>}
+        >
             <Grid>
                 <Grid.Col span={8}>
                     <div style={{ display: 'flex', flexDirection: 'row'}}>
@@ -35,9 +31,7 @@ function PoolStatus({pool, onRefresh}:Prop){
                 </Grid.Col>
             </Grid>
 
-
-
-        </Paper>
+        </SimpleBoxTemplate>
     )
 }
 

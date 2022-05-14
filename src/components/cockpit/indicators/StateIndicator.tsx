@@ -1,8 +1,9 @@
-import React, {useState} from "react";
-import {Center, RingProgress, ThemeIcon, Tooltip, Text} from "@mantine/core";
+import React from "react";
+import {Text} from "@mantine/core";
 import {Check, QuestionMark, X} from "tabler-icons-react";
 import {Disk, RaidStatus} from "../../../config/types";
 import KeyValueRow from "../../KeyValueRow";
+import CustomRingState from "./CustomRingState";
 
 interface Prop{
     pool: RaidStatus
@@ -23,7 +24,7 @@ function StateIndicator({pool}:Prop){
         if(!pool.state){
             return (
                     <CustomRingState
-                        color='orange'
+                        color='gray'
                         icon={<QuestionMark size={22}/>}
                         tooltipContent={getToolTipContent(pool.disks)}
                     />
@@ -50,39 +51,7 @@ function StateIndicator({pool}:Prop){
 
 }
 
-interface StateProp{
-    color: string,
-    tooltipContent: JSX.Element,
-    icon: JSX.Element
-}
 
-function CustomRingState({color, icon, tooltipContent}: StateProp){
-
-    const [showTooltip, setShowTooltip] = useState<boolean>(false)
-
-    return (
-        <Tooltip
-            opened={showTooltip}
-            label={tooltipContent}
-            withArrow
-            color={color}
-        >
-            <RingProgress
-                onMouseEnter={() => setShowTooltip(true)}
-                onMouseLeave={() => setShowTooltip(false)}
-                size={150}
-                thickness={15}
-                sections={[{value: 100, color: color}]}
-                label={
-                    <Center>
-                        <ThemeIcon color={color} variant='light' radius={60} size={60}>
-                            {icon}
-                        </ThemeIcon>
-                    </Center>
-                }
-        />
-        </Tooltip>)
-}
 
 
 

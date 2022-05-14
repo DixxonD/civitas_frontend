@@ -1,8 +1,9 @@
 import React, {useEffect, useState} from 'react'
-import {Title, SimpleGrid, Badge} from '@mantine/core';
+import {Title, SimpleGrid} from '@mantine/core';
 import {getAllPools} from "../services/DashboardAPI";
 import {RaidStatus} from "../config/types";
 import PoolStatus from "../components/cockpit/PoolStatus";
+import AddLocalStorage from "../components/cockpit/AddLocalStorage";
 
 function Home(){
 
@@ -17,9 +18,7 @@ function Home(){
     function renderContent(pools: RaidStatus[]){
         if(pools.length === 0){
             return (
-                <div style={{marginTop: '10px', display: 'flex', width: '100%'}}>
-                    <Badge color="gray" size="xl" radius="lg">No disks are registered yet</Badge>
-                </div>
+                <AddLocalStorage/>
             )
         }
 
@@ -29,6 +28,7 @@ function Home(){
     return (
         <div className='content' >
             <Title order={1}>Cockpit</Title>
+            <Title order={2}>Own Data</Title>
             <SimpleGrid
                 cols={4}
                 spacing='lg'
