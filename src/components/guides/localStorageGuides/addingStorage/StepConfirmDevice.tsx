@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {StorageDeviceDescription} from "../../../config/types";
+import {StorageDeviceDescription} from "../../../../config/types";
 import {Space, Text} from "@mantine/core";
 import deviceInitialisationStrings from "../deviceInitialisationStrings";
 

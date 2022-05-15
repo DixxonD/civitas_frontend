@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {Box, Text, Stack, Grid, Center} from "@mantine/core";
-import {StorageDeviceDescription} from "../../../config/types";
+import {StorageDeviceDescription} from "../../../../config/types";
 import deviceInitialisationStrings from "../deviceInitialisationStrings";
 
 interface Prop{

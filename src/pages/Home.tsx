@@ -1,10 +1,11 @@
 import React, {useEffect, useState} from 'react'
 import {useNavigate} from 'react-router-dom'
-import {Title, SimpleGrid, Text} from '@mantine/core';
+import {Title, SimpleGrid, Text, Badge} from '@mantine/core';
 import {getAllPools} from "../services/DashboardAPI";
 import {Disk, RaidStatus} from "../config/types";
 import PoolStatus from "../components/cockpit/PoolStatus";
 import AddStorageBox from "../components/cockpit/AddStorageBox";
+import NodeName from "../components/NodeName";
 
 function Home(){
 
@@ -32,15 +33,17 @@ function Home(){
 
     function renderRemoteStorage(remoteStorage: Disk[]){
         if(remoteStorage.length === 0){
-            return <AddStorageBox title='Add remote storage' onClick={() => {}}/>
+            return <AddStorageBox title='Add remote storage' onClick={() => {navigate('addRemoteStorage')}}/>
         }
         return <Text>remote Storage</Text>
     }
 
     return (
         <div className='content' >
+
             <Title order={1}>Cockpit</Title>
-            <Title order={2}>Own Data</Title>
+            <NodeName ownNode={{id: 'blah123', name: undefined}}/>
+            <Title order={2}>My Data</Title>
             <SimpleGrid
                 cols={4}
                 spacing='lg'
@@ -53,6 +56,11 @@ function Home(){
                     {renderLocalStorage(pools)}
                     {renderRemoteStorage(remoteStorage)}
             </SimpleGrid>
+            <Title order={2}>My friend's data</Title>
+            <div style={{marginTop: '10px', display: 'flex', width: '100%'}}>
+                <Badge color="gray" size="xl" radius="lg">No one is claiming storage from you yet</Badge>
+            </div>
+
         </div>
     )
 }

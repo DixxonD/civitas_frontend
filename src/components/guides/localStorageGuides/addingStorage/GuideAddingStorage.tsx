@@ -1,6 +1,6 @@
 import React, {useState} from "react";
-import {StorageDeviceDescription} from "../../../config/types";
-import {callAfterState, callBeforeState, registerDisk} from "../../../services/DeviceAPI";
+import {StorageDeviceDescription} from "../../../../config/types";
+import {callAfterState, callBeforeState, registerDisk} from "../../../../services/DeviceAPI";
 import {Button, Stepper, Text} from "@mantine/core";
 import AppStep from "../AppStep";
 import deviceInitialisationStrings from "../deviceInitialisationStrings";
@@ -8,7 +8,7 @@ import StepUnplugDevice from "./StepUnplugDevice";
 import StepPlugDevice from "./StepPlugDevice";
 import StepConfirmDevice from "./StepConfirmDevice";
 import StepComplete from "../StepComplete";
-import {showErrorNotification} from "../../../services/AppNotificationProvider";
+import {showErrorNotification} from "../../../../services/AppNotificationProvider";
 
 const START_STEP = 0
 const PREPARE_STEP = 1

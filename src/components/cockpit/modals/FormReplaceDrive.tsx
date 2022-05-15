@@ -3,7 +3,7 @@ import {Button, Text, Group, Badge, Paper, Divider} from '@mantine/core';
 import {RaidStatus, StorageDeviceDescription} from "../../../config/types";
 import {getRegisteredDisks} from "../../../services/DeviceAPI";
 import {showDoneNotification, showErrorNotification} from "../../../services/AppNotificationProvider";
-import GuideAddingStorage from "../../storageConfiguration/addingStorage/GuideAddingStorage";
+import GuideAddingStorage from "../../guides/localStorageGuides/addingStorage/GuideAddingStorage";
 import {replaceDrive} from "../../../services/DashboardAPI";
 
 interface Prop{

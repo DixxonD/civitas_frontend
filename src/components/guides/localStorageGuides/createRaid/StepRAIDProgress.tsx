@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {Progress} from "@mantine/core";
-import {getBuildProgress} from "../../../services/DeviceAPI";
+import {getBuildProgress} from "../../../../services/DeviceAPI";
 
 interface Prop{
     onComplete(): void

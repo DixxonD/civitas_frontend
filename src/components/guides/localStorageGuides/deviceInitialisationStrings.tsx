@@ -12,4 +12,7 @@ export default {
 
     welcomeTextCreateRAID: 'This guide helps to select two storage devices to be mirrored. This will help prevent data loss if one storage device breaks.',
     atLeastToDevices: 'At least two storage devices must be added to the system first.',
+
+    welcomeTextAddRemoteStorage: 'This guide will help you to find other nodes to store your data there. The owner of the selected node will provide you with storage space.'
+
 }

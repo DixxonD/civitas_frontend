@@ -1,7 +1,7 @@
 import React, {useEffect} from "react";
 import {Center, Loader} from '@mantine/core';
-import {getBuildProgress} from "../../../services/DeviceAPI";
-import {showErrorNotification} from "../../../services/AppNotificationProvider";
+import {getBuildProgress} from "../../../../services/DeviceAPI";
+import {showErrorNotification} from "../../../../services/AppNotificationProvider";
 
 interface Prop{
     onComplete(): void,

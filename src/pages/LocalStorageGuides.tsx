@@ -1,13 +1,13 @@
 import React, {useEffect, useState} from "react";
-import GuideAddingStorage from "../components/storageConfiguration/addingStorage/GuideAddingStorage";
+import GuideAddingStorage from "../components/guides/localStorageGuides/addingStorage/GuideAddingStorage";
 import {Accordion, Title, Text, Badge} from "@mantine/core";
-import GuideCreateRaid from "../components/storageConfiguration/createRaid/GuideCreateRaid";
-import StepComplete from "../components/storageConfiguration/StepComplete";
+import GuideCreateRaid from "../components/guides/localStorageGuides/createRaid/GuideCreateRaid";
+import StepComplete from "../components/guides/localStorageGuides/StepComplete";
 import {getPrimaryRaidStatus} from "../services/DeviceAPI";
 import {showErrorNotification} from "../services/AppNotificationProvider";
 import SimpleBoxTemplate from "../components/SimpleBoxTemplate";
 
-function StorageConfig(){
+function LocalStorageGuides(){
 
     const [raidIsDone, setRaidIsDone] = useState<boolean>(false)
     const labelTextCreateRaid = 'Create RAID'
@@ -56,4 +56,4 @@ function StorageConfig(){
 }
 
 
-export default StorageConfig
+export default LocalStorageGuides

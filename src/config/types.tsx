@@ -43,3 +43,8 @@ export interface RaidStatus{
     disks: Disk[]
 
 }
+
+export interface Node{
+    id: string,
+    name: string | undefined
+}
