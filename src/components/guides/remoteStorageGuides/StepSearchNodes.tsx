@@ -10,7 +10,7 @@ function StepSearchNodes({onFound}: Prop){
 
     useEffect(() => {
         //todo: fetch nodes
-        setTimeout(() => {onFound([{id: 'blah123', name: 'myNode'}])}, 2000)
+        setTimeout(() => {onFound([{nodeID: 'blah123', name: 'myNode'}])}, 2000)
         //onFound([])
     }, [])
 

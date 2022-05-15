@@ -45,6 +45,6 @@ export interface RaidStatus{
 }
 
 export interface Node{
-    id: string,
+    nodeID: string,
     name: string | undefined
 }

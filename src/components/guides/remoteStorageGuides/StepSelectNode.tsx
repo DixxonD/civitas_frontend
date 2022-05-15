@@ -21,7 +21,7 @@ function StepSelectNode({availableNodes, onSelect}: Prop){
             return <Badge color="gray" style={{marginTop: '10px', marginBottom: '10px'}}>No other nodes found</Badge>
         }
         return nodes.map(node => (
-            <SimpleBoxTemplate key={node.id} hovering onClick={() => onSelect(node)}>
+            <SimpleBoxTemplate key={node.nodeID} hovering onClick={() => onSelect(node)}>
                 <Group>
                     <Text>Hallo</Text>
                     <Text>Hi</Text>

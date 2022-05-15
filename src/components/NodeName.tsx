@@ -1,9 +1,11 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {useForm, useMediaQuery} from "@mantine/hooks";
 import {Text, TextInput, Group, Anchor, Button, Popover, ActionIcon} from "@mantine/core";
 import SimpleBoxTemplate from "./SimpleBoxTemplate";
 import {Edit} from "tabler-icons-react";
 import {Node} from "../config/types"
+import {updateNodeInformation} from "../services/DashboardAPI";
+import {showErrorNotification} from "../services/AppNotificationProvider";
 
 interface Prop{
     ownNode: Node
@@ -13,21 +15,23 @@ function NodeName({ownNode}:Prop){
     const [node, setNode] = useState<Node>(ownNode)
     const [opened, setOpened] = useState(false)
 
+    useEffect(() => {setNode(ownNode)}, [ownNode])
+
     function updateNodeName(newName: string){
-        //todo call backend
-        setNode(node => {
-            return {
-                id: node.id,
-                name: newName
-            }
+        const newNode = {nodeID: node.nodeID, name: newName}
+        updateNodeInformation(newNode).then(() => {
+            setNode(newNode)
+        }).catch((error) => {
+            showErrorNotification('Sorry!', error.message)
         })
+
     }
 
     function getNodeName(node: Node){
         if(node.name){
-            return `${node.name} | ${node.id}`
+            return `${node.name} | ${node.nodeID}`
         }
-        return node.id
+        return node.nodeID
     }
 
     return(
@@ -54,7 +58,7 @@ function NodeName({ownNode}:Prop){
                     }
                 >
                     <NodeNameForm
-                        nodeName={node.name? node.name : node.id}
+                        nodeName={node.name? node.name : node.nodeID}
                         onChange={(values) =>{
                             updateNodeName(values.nodeName)
                             setOpened(false)

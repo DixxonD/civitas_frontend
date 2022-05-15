@@ -1,19 +1,25 @@
 import React, {useEffect, useState} from 'react'
 import {useNavigate} from 'react-router-dom'
 import {Title, SimpleGrid, Text, Badge} from '@mantine/core';
-import {getAllPools} from "../services/DashboardAPI";
+import {getAllPools, getOwnNodeInformation} from "../services/DashboardAPI";
 import {Disk, RaidStatus} from "../config/types";
 import PoolStatus from "../components/cockpit/PoolStatus";
 import AddStorageBox from "../components/cockpit/AddStorageBox";
 import NodeName from "../components/NodeName";
+import {Node} from "../config/types"
 
 function Home(){
 
     const [pools, setPools] = useState<RaidStatus[]>([])
+    const [ownNode, setOwnNode] = useState<Node>({nodeID: 'unknown', name: undefined})
     const [remoteStorage, setRemoteStorage] = useState<Disk[]>([])
     const navigate = useNavigate()
 
-    useEffect(() => {fetchPools(); fetchRemoteStorage()}, [])
+    useEffect(() => {
+        fetchPools();
+        fetchRemoteStorage();
+        fetchOwnNodeName()
+    }, [])
 
     function fetchPools(){
         getAllPools().then(pools => setPools(pools.filter(pool => pool.exists)))
@@ -21,6 +27,11 @@ function Home(){
 
     function fetchRemoteStorage(){
         //todo: fetch and save remote storage
+    }
+
+    function fetchOwnNodeName(){
+        console.log("hi")
+        getOwnNodeInformation().then(ownNode => setOwnNode(ownNode)).catch(error => console.log(error))
     }
 
     function renderLocalStorage(pools: RaidStatus[]){
@@ -42,7 +53,7 @@ function Home(){
         <div className='content' >
 
             <Title order={1}>Cockpit</Title>
-            <NodeName ownNode={{id: 'blah123', name: undefined}}/>
+            <NodeName ownNode={ownNode}/>
             <Title order={2}>My Data</Title>
             <SimpleGrid
                 cols={4}

@@ -1,7 +1,7 @@
 import {server} from "../config/config";
 import axios from "axios";
 import {handleAxiosError} from "./utils";
-import {RaidStatus} from "../config/types";
+import {Node, RaidStatus} from "../config/types";
 
 const baseURL = `${server.prefix}${server.addr}:${server.port}`
 
@@ -35,6 +35,23 @@ export async function replaceDrive(pool: string, diskId: string): Promise<boolea
     }
 }
 
+export async function getOwnNodeInformation(): Promise<Node>{
+    try{
+        const {data: result} = await axios.get(`${baseURL}/api/discover`)
+        return result
+    }catch (error){
+        throw handleAxiosError(error)
+    }
+}
 
+export async function updateNodeInformation(node: Node): Promise<void>{
+    try{
+        await axios.post(`${baseURL}/api/node`, node)
+    }catch (error) {
+        throw handleAxiosError(error)
+    }
+
+
+}
 
  const removeSlash = (path: string) =>  path.charAt(0) === '/' ?  path.substring(1) : path
