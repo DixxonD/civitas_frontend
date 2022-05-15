@@ -4,8 +4,8 @@ import {Text, TextInput, Group, Anchor, Button, Popover, ActionIcon} from "@mant
 import SimpleBoxTemplate from "./SimpleBoxTemplate";
 import {Edit} from "tabler-icons-react";
 import {Node} from "../config/types"
-import {updateNodeInformation} from "../services/DashboardAPI";
 import {showErrorNotification} from "../services/AppNotificationProvider";
+import {updateNodeInformation} from "../services/NodeAPI";
 
 interface Prop{
     ownNode: Node

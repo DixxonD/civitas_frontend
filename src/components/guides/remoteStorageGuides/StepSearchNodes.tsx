@@ -1,6 +1,8 @@
 import React, {useEffect} from "react";
 import {Center, Loader} from "@mantine/core";
 import {Node} from "../../../config/types";
+import {getAllAvailableNodes} from "../../../services/NodeAPI";
+import {showErrorNotification} from "../../../services/AppNotificationProvider";
 
 interface Prop{
     onFound(nodes: Node[]): void
@@ -9,9 +11,13 @@ interface Prop{
 function StepSearchNodes({onFound}: Prop){
 
     useEffect(() => {
-        //todo: fetch nodes
-        setTimeout(() => {onFound([{nodeID: 'blah123', name: 'myNode'}])}, 2000)
-        //onFound([])
+        getAllAvailableNodes()
+            .then(nodes => {
+                onFound(nodes)
+            }).catch(error => {
+                showErrorNotification('Sorry!', error.message)
+            })
+
     }, [])
 
 

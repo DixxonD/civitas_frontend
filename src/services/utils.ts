@@ -9,6 +9,6 @@ export function handleAxiosError(error: unknown): Error{
             return new Error("An error occurred in the node.")
         }
     }
-    return new Error('The node could not respond')
+    return new Error('The node could not be reached.')
 }
 

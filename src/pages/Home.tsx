@@ -1,12 +1,13 @@
 import React, {useEffect, useState} from 'react'
 import {useNavigate} from 'react-router-dom'
 import {Title, SimpleGrid, Text, Badge} from '@mantine/core';
-import {getAllPools, getOwnNodeInformation} from "../services/DashboardAPI";
+import {getAllPools} from "../services/DashboardAPI";
 import {Disk, RaidStatus} from "../config/types";
 import PoolStatus from "../components/cockpit/PoolStatus";
 import AddStorageBox from "../components/cockpit/AddStorageBox";
 import NodeName from "../components/NodeName";
 import {Node} from "../config/types"
+import {getOwnNodeInformation} from "../services/NodeAPI";
 
 function Home(){
 
