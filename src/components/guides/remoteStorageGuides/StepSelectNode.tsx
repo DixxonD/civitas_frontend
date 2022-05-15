@@ -23,8 +23,8 @@ function StepSelectNode({availableNodes, onSelect}: Prop){
         return nodes.map(node => (
             <SimpleBoxTemplate key={node.nodeID} hovering onClick={() => onSelect(node)}>
                 <Group>
-                    <Text>Hallo</Text>
-                    <Text>Hi</Text>
+                    {node.name && <Text>{node.name}</Text>}
+                    <Text>{node.nodeID}</Text>
                 </Group>
 
             </SimpleBoxTemplate>
