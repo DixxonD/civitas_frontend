@@ -4,15 +4,15 @@ import {RaidStatus, StorageDeviceDescription} from "../../../config/types";
 import {getRegisteredDisks} from "../../../services/DeviceAPI";
 import {showDoneNotification, showErrorNotification} from "../../../services/AppNotificationProvider";
 import GuideAddingStorage from "../../guides/localStorageGuides/addingStorage/GuideAddingStorage";
-import {replaceDrive} from "../../../services/DashboardAPI";
 
 interface Prop{
     pool: RaidStatus,
     close(): void,
     onSuccess(): void,
+    replaceFunction(path: string, diskId: string): Promise<boolean>
 }
 
-function FormReplaceDrive({pool, close, onSuccess}: Prop){
+function FormReplaceDrive({pool, close,replaceFunction, onSuccess}: Prop){
     const [showAddDisk, setShowAddDisk] = useState<boolean>(false)
     const [registeredDevices, setRegisteredDevices] = useState<StorageDeviceDescription[]>([])
     useEffect(() => {updateRegisteredDisks()}, [])
@@ -60,7 +60,7 @@ function FormReplaceDrive({pool, close, onSuccess}: Prop){
             return
         }
 
-        replaceDrive(pool.path, diskId).then(success => {
+        replaceFunction(pool.path, diskId).then(success => {
             if (success) {
                 showDoneNotification('The disc has been replaced.')
                 onSuccess()

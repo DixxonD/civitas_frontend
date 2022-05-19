@@ -1,11 +1,12 @@
 import React, {useEffect, useState} from "react";
 import {useForm, useMediaQuery} from "@mantine/hooks";
 import {Text, TextInput, Group, Anchor, Button, Popover, ActionIcon} from "@mantine/core";
-import SimpleBoxTemplate from "./SimpleBoxTemplate";
+import SimpleBoxTemplate from "../../SimpleBoxTemplate";
 import {Edit} from "tabler-icons-react";
-import {Node} from "../config/types"
-import {showErrorNotification} from "../services/AppNotificationProvider";
-import {updateNodeInformation} from "../services/NodeAPI";
+import {Node} from "../../../config/types"
+import {showErrorNotification} from "../../../services/AppNotificationProvider";
+import {updateNodeInformation} from "../../../services/NodeAPI";
+import NodeNameText from "./NodeNameText";
 
 interface Prop{
     ownNode: Node
@@ -18,7 +19,7 @@ function NodeName({ownNode}:Prop){
     useEffect(() => {setNode(ownNode)}, [ownNode])
 
     function updateNodeName(newName: string){
-        const newNode = {nodeID: node.nodeID, name: newName}
+        const newNode = {nodeID: node.nodeID, name: newName, ip: node.ip}
         updateNodeInformation(newNode).then(() => {
             setNode(newNode)
         }).catch((error) => {
@@ -27,19 +28,13 @@ function NodeName({ownNode}:Prop){
 
     }
 
-    function getNodeName(node: Node){
-        if(node.name){
-            return `${node.name} | ${node.nodeID}`
-        }
-        return node.nodeID
-    }
 
     return(
         <SimpleBoxTemplate
             customTitle={(
                 <>
                     <Text>Your Node:</Text>
-                    <Text weight={700}>{getNodeName(node)}</Text>
+                    <NodeNameText node={node}/>
                 </>)}
             maxWidth={780}
             menu={(

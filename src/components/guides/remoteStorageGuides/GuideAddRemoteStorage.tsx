@@ -7,6 +7,8 @@ import StepSearchNodes from "./StepSearchNodes";
 import StepSelectNode from "./StepSelectNode";
 import {useNavigate} from "react-router-dom";
 import StepComplete from "../localStorageGuides/StepComplete";
+import {setAsBackupProvider} from "../../../services/NodeAPI";
+import {showErrorNotification} from "../../../services/AppNotificationProvider";
 const START_STEP = 0
 const SEARCH_STEP = 1
 const SELECT_STEP = 2
@@ -33,9 +35,16 @@ function GuideAddRemoteStorage() {
         setActive(SELECT_STEP)
     }
 
-    function onSelectNode(node: Node){
-        //todo: call backend and claim node
-        setActive(ALL_DONE_STEP)
+    function onSelectNode(node: Node, interval: number){
+        setIsLoading(true)
+        setAsBackupProvider(node, interval).then(() => {
+            setIsLoading(false)
+            setActive(ALL_DONE_STEP)
+        }).catch((error) => {
+            setIsLoading(false)
+            showErrorNotification('Sorry!', error.message)
+        })
+
     }
 
     function onFinish(){

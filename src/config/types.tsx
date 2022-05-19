@@ -46,5 +46,13 @@ export interface RaidStatus{
 
 export interface Node{
     nodeID: string,
+    ip: string,
     name: string | undefined
+}
+
+export interface SharedNode {
+    nodeID: string,
+    name: string | undefined,
+    disk: string | null,
+    lastSeen: Date | null
 }

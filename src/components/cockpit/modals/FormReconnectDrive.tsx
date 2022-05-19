@@ -1,17 +1,16 @@
 import React  from "react";
 import {Button, Text, Group} from '@mantine/core';
 import {RaidStatus} from "../../../config/types";
-
-import {reconnectDrive} from "../../../services/DashboardAPI"
 import {showDoneNotification, showErrorNotification} from "../../../services/AppNotificationProvider";
 
 interface Prop{
     pool: RaidStatus,
     close(): void,
-    onSuccess(): void
+    onSuccess(): void,
+    reconnectFunction(path: string): Promise<boolean>
 }
 
-function FormReconnectDrive({pool, close, onSuccess}: Prop){
+function FormReconnectDrive({pool, close, reconnectFunction, onSuccess}: Prop){
 
     function onClick(){
         if(!pool.path){
@@ -19,7 +18,7 @@ function FormReconnectDrive({pool, close, onSuccess}: Prop){
             return
         }
 
-        reconnectDrive(pool.path).then(success => {
+        reconnectFunction(pool.path).then(success => {
             if (success) {
                 showDoneNotification('The disc has been reconnected')
                 onSuccess()

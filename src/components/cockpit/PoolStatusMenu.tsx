@@ -5,6 +5,7 @@ import ModalTemplate from "../ModalTemplate";
 import FormReconnectDrive from "./modals/FormReconnectDrive";
 import {RaidStatus} from "../../config/types";
 import FormReplaceDrive from "./modals/FormReplaceDrive";
+import {reconnectDrive, replaceDrive} from "../../services/DashboardAPI";
 
 interface Prop{
     pool: RaidStatus,
@@ -22,14 +23,22 @@ function PoolStatusMenu({pool, onRefresh}: Prop){
                 visible={reconnectModalVisible}
                 onClose={() => setReconnectModalVisible(false)}
                 title='Reconnect Drive'
-                content={<FormReconnectDrive pool={pool} close={() => setReconnectModalVisible(false)} onSuccess={onRefresh}/>}
+                content={<FormReconnectDrive
+                    pool={pool}
+                    close={() => setReconnectModalVisible(false)}
+                    reconnectFunction={reconnectDrive}
+                    onSuccess={onRefresh}/>}
             />
             <ModalTemplate
                 fullSize
                 visible={replaceModalVisible}
                 onClose={() => setReplaceModalVisible(false)}
                 title='Replace Drive'
-                content={<FormReplaceDrive pool={pool} close={() => setReplaceModalVisible(false)} onSuccess={onRefresh}/>}
+                content={<FormReplaceDrive
+                    pool={pool}
+                    close={() => setReplaceModalVisible(false)}
+                    replaceFunction={replaceDrive}
+                    onSuccess={onRefresh}/>}
             />
             <Menu>
                 <Menu.Item
