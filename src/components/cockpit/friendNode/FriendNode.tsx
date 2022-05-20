@@ -16,15 +16,17 @@ function FriendNode({node}: Prop){
     //const [sharedNode, setSharedNode] = useState<SharedNode>(node)
     const [statusIcon, setStatusIcon] = useState<JSX.Element>(<></>)
     const [statusText, setStatusText] = useState<string>('Loading...')
+    const [diskAlreadyConnected, setDiskAlreadyConnected] = useState<boolean>(false)
     const [opened, setOpened] = useState<boolean>(false)
 
     useEffect(() => {
       //  setSharedNode(node)
         updateStatus(node)
+        updateDiskAlreadyConnected(node)
     }, [node])
 
     function updateStatus(node: SharedNode){
-        if( node.disk === null){
+        if( node.disk === null || node.disk === undefined){
             setStatusIcon( <AlertTriangle size={24}/>)
             setStatusText('No storage device attached.')
             return
@@ -42,6 +44,13 @@ function FriendNode({node}: Prop){
 
     }
 
+    function updateDiskAlreadyConnected(node: SharedNode){
+        if( node.disk === null || node.disk === undefined){
+            setDiskAlreadyConnected(false)
+            return
+        }
+        setDiskAlreadyConnected(true)
+    }
 
     function moreThanOneHourAgo(pastTime: Date | null): boolean{
         if(pastTime === null){return true}
@@ -59,8 +68,10 @@ function FriendNode({node}: Prop){
             menu={(
                 <>
                     <FriendNodeMenu
+                        supplierNodeID={node.nodeID}
                         statusIcon={statusIcon}
                         statusText={statusText}
+                        diskIsAlreadyConnected={diskAlreadyConnected}
                         button={(
                             <Tooltip
                                 opened={opened}

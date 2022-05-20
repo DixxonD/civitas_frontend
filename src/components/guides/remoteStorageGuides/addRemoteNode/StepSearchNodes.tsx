@@ -1,8 +1,8 @@
 import React, {useEffect} from "react";
 import {Center, Loader} from "@mantine/core";
-import {Node} from "../../../config/types";
-import {getAllAvailableNodes} from "../../../services/NodeAPI";
-import {showErrorNotification} from "../../../services/AppNotificationProvider";
+import {Node} from "../../../../config/types";
+import {getAllAvailableNodes} from "../../../../services/NodeAPI";
+import {showErrorNotification} from "../../../../services/AppNotificationProvider";
 
 interface Prop{
     onFound(nodes: Node[]): void

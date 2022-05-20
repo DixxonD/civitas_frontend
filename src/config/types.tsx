@@ -53,6 +53,6 @@ export interface Node{
 export interface SharedNode {
     nodeID: string,
     name: string | undefined,
-    disk: string | null,
+    disk: string | undefined,
     lastSeen: Date | null
 }

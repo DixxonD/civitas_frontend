@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from "react";
 import {Badge, Group, Text} from "@mantine/core";
 
-import {Node} from "../../../config/types";
-import SimpleBoxTemplate from "../../SimpleBoxTemplate";
+import {Node} from "../../../../config/types";
+import SimpleBoxTemplate from "../../../SimpleBoxTemplate";
 import SyncInterval from "./SyncInterval";
 
 const DEFAULT_INTERVAL = 30

@@ -57,3 +57,11 @@ export async function setAsBackupProvider(node: Node, interval: number): Promise
     }
 
 }
+
+export async function provideDisk(supplierNodeID: string, diskID: string){
+    try{
+        await axios.post(`${baseURL}/api/node/provideDisk`, {supplierNodeID: supplierNodeID, diskID: diskID})
+    }catch (error) {
+        throw handleAxiosError(error)
+    }
+}

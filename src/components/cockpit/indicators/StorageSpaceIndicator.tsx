@@ -18,13 +18,14 @@ function StorageSpaceIndicator({pool}: Prop){
         }
 
     const used = pool.size - pool.free
+    const usedText = Number(used).toFixed(1)
     const percentage = calcPercentage(used, pool.size)
 
         return (
 
             <Tooltip
                 opened={showTooltip}
-                label={`${used} / ${pool.size} GB`}
+                label={`${usedText} / ${pool.size} GB`}
                 withArrow
                 color='blue'
             >

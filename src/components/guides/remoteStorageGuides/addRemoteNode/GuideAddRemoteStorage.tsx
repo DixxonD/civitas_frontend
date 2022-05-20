@@ -1,14 +1,14 @@
 import React, {useState} from "react";
 import { Stepper, Text, Button } from "@mantine/core";
-import AppStep from "../localStorageGuides/AppStep";
-import {Node} from "../../../config/types";
-import deviceInitialisationStrings from "../localStorageGuides/deviceInitialisationStrings";
+import AppStep from "../../localStorageGuides/AppStep";
+import {Node} from "../../../../config/types";
+import deviceInitialisationStrings from "../../localStorageGuides/deviceInitialisationStrings";
 import StepSearchNodes from "./StepSearchNodes";
 import StepSelectNode from "./StepSelectNode";
 import {useNavigate} from "react-router-dom";
-import StepComplete from "../localStorageGuides/StepComplete";
-import {setAsBackupProvider} from "../../../services/NodeAPI";
-import {showErrorNotification} from "../../../services/AppNotificationProvider";
+import StepComplete from "../../localStorageGuides/StepComplete";
+import {setAsBackupProvider} from "../../../../services/NodeAPI";
+import {showErrorNotification} from "../../../../services/AppNotificationProvider";
 const START_STEP = 0
 const SEARCH_STEP = 1
 const SELECT_STEP = 2
