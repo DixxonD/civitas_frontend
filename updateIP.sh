@@ -19,6 +19,7 @@ else
     echo "IP has changed"
     echo "$MYIP" > ~/baseapplication/app/shell/ip
     REACT_APP_BACKEND_IP=$MYIP npm run build
+    EXPRESS_HOST=$MYIP pm2 restart backup_base --update-env
 fi
 
 
