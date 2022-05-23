@@ -6,9 +6,9 @@ import {RaidStatus} from "../config/types";
 const baseURL = `${server.prefix}${server.addr}:${server.port}`
 
 
-export async function getAllPools(): Promise<RaidStatus[]>{
+export async function getAllPools(storageLocation: 'local' | 'remote'): Promise<RaidStatus[]>{
     try{
-        const {data: result} = await axios.get(`${baseURL}/api/pools`)
+        const {data: result} = await axios.get(`${baseURL}/api/pools/${storageLocation}`)
         return result
     }catch (error){
         throw handleAxiosError(error)
