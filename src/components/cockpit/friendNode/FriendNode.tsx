@@ -32,8 +32,7 @@ function FriendNode({node}: Prop){
             return
         }
 
-        const lastSeen = node.lastSeen === null ? 'never' : node.lastSeen.toLocaleTimeString()
-        setStatusText(`Last seen: ${lastSeen}`)
+        setStatusText(`Last seen: ${getTimeAgo(node.lastSeen)}`)
 
         if( moreThanOneHourAgo(node.lastSeen)){
             setStatusIcon(<Clock size={24}/>)
@@ -42,6 +41,17 @@ function FriendNode({node}: Prop){
 
         setStatusIcon(<Check size={24}/>)
 
+    }
+
+    function getTimeAgo(pastTime: Date | null): string{
+        if(pastTime === null){return 'never'}
+        const now = new Date()
+        const diff = new Date(now.getTime() - pastTime.getTime() )
+
+        if(diff.getUTCHours() > 0){
+            return `${diff.getUTCHours()}h ago`
+        }
+        return `${diff.getUTCMinutes()} min ago`
     }
 
     function updateDiskAlreadyConnected(node: SharedNode){
