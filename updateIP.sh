@@ -1,5 +1,10 @@
 #!/bin/bash
 
+## wait for the adapter to be initialized
+sleep 30
+
+
+
 #load the old IP
 cd ~/frontend || exit
 OLDIP=$(cat ~/baseapplication/app/shell/ip)
@@ -18,8 +23,11 @@ if [ "$OLDIP" = "$MYIP" ]; then
 else
     echo "IP has changed"
     echo "$MYIP" > ~/baseapplication/app/shell/ip
-    EXPRESS_HOST=$MYIP pm2 restart backup_base --update-env
+    pm2 stop backup_front
+    pm2 serve ~/frontend/src/pages 8080 --name rebuilding --spa
     REACT_APP_BACKEND_IP=$MYIP npm run build
+    pm2 stop rebuilding
+    pm2 restart backup_front
 fi
 
 
