@@ -50,9 +50,23 @@ export interface Node{
     name: string | undefined
 }
 
-export interface SharedNode {
+export interface StorageSupplier {
     nodeID: string,
     name: string | undefined,
     disk: string | undefined,
     lastSeen: Date | null
+}
+
+export interface StorageProvider {
+    nodeID: string,
+    name: string | undefined,
+    ip: string,
+    frequency: number,
+    lastBackup: Date,
+    missedHeartbeats: number
+}
+
+export interface ObjWithNodeName{
+    nodeID: string,
+    name: string | undefined
 }

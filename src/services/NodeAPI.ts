@@ -1,5 +1,5 @@
 import {server} from "../config/config";
-import {Node, SharedNode} from "../config/types";
+import {Node, RaidStatus, StorageProvider, StorageSupplier} from "../config/types";
 import axios from "axios";
 import {handleAxiosError} from "./utils";
 
@@ -23,18 +23,30 @@ export async function updateNodeInformation(node: Node): Promise<void>{
     }
 }
 
-export async function getAllAvailableNodes(): Promise<Node[]>{
+export async function getLocalStorage(): Promise<RaidStatus[]>{
     try{
-        const {data: result} = await axios.get(`${baseURL}/api/nodes/available`)
+        const {data: result} = await axios.get(`${baseURL}/api/node/local`)
         return result
-    }catch (error) {
+    }catch (error){
         throw handleAxiosError(error)
     }
 }
 
-export async function getAllMarriedNodes(): Promise<SharedNode[]>{
+export async function getStorageProviders(): Promise<StorageProvider[]>{
     try{
-        const {data: result} = await axios.get(`${baseURL}/api/nodes/married`)
+        const {data: result} = await axios.get(`${baseURL}/api/node/providers`)
+        return result.map((node: any) => {
+            node.lastBackup = new Date(node.lastBackup)
+            return node
+        })
+    }catch (error){
+        throw handleAxiosError(error)
+    }
+}
+
+export async function getStorageSuppliers(): Promise<StorageSupplier[]>{
+    try{
+        const {data: result} = await axios.get(`${baseURL}/api/node/suppliers`)
         return result
             .map((node: any) => {
                 node.lastSeen = new Date(node.lastSeen)
@@ -46,6 +58,16 @@ export async function getAllMarriedNodes(): Promise<SharedNode[]>{
         throw handleAxiosError(error)
     }
 }
+
+export async function getAllAvailableNodes(): Promise<Node[]>{
+    try{
+        const {data: result} = await axios.get(`${baseURL}/api/node/all`)
+        return result
+    }catch (error) {
+        throw handleAxiosError(error)
+    }
+}
+
 
 
 export async function setAsBackupProvider(node: Node, interval: number): Promise<void>{

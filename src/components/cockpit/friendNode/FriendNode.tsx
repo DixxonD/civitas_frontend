@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import SimpleBoxTemplate from "../../SimpleBoxTemplate";
-import {SharedNode} from '../../../config/types'
+import {StorageSupplier} from '../../../config/types'
 import NodeNameText from "../nodeName/NodeNameText";
 import {Tooltip} from "@mantine/core";
 
@@ -8,7 +8,7 @@ import {AlertTriangle, Clock, Check, } from "tabler-icons-react";
 import FriendNodeMenu from "./FriendNodeMenu";
 
 interface Prop{
-    node: SharedNode
+    node: StorageSupplier
 }
 
 function FriendNode({node}: Prop){
@@ -25,7 +25,7 @@ function FriendNode({node}: Prop){
         updateDiskAlreadyConnected(node)
     }, [node])
 
-    function updateStatus(node: SharedNode){
+    function updateStatus(node: StorageSupplier){
         if( node.disk === null || node.disk === undefined){
             setStatusIcon( <AlertTriangle size={24}/>)
             setStatusText('No storage device attached.')
@@ -54,7 +54,7 @@ function FriendNode({node}: Prop){
         return `${diff.getUTCMinutes()} min ago`
     }
 
-    function updateDiskAlreadyConnected(node: SharedNode){
+    function updateDiskAlreadyConnected(node: StorageSupplier){
         if( node.disk === null || node.disk === undefined){
             setDiskAlreadyConnected(false)
             return

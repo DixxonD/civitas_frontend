@@ -1,47 +1,46 @@
 import React, {useEffect, useState} from 'react'
 import {useNavigate} from 'react-router-dom'
 import {Title, SimpleGrid, Badge} from '@mantine/core';
-import {getAllPools} from "../services/DashboardAPI";
-import {SharedNode, RaidStatus} from "../config/types";
+import {StorageSupplier, RaidStatus, StorageProvider} from "../config/types";
 import PoolStatus from "../components/cockpit/PoolStatus";
 import AddStorageBox from "../components/cockpit/AddStorageBox";
 import NodeName from "../components/cockpit/nodeName/NodeName";
 import {Node} from "../config/types"
-import {getAllMarriedNodes, getOwnNodeInformation} from "../services/NodeAPI";
+import {getStorageSuppliers, getOwnNodeInformation, getLocalStorage, getStorageProviders} from "../services/NodeAPI";
 import {showErrorNotification} from "../services/AppNotificationProvider";
 import FriendNode from "../components/cockpit/friendNode/FriendNode";
-import RemoteDiskStatus from "../components/cockpit/RemoteDiskStatus";
+import StorageProviderStatus from "../components/cockpit/StorageProviderStatus";
 
 function Home(){
 
     const [localPools, setLocalPools] = useState<RaidStatus[]>([])
     const [ownNode, setOwnNode] = useState<Node>({nodeID: 'unknown', ip: "unknown", name: undefined})
-    const [remoteDisks, setRemoteDisks] = useState<RaidStatus[]>([])
-    const [friendStorage, setFriendStorage] = useState<SharedNode[]>([])
+    const [storageProvider, setStorageProvider] = useState<StorageProvider[]>([])
+    const [storageSuppliers, setStorageSuppliers] = useState<StorageSupplier[]>([])
     const navigate = useNavigate()
 
     useEffect(() => {
-        fetchPools();
-        fetchFriendNodes();
-        fetchRemoteStorage();
+        fetchLocalPools();
+        fetchStorageSuppliers();
+        fetchStorageProvider();
         fetchOwnNodeName()
     }, [])
 
-    function fetchPools(){
-        getAllPools('local')
+    function fetchLocalPools(){
+        getLocalStorage()
             .then(pools => setLocalPools(pools.filter(pool => pool.exists)))
             .catch((error) => showErrorNotification("Sorry!", error.message))
     }
 
-    function fetchRemoteStorage(){
-        getAllPools('remote')
-            .then(disks => setRemoteDisks(disks.filter(disk => disk.exists)))
+    function fetchStorageProvider(){
+        getStorageProviders()
+            .then(disks => setStorageProvider(disks))
             .catch(error => showErrorNotification('Sorry!', error.message))
     }
 
-    function fetchFriendNodes(){
-        getAllMarriedNodes()
-            .then(friendNodes => {setFriendStorage(friendNodes)})
+    function fetchStorageSuppliers(){
+        getStorageSuppliers()
+            .then(storageSupplier => {setStorageSuppliers(storageSupplier)})
             .catch(error => showErrorNotification('Sorry!', error.message))
     }
 
@@ -54,26 +53,26 @@ function Home(){
             return <AddStorageBox title='Add local storage' onClick={() => {navigate('addLocalStorage')}}/>
         }
 
-        return pools.map(pool => <PoolStatus pool={pool} onRefresh={() => fetchPools()}/>)
+        return pools.map(pool => <PoolStatus pool={pool} onRefresh={() => fetchLocalPools()}/>)
     }
 
-    function renderRemoteStorage(remoteStorage: RaidStatus[]){
-        if(remoteStorage.length === 0){
+    function renderStorageProviders(storageProviders: StorageProvider[]){
+        if(storageProviders.length === 0){
             return <AddStorageBox title='Add remote storage' onClick={() => {navigate('addRemoteStorage')}}/>
         }
 
-        return remoteStorage.map(remoteDisk => <RemoteDiskStatus remoteStorage={remoteDisk}/>)
+        return storageProviders.map(storageProvider => <StorageProviderStatus provider={storageProvider}/>)
     }
 
-    function renderFriendsStorage(friendsNodes: SharedNode[]){
-        if(friendsNodes.length === 0){
+    function renderStorageSuppliers(storageSuppliers: StorageSupplier[]){
+        if(storageSuppliers.length === 0){
             return (
                 <div style={{marginTop: '10px', display: 'flex', width: '100%'}}>
                     <Badge color="gray" size="xl" radius="lg">No one is claiming storage from you yet</Badge>
                 </div>
             )
         }
-        return friendsNodes.map(node => (<FriendNode key={node.nodeID} node={node}/>))
+        return storageSuppliers.map(node => (<FriendNode key={node.nodeID} node={node}/>))
     }
 
     return (
@@ -92,10 +91,10 @@ function Home(){
                 ]}
             >
                     {renderLocalStorage(localPools)}
-                    {renderRemoteStorage(remoteDisks)}
+                    {renderStorageProviders(storageProvider)}
             </SimpleGrid>
             <Title order={2}>My friend's data</Title>
-            {renderFriendsStorage(friendStorage)}
+            {renderStorageSuppliers(storageSuppliers)}
 
         </div>
     )

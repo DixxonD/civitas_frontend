@@ -1,16 +1,16 @@
 import React, {useEffect, useState} from "react";
-import {Node, SharedNode} from "../../../config/types";
+import {Node, ObjWithNodeName, StorageProvider, StorageSupplier} from "../../../config/types";
 import {Text} from "@mantine/core";
 
 interface Prop{
-    node: Node | SharedNode
+    node: ObjWithNodeName//Node | StorageSupplier | StorageProvider
 }
 
 function NodeNameText({node}:Prop){
-    const [nodeToDisplay, setNode] = useState<Node|SharedNode>(node)
+    const [nodeToDisplay, setNode] = useState<ObjWithNodeName>(node)
     useEffect(() => {setNode(node)}, [node])
 
-    function getNodeName(node: Node|SharedNode){
+    function getNodeName(node: ObjWithNodeName){
         if(node.name){
             return `${node.name} | ${node.nodeID}`
         }
