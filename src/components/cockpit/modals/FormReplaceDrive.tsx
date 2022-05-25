@@ -3,7 +3,7 @@ import {Button, Text, Group, Badge, Paper, Divider} from '@mantine/core';
 import {RaidStatus, StorageDeviceDescription} from "../../../config/types";
 import {getRegisteredDisks} from "../../../services/DeviceAPI";
 import {showDoneNotification, showErrorNotification} from "../../../services/AppNotificationProvider";
-import GuideAddingStorage from "../../guides/localStorageGuides/addingStorage/GuideAddingStorage";
+import GuideRegisterStorage from "../../guides/localStorageGuides/addingStorage/GuideRegisterStorage";
 
 interface Prop{
     pool: RaidStatus,
@@ -93,7 +93,7 @@ function FormReplaceDrive({pool, close,replaceFunction, onSuccess}: Prop){
     return (
         <>
             <Text>Select an already registered storage device to replace it with a faulty one:</Text>
-            {!showAddDisk ? showDiskList(registeredDevices) : <GuideAddingStorage onLastStep={onAddDeviceFinished}/>}
+            {!showAddDisk ? showDiskList(registeredDevices) : <GuideRegisterStorage onLastStep={onAddDeviceFinished}/>}
         </>
 
 

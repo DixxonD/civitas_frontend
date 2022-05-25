@@ -5,22 +5,21 @@ import NodeNameText from "../nodeName/NodeNameText";
 import {Tooltip} from "@mantine/core";
 
 import {AlertTriangle, Clock, Check, } from "tabler-icons-react";
-import FriendNodeMenu from "./FriendNodeMenu";
+import SupplierNodeMenu from "./SupplierNodeMenu";
 
 interface Prop{
-    node: StorageSupplier
+    node: StorageSupplier,
+    afterAction(): void
 }
 
-function FriendNode({node}: Prop){
+function SupplierNode({node, afterAction}: Prop){
 
-    //const [sharedNode, setSharedNode] = useState<SharedNode>(node)
     const [statusIcon, setStatusIcon] = useState<JSX.Element>(<></>)
     const [statusText, setStatusText] = useState<string>('Loading...')
     const [diskAlreadyConnected, setDiskAlreadyConnected] = useState<boolean>(false)
     const [opened, setOpened] = useState<boolean>(false)
 
     useEffect(() => {
-      //  setSharedNode(node)
         updateStatus(node)
         updateDiskAlreadyConnected(node)
     }, [node])
@@ -77,7 +76,8 @@ function FriendNode({node}: Prop){
             customTitle={(<NodeNameText node={node}/>)}
             menu={(
                 <>
-                    <FriendNodeMenu
+                    <SupplierNodeMenu
+                        afterAction={afterAction}
                         supplierNodeID={node.nodeID}
                         statusIcon={statusIcon}
                         statusText={statusText}
@@ -107,7 +107,7 @@ function FriendNode({node}: Prop){
     )
 }
 
-export default FriendNode
+export default SupplierNode
 
 
 /*

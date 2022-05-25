@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import GuideAddingStorage from "../components/guides/localStorageGuides/addingStorage/GuideAddingStorage";
+import GuideRegisterStorage from "../components/guides/localStorageGuides/addingStorage/GuideRegisterStorage";
 import {Accordion, Title, Text, Badge} from "@mantine/core";
 import GuideCreateRaid from "../components/guides/localStorageGuides/createRaid/GuideCreateRaid";
 import StepComplete from "../components/guides/localStorageGuides/StepComplete";
@@ -42,7 +42,7 @@ function LocalStorageGuides(){
             <Accordion >
 
                 <Accordion.Item label='Add Storage Device'>
-                    <GuideAddingStorage/>
+                    <GuideRegisterStorage/>
                 </Accordion.Item>
                 <Accordion.Item label={labelCreateRaid(raidIsDone)}>
                     { raidIsDone ? <StepComplete/> : <GuideCreateRaid onComplete={updateRaidIsDone}/>}

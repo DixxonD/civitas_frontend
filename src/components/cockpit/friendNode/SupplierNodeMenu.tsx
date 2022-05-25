@@ -9,11 +9,12 @@ interface Prop{
     statusIcon: JSX.Element,
     statusText: string,
     diskIsAlreadyConnected: boolean,
-    supplierNodeID: string
+    supplierNodeID: string,
+    afterAction(): void,
 
 }
 
-function FriendNodeMenu({button, statusIcon, statusText, diskIsAlreadyConnected, supplierNodeID}: Prop) {
+function SupplierNodeMenu({button, statusIcon, statusText, diskIsAlreadyConnected, supplierNodeID, afterAction}: Prop) {
 
     const [reconnectModalVisible, setReconnectModalVisible] = useState<boolean>(false)
     const [replaceModalVisible, setReplaceModalVisible] = useState<boolean>(false)
@@ -26,7 +27,16 @@ function FriendNodeMenu({button, statusIcon, statusText, diskIsAlreadyConnected,
                 visible={addDiskModalVisible}
                 title='Provide a disk for a friend'
                 onClose={() => setAddDiskModalVisible(false)}
-                content={<GuideProvideDisk supplierNodeId={supplierNodeID} onFinish={() => setAddDiskModalVisible(false)}/>}/>
+                content={
+                <GuideProvideDisk
+                    supplierNodeId={supplierNodeID}
+                    onFinish={() => {
+                            setAddDiskModalVisible(false)
+                            afterAction()
+                        }
+                    }
+                />}
+            />
 
 
             <Menu size='lg' control={button}>
@@ -65,4 +75,4 @@ function FriendNodeMenu({button, statusIcon, statusText, diskIsAlreadyConnected,
     )
 }
 
-export default FriendNodeMenu
+export default SupplierNodeMenu

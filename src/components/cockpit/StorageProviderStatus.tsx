@@ -1,12 +1,10 @@
-import {RaidStatus, StorageProvider} from "../../config/types";
+import {StorageProvider} from "../../config/types";
 import SimpleBoxTemplate from "../SimpleBoxTemplate";
 import {Center, Grid, Text, Stack} from "@mantine/core";
-import StateIndicator from "./indicators/StateIndicator";
-import StateDescription from "./indicators/StateDescription";
 import React from "react";
 import NodeNameText from "./nodeName/NodeNameText";
 import CustomRingState from "./indicators/CustomRingState";
-import {Check, X} from "tabler-icons-react";
+import {Check, Ghost, X} from "tabler-icons-react";
 
 interface Prop{
     provider: StorageProvider,
@@ -15,6 +13,9 @@ interface Prop{
 function StorageProviderStatus({provider}:Prop){
 
     function getTime(date: Date) {
+        if(!date){
+            return 'unknown'
+        }
         return date.toLocaleString("en-GB", {
             day: "numeric",
             month: "short",
@@ -25,6 +26,14 @@ function StorageProviderStatus({provider}:Prop){
     }
 
     function renderRingState(){
+
+        if(!provider.hasDisk){
+            return <CustomRingState
+                color={'gray'}
+                tooltipContent={<Text>No storage has been provided yet.</Text>}
+                icon={<Ghost size={30}/> }/>
+        }
+
         if(provider.missedHeartbeats > 0){
             return (
                 <CustomRingState
@@ -53,10 +62,10 @@ function StorageProviderStatus({provider}:Prop){
                         {renderRingState()}
                         <Center>
                             <Stack spacing={0}>
-                            <NodeNameText node={provider}/>
-                            <Text>IP Address: {provider.ip}</Text>
-                            <Text>Backup Frequency: every {provider.frequency} minutes.</Text>
-                            <Text>Last Backup: {getTime(provider.lastBackup)} </Text>
+                                <NodeNameText node={provider}/>
+                                <Text>IP Address: {provider.ip}</Text>
+                                <Text>Backup Frequency: every {provider.frequency} minutes.</Text>
+                                {provider.hasDisk && <Text>Last Backup: {getTime(provider.lastBackup)} </Text>}
                             </Stack>
                         </Center>
                     </div>

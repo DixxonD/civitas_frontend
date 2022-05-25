@@ -17,7 +17,7 @@ interface Prop{
     onLastStep?: Function
 }
 
-function GuideAddingStorage({onLastStep}: Prop){
+function GuideRegisterStorage({onLastStep}: Prop){
 
     const [active, setActive] = useState<number>(START_STEP)
     const [isLoading, setIsLoading] = useState<boolean>(false)
@@ -155,4 +155,4 @@ function GuideAddingStorage({onLastStep}: Prop){
 
 }
 
-export default GuideAddingStorage
+export default GuideRegisterStorage

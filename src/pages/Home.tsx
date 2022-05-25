@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react'
 import {useNavigate} from 'react-router-dom'
-import {Title, SimpleGrid, Badge} from '@mantine/core';
+import {Title, SimpleGrid, Badge, Space} from '@mantine/core';
 import {StorageSupplier, RaidStatus, StorageProvider} from "../config/types";
 import PoolStatus from "../components/cockpit/PoolStatus";
 import AddStorageBox from "../components/cockpit/AddStorageBox";
@@ -8,8 +8,9 @@ import NodeName from "../components/cockpit/nodeName/NodeName";
 import {Node} from "../config/types"
 import {getStorageSuppliers, getOwnNodeInformation, getLocalStorage, getStorageProviders} from "../services/NodeAPI";
 import {showErrorNotification} from "../services/AppNotificationProvider";
-import FriendNode from "../components/cockpit/friendNode/FriendNode";
+import SupplierNode from "../components/cockpit/friendNode/SupplierNode";
 import StorageProviderStatus from "../components/cockpit/StorageProviderStatus";
+import {FiRefreshCw} from "react-icons/fi";
 
 function Home(){
 
@@ -20,11 +21,15 @@ function Home(){
     const navigate = useNavigate()
 
     useEffect(() => {
+        refresh()
+    }, [])
+
+    function refresh(){
         fetchLocalPools();
         fetchStorageSuppliers();
         fetchStorageProvider();
         fetchOwnNodeName()
-    }, [])
+    }
 
     function fetchLocalPools(){
         getLocalStorage()
@@ -72,13 +77,22 @@ function Home(){
                 </div>
             )
         }
-        return storageSuppliers.map(node => (<FriendNode key={node.nodeID} node={node}/>))
+        return storageSuppliers.map(node => (
+            <SupplierNode
+                key={node.nodeID}
+                node={node}
+                afterAction={fetchStorageSuppliers}
+            />))
     }
 
     return (
         <div className='content' >
+            <div style={{display: 'flex', flexDirection: 'row'}}>
+                <Title order={1}>Cockpit</Title>
+                <Space w={20}/>
+                <FiRefreshCw  onClick={() => refresh()} size='1.8em' style={{cursor: 'pointer', paddingTop: 5}} />
+            </div>
 
-            <Title order={1}>Cockpit</Title>
             <NodeName ownNode={ownNode}/>
             <Title order={2}>My Data</Title>
             <SimpleGrid

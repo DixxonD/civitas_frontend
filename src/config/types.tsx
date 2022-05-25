@@ -63,7 +63,8 @@ export interface StorageProvider {
     ip: string,
     frequency: number,
     lastBackup: Date,
-    missedHeartbeats: number
+    missedHeartbeats: number,
+    hasDisk: boolean
 }
 
 export interface ObjWithNodeName{

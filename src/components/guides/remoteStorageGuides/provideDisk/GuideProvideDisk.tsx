@@ -3,7 +3,7 @@ import {StorageDeviceDescription} from "../../../../config/types";
 import {Button, LoadingOverlay, Text} from "@mantine/core";
 
 import {getRegisteredDisks} from "../../../../services/DeviceAPI";
-import GuideAddingStorage from "../../localStorageGuides/addingStorage/GuideAddingStorage";
+import GuideRegisterStorage from "../../localStorageGuides/addingStorage/GuideRegisterStorage";
 import SimpleBoxTemplate from "../../../SimpleBoxTemplate";
 import {provideDisk} from "../../../../services/NodeAPI";
 import {showErrorNotification} from "../../../../services/AppNotificationProvider";
@@ -55,7 +55,7 @@ function GuideProvideDisk({supplierNodeId, onFinish}: Prop) {
 
     const selectDiskGuide = (
         <>
-            <GuideAddingStorage onLastStep={showDiskList}/>
+            <GuideRegisterStorage onLastStep={fetchRegisteredDisks}/>
         </>)
 
     function diskSelectionList(){
