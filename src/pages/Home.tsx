@@ -39,7 +39,7 @@ function Home(){
 
     function fetchStorageProvider(){
         getStorageProviders()
-            .then(disks => setStorageProvider(disks))
+            .then(providers => setStorageProvider(providers))
             .catch(error => showErrorNotification('Sorry!', error.message))
     }
 

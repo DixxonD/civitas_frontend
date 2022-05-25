@@ -87,3 +87,12 @@ export async function provideDisk(supplierNodeID: string, diskID: string){
         throw handleAxiosError(error)
     }
 }
+
+export async function getRemoteDiskState(providerNodeID: string): Promise<string>{
+    try {
+        const {data: result} = await axios.get(`${baseURL}/api/marry/providerStatus?nodeID=${providerNodeID}`)
+        return result.disk_state
+    }catch (error){
+        throw handleAxiosError(error)
+    }
+}

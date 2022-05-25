@@ -1,16 +1,26 @@
 import {StorageProvider} from "../../config/types";
 import SimpleBoxTemplate from "../SimpleBoxTemplate";
 import {Center, Grid, Text, Stack} from "@mantine/core";
-import React from "react";
+import React, {useEffect, useState} from "react";
 import NodeNameText from "./nodeName/NodeNameText";
 import CustomRingState from "./indicators/CustomRingState";
 import {Check, Ghost, X} from "tabler-icons-react";
+import {getRemoteDiskState} from "../../services/NodeAPI";
 
 interface Prop{
     provider: StorageProvider,
 }
 
 function StorageProviderStatus({provider}:Prop){
+
+    const [diskState, setDiskState] = useState<string>('')
+    useEffect(() => {
+        getRemoteDiskState(provider.nodeID).then(state => {
+            setDiskState(state)
+        }).catch(error => {
+            setDiskState(error.message)
+        })
+    }, [provider])
 
     function getTime(date: Date) {
         if(!date){
@@ -27,13 +37,22 @@ function StorageProviderStatus({provider}:Prop){
 
     function renderRingState(){
 
-        if(!provider.hasDisk){
+        if(!provider.hasDisk || diskState === ''){
             return <CustomRingState
                 color={'gray'}
                 tooltipContent={<Text>No storage has been provided yet.</Text>}
                 icon={<Ghost size={30}/> }/>
         }
 
+        if(diskState.toLowerCase() !== 'online'){
+            return (
+                <CustomRingState
+                    color={'red'}
+                    tooltipContent={<Text>{diskState}</Text>}
+                    icon={<X size={22}/>}
+                />
+            )
+        }
         if(provider.missedHeartbeats > 0){
             return (
                 <CustomRingState
@@ -43,6 +62,7 @@ function StorageProviderStatus({provider}:Prop){
                 />
             )
         }
+
         return (
             <CustomRingState
                 color={'teal'}
