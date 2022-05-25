@@ -1,23 +1,23 @@
 import React from "react";
 import {Grid} from "@mantine/core";
-import StorageSpaceIndicator from "./indicators/StorageSpaceIndicator";
-import {RaidStatus} from "../../config/types";
-import StateIndicator from "./indicators/StateIndicator";
-import StateDescription from "./indicators/StateDescription";
-import PoolStatusMenu from "./PoolStatusMenu";
-import SimpleBoxTemplate from "../SimpleBoxTemplate";
+import StorageSpaceIndicator from "../indicators/StorageSpaceIndicator";
+import {RaidStatus} from "../../../config/types";
+import StateIndicator from "../indicators/StateIndicator";
+import StateDescription from "../indicators/StateDescription";
+import LocalNodeMenu from "./LocalNodeMenu";
+import SimpleBoxTemplate from "../../SimpleBoxTemplate";
 
 interface Prop{
     pool: RaidStatus,
     onRefresh(): void
 }
 
-function PoolStatus({pool, onRefresh}:Prop){
+function LocalNode({pool, onRefresh}:Prop){
 
     return (
         <SimpleBoxTemplate
             title='Local Node'
-            menu={<PoolStatusMenu pool={pool} onRefresh={onRefresh}/>}
+            menu={<LocalNodeMenu pool={pool} onRefresh={onRefresh}/>}
         >
             <Grid>
                 <Grid.Col span={8}>
@@ -35,4 +35,4 @@ function PoolStatus({pool, onRefresh}:Prop){
     )
 }
 
-export default PoolStatus
+export default LocalNode

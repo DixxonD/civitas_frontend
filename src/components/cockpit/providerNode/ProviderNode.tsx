@@ -1,17 +1,18 @@
-import {StorageProvider} from "../../config/types";
-import SimpleBoxTemplate from "../SimpleBoxTemplate";
+import {StorageProvider} from "../../../config/types";
+import SimpleBoxTemplate from "../../SimpleBoxTemplate";
 import {Center, Grid, Text, Stack} from "@mantine/core";
 import React, {useEffect, useState} from "react";
-import NodeNameText from "./nodeName/NodeNameText";
-import CustomRingState from "./indicators/CustomRingState";
+import NodeNameText from "../nodeName/NodeNameText";
+import CustomRingState from "../indicators/CustomRingState";
 import {Check, Ghost, X} from "tabler-icons-react";
-import {getRemoteDiskState} from "../../services/NodeAPI";
+import {getRemoteDiskState} from "../../../services/NodeAPI";
+import ProviderNodeMenu from "./ProviderNodeMenu";
 
 interface Prop{
     provider: StorageProvider,
 }
 
-function StorageProviderStatus({provider}:Prop){
+function ProviderNode({provider}:Prop){
 
     const [diskState, setDiskState] = useState<string>('')
     useEffect(() => {
@@ -75,6 +76,7 @@ function StorageProviderStatus({provider}:Prop){
     return (
         <SimpleBoxTemplate
             title='Remote Storage'
+            menu={<ProviderNodeMenu/>}
         >
             <Grid>
                 <Grid.Col key={provider.nodeID}>
@@ -96,7 +98,7 @@ function StorageProviderStatus({provider}:Prop){
     )
 }
 
-export default StorageProviderStatus
+export default ProviderNode
 
 
 

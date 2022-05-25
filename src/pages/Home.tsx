@@ -2,14 +2,14 @@ import React, {useEffect, useState} from 'react'
 import {useNavigate} from 'react-router-dom'
 import {Title, SimpleGrid, Badge, Space} from '@mantine/core';
 import {StorageSupplier, RaidStatus, StorageProvider} from "../config/types";
-import PoolStatus from "../components/cockpit/PoolStatus";
+import LocalNode from "../components/cockpit/localNode/LocalNode";
 import AddStorageBox from "../components/cockpit/AddStorageBox";
 import NodeName from "../components/cockpit/nodeName/NodeName";
 import {Node} from "../config/types"
 import {getStorageSuppliers, getOwnNodeInformation, getLocalStorage, getStorageProviders} from "../services/NodeAPI";
 import {showErrorNotification} from "../services/AppNotificationProvider";
-import SupplierNode from "../components/cockpit/friendNode/SupplierNode";
-import StorageProviderStatus from "../components/cockpit/StorageProviderStatus";
+import SupplierNode from "../components/cockpit/supplierNode/SupplierNode";
+import ProviderNode from "../components/cockpit/providerNode/ProviderNode";
 import {FiRefreshCw} from "react-icons/fi";
 
 function Home(){
@@ -58,7 +58,7 @@ function Home(){
             return <AddStorageBox title='Add local storage' onClick={() => {navigate('addLocalStorage')}}/>
         }
 
-        return pools.map(pool => <PoolStatus pool={pool} onRefresh={() => fetchLocalPools()}/>)
+        return pools.map(pool => <LocalNode pool={pool} onRefresh={() => fetchLocalPools()}/>)
     }
 
     function renderStorageProviders(storageProviders: StorageProvider[]){
@@ -66,7 +66,7 @@ function Home(){
             return <AddStorageBox title='Add remote storage' onClick={() => {navigate('addRemoteStorage')}}/>
         }
 
-        return storageProviders.map(storageProvider => <StorageProviderStatus provider={storageProvider}/>)
+        return storageProviders.map(storageProvider => <ProviderNode provider={storageProvider}/>)
     }
 
     function renderStorageSuppliers(storageSuppliers: StorageSupplier[]){

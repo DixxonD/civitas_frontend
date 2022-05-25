@@ -1,18 +1,18 @@
 import React, {useState} from "react";
 import {Menu} from "@mantine/core";
 import {Activity, PlugConnected} from "tabler-icons-react";
-import ModalTemplate from "../ModalTemplate";
-import FormReconnectDrive from "./modals/FormReconnectDrive";
-import {RaidStatus} from "../../config/types";
-import FormReplaceDrive from "./modals/FormReplaceDrive";
-import {reconnectDrive, replaceDrive} from "../../services/DashboardAPI";
+import ModalTemplate from "../../ModalTemplate";
+import FormReconnectDrive from "../modals/FormReconnectDrive";
+import {RaidStatus} from "../../../config/types";
+import FormReplaceDrive from "../modals/FormReplaceDrive";
+import {reconnectDrive, replaceDrive} from "../../../services/DashboardAPI";
 
 interface Prop{
     pool: RaidStatus,
     onRefresh(): void
 }
 
-function PoolStatusMenu({pool, onRefresh}: Prop){
+function LocalNodeMenu({pool, onRefresh}: Prop){
 
     const [reconnectModalVisible, setReconnectModalVisible] = useState<boolean>(false)
     const [replaceModalVisible, setReplaceModalVisible] = useState<boolean>(false)
@@ -59,4 +59,4 @@ function PoolStatusMenu({pool, onRefresh}: Prop){
     )
 }
 
-export default PoolStatusMenu
+export default LocalNodeMenu
