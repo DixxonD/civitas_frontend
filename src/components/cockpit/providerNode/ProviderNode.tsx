@@ -1,27 +1,18 @@
+import React from "react";
 import {StorageProvider} from "../../../config/types";
 import SimpleBoxTemplate from "../../SimpleBoxTemplate";
 import {Center, Grid, Text, Stack} from "@mantine/core";
-import React, {useEffect, useState} from "react";
 import NodeNameText from "../nodeName/NodeNameText";
 import CustomRingState from "../indicators/CustomRingState";
-import {Check, Ghost, X} from "tabler-icons-react";
-import {getRemoteDiskState} from "../../../services/NodeAPI";
+import {Check, Ghost, QuestionMark, X} from "tabler-icons-react";
 import ProviderNodeMenu from "./ProviderNodeMenu";
 
 interface Prop{
     provider: StorageProvider,
+    diskState: string
 }
 
-function ProviderNode({provider}:Prop){
-
-    const [diskState, setDiskState] = useState<string>('')
-    useEffect(() => {
-        getRemoteDiskState(provider.nodeID).then(state => {
-            setDiskState(state)
-        }).catch(error => {
-            setDiskState(error.message)
-        })
-    }, [provider])
+function ProviderNode({provider, diskState}:Prop){
 
     function getTime(date: Date) {
         if(!date){
@@ -38,11 +29,19 @@ function ProviderNode({provider}:Prop){
 
     function renderRingState(){
 
-        if(!provider.hasDisk || diskState === ''){
+        if(!provider.hasDisk){
             return <CustomRingState
                 color={'gray'}
                 tooltipContent={<Text>No storage has been provided yet.</Text>}
                 icon={<Ghost size={30}/> }/>
+        }
+
+        if(diskState === '' || !diskState){
+            return <CustomRingState
+                color={'gray'}
+                tooltipContent={<Text>Status of the storage medium is unknown</Text>}
+                icon={<QuestionMark size={22}/>}
+            />
         }
 
         if(diskState.toLowerCase() !== 'online'){

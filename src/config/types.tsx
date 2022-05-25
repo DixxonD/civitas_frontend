@@ -71,3 +71,6 @@ export interface ObjWithNodeName{
     nodeID: string,
     name: string | undefined
 }
+export interface StringMap{
+    [key: string]: string
+}

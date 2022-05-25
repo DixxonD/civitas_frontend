@@ -4,7 +4,7 @@ import axios from "axios";
 import {handleAxiosError} from "./utils";
 
 const baseURL = `${server.prefix}${server.addr}:${server.port}`
-
+const remoteURL = (remoteIP: string) => `${server.prefix}${remoteIP}:${server.port}`
 
 export async function getOwnNodeInformation(): Promise<Node>{
     try{
@@ -88,9 +88,9 @@ export async function provideDisk(supplierNodeID: string, diskID: string){
     }
 }
 
-export async function getRemoteDiskState(providerNodeID: string): Promise<string>{
+export async function getRemoteDiskState(ownNodeID: string, remoteIP: string): Promise<string>{
     try {
-        const {data: result} = await axios.get(`${baseURL}/api/marry/providerStatus?nodeID=${providerNodeID}`)
+        const {data: result} = await axios.get(`${remoteURL(remoteIP)}/api/marry/providerStatus?nodeID=${ownNodeID}`)
         return result.disk_state
     }catch (error){
         throw handleAxiosError(error)

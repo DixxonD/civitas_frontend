@@ -1,12 +1,17 @@
 import React, {useEffect, useState} from 'react'
 import {useNavigate} from 'react-router-dom'
-import {Title, SimpleGrid, Badge, Space} from '@mantine/core';
-import {StorageSupplier, RaidStatus, StorageProvider} from "../config/types";
+import {Badge, SimpleGrid, Space, Title} from '@mantine/core';
+import {Node, RaidStatus, StorageProvider, StorageSupplier, StringMap} from "../config/types";
 import LocalNode from "../components/cockpit/localNode/LocalNode";
 import AddStorageBox from "../components/cockpit/AddStorageBox";
 import NodeName from "../components/cockpit/nodeName/NodeName";
-import {Node} from "../config/types"
-import {getStorageSuppliers, getOwnNodeInformation, getLocalStorage, getStorageProviders} from "../services/NodeAPI";
+import {
+    getLocalStorage,
+    getOwnNodeInformation,
+    getRemoteDiskState,
+    getStorageProviders,
+    getStorageSuppliers
+} from "../services/NodeAPI";
 import {showErrorNotification} from "../services/AppNotificationProvider";
 import SupplierNode from "../components/cockpit/supplierNode/SupplierNode";
 import ProviderNode from "../components/cockpit/providerNode/ProviderNode";
@@ -15,20 +20,27 @@ import {FiRefreshCw} from "react-icons/fi";
 function Home(){
 
     const [localPools, setLocalPools] = useState<RaidStatus[]>([])
-    const [ownNode, setOwnNode] = useState<Node>({nodeID: 'unknown', ip: "unknown", name: undefined})
-    const [storageProvider, setStorageProvider] = useState<StorageProvider[]>([])
+    const [ownNode, setOwnNode] = useState<Node>({nodeID: '', ip: "", name: undefined})
+    const [storageProviders, setStorageProviders] = useState<StorageProvider[]>([])
     const [storageSuppliers, setStorageSuppliers] = useState<StorageSupplier[]>([])
+    const [remoteDiskStates, setRemoteDiskStates] = useState<StringMap>({})
+
     const navigate = useNavigate()
 
     useEffect(() => {
         refresh()
     }, [])
 
-    function refresh(){
+    useEffect(() => {
+        fetchRemoteDiskStatus(ownNode.nodeID)
+    }, [storageProviders, ownNode])
+
+     function refresh(){
         fetchLocalPools();
         fetchStorageSuppliers();
         fetchStorageProvider();
-        fetchOwnNodeName()
+        fetchOwnNode();
+        //fetchRemoteDiskStatus(ownNode.nodeID)
     }
 
     function fetchLocalPools(){
@@ -39,7 +51,7 @@ function Home(){
 
     function fetchStorageProvider(){
         getStorageProviders()
-            .then(providers => setStorageProvider(providers))
+            .then(providers => setStorageProviders(providers))
             .catch(error => showErrorNotification('Sorry!', error.message))
     }
 
@@ -49,9 +61,24 @@ function Home(){
             .catch(error => showErrorNotification('Sorry!', error.message))
     }
 
-    function fetchOwnNodeName(){
-        getOwnNodeInformation().then(ownNode => setOwnNode(ownNode)).catch(error => console.log(error))
+    function fetchOwnNode(){
+        getOwnNodeInformation()
+            .then(ownNode => {setOwnNode(ownNode)})
+            .catch(error => console.log(error))
     }
+
+    async function fetchRemoteDiskStatus(ownNodeID: string){
+        const diskStates: StringMap = {}
+        for (const provider of storageProviders) {
+            try{
+                diskStates[provider.ip] = await getRemoteDiskState(ownNodeID, provider.ip)
+            }catch (e) {
+                diskStates[provider.ip] = e instanceof Error ? e.message : 'Node not reachable'
+            }
+        }
+        setRemoteDiskStates(diskStates)
+    }
+
 
     function renderLocalStorage(pools: RaidStatus[]){
         if(pools.length === 0){
@@ -61,12 +88,12 @@ function Home(){
         return pools.map(pool => <LocalNode pool={pool} onRefresh={() => fetchLocalPools()}/>)
     }
 
-    function renderStorageProviders(storageProviders: StorageProvider[]){
+    function renderStorageProviders(storageProviders: StorageProvider[], diskStates: StringMap ){
         if(storageProviders.length === 0){
             return <AddStorageBox title='Add remote storage' onClick={() => {navigate('addRemoteStorage')}}/>
         }
 
-        return storageProviders.map(storageProvider => <ProviderNode provider={storageProvider}/>)
+        return storageProviders.map(storageProvider => <ProviderNode provider={storageProvider} diskState={diskStates[storageProvider.ip]}/>)
     }
 
     function renderStorageSuppliers(storageSuppliers: StorageSupplier[]){
@@ -105,7 +132,7 @@ function Home(){
                 ]}
             >
                     {renderLocalStorage(localPools)}
-                    {renderStorageProviders(storageProvider)}
+                    {renderStorageProviders(storageProviders, remoteDiskStates)}
             </SimpleGrid>
             <Title order={2}>My friend's data</Title>
             {renderStorageSuppliers(storageSuppliers)}
