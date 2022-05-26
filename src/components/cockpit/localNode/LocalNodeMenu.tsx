@@ -58,14 +58,14 @@ function LocalNodeMenu({pool, onRefresh}: Prop){
                     icon={<PlugConnected size={18}/>}
                     onClick={() => setReconnectModalVisible(true)}
                 >
-                    Reconnect Drive
+                    Reconnect disk
                 </Menu.Item>
 
                 <Menu.Item
                     icon={<Activity size={18}/>}
                     onClick={() => {setReplaceModalVisible(true)}}
                 >
-                    Replace Drive
+                    Replace disk
                 </Menu.Item>
 
                 <Menu.Item

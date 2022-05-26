@@ -2,8 +2,9 @@ import React, {useEffect, useState} from "react";
 import {StorageDeviceDescription} from "../../../config/types";
 import {getRegisteredDisks} from "../../../services/DeviceAPI";
 import {showErrorNotification} from "../../../services/AppNotificationProvider";
-import {Badge, Button, Divider, Group, Paper, Text} from "@mantine/core";
+import {Badge, Button,Space} from "@mantine/core";
 import GuideRegisterStorage from "../../guides/localStorageGuides/addingStorage/GuideRegisterStorage";
+import DiskListElement from "../../DiskListElement";
 
 interface Prop{
     onDiskClick(deviceID: string): void
@@ -26,31 +27,10 @@ function SelectOrRegisterDisk({onDiskClick}: Prop){
 
     function renderDisks(devices: StorageDeviceDescription[]){
         if(devices.length === 0){
-            return <Badge color="teal" style={{marginTop: '10px', marginBottom: '10px'}}>No discs registered yet</Badge>
+            return <div><Badge color="teal" style={{marginTop: '10px', marginBottom: '10px'}}>No disks registered yet</Badge></div>
         }
 
-        return devices.map(device => (
-            <Paper
-                sx={(theme) => ({
-                    marginTop: '5px',
-                    cursor: 'pointer',
-                    '&:hover': {
-                        backgroundColor: theme.colors.gray[1],
-                    },
-                })}
-                shadow="xs"
-                p='md'
-                onClick={() => onDiskClick(device.id)}
-            >
-                <Group>
-                    <Text weight={700}>{device.name}</Text>
-                    <Text>{device.size}</Text>
-                    <Text>{device.mountPoint}</Text>
-                </Group>
-            </Paper>
-
-
-        ))
+        return devices.map(device => <DiskListElement key={device.id} disk={device} onClick={onDiskClick}/>)
     }
 
     function onAddDeviceFinished(){
@@ -60,25 +40,18 @@ function SelectOrRegisterDisk({onDiskClick}: Prop){
 
     function showDiskList(devices: StorageDeviceDescription[]): JSX.Element{
         return (<>
+                <Space  h={20}/>
                 {renderDisks(devices)}
-                <Divider my="sm" style={{marginTop: '15px'}} />
-                <Text>Register a new storage device to add it to the list:</Text>
-                <Button style={{marginTop: '10px'}} onClick={() => setShowAddDisk(true)}>Register new Disk</Button>
+                <Button style={{marginTop: '30px'}} variant='outline' onClick={() => setShowAddDisk(true)}>Add new storage device</Button>
             </>
         )
     }
-
-
 
     return (
         <>
             {!showAddDisk ? showDiskList(registeredDevices) : <GuideRegisterStorage onLastStep={onAddDeviceFinished}/>}
         </>
-
-
     )
-
-
 }
 
 export default SelectOrRegisterDisk

@@ -1,5 +1,5 @@
 import {server} from "../config/config";
-import {BuildProgress, RaidStatus, StorageDeviceDescription} from "../config/types";
+import {BuildProgress, PreparedDisk, RaidStatus, StorageDeviceDescription} from "../config/types";
 import axios from "axios";
 import {handleAxiosError} from "./utils";
 
@@ -36,8 +36,25 @@ export async function registerDisk(selectedDisk: StorageDeviceDescription){
 
 export async function prepareOffsiteBackup(diskID: string): Promise<boolean>{
     try{
-        const {data: result} = await axios.post(`${baseURL}/api/addDrive/prepareOffsiteBackup`, {diskID: diskID})
+        const {data: result} = await axios.post(`${baseURL}/api/preparedDisk`, {diskID: diskID})
         return result.success
+    }catch (error){
+        throw handleAxiosError(error)
+    }
+}
+
+export async function getPreparedDisks(): Promise<PreparedDisk[]>{
+    try{
+        const {data: result} = await axios.get(`${baseURL}/api/preparedDisk`)
+        return result
+    }catch (error){
+        throw handleAxiosError(error)
+    }
+}
+
+export async function addPreparedDisk(poolName: string): Promise<void>{
+    try{
+        await axios.post(`${baseURL}/api/addDrive/preparedDrive`, {poolName: poolName})
     }catch (error){
         throw handleAxiosError(error)
     }

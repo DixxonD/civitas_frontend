@@ -75,6 +75,13 @@ export interface StringMap{
     [key: string]: string
 }
 
+export interface PreparedDisk{
+    poolName: string,
+    state: string,
+    action: string,
+    hasSupplier: boolean
+}
+
 export interface RsyncProgressState{
     running: boolean,
     job: string | null,

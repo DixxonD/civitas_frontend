@@ -1,8 +1,9 @@
 import React, {useState} from "react";
 import {Divider, Menu, Text} from "@mantine/core";
-import {Activity, PlugConnected, Plus} from "tabler-icons-react";
+import {Activity, PackgeImport, PlugConnected, Plus} from "tabler-icons-react";
 import ModalTemplate from "../../ModalTemplate";
-import GuideProvideDisk from "../../guides/remoteStorageGuides/provideDisk/GuideProvideDisk";
+import GuideProvideEmptyDisk from "../../guides/remoteStorageGuides/provideDisk/GuideProvideEmptyDisk";
+import GuideProvidePreparedDisk from "../../guides/remoteStorageGuides/provideDisk/GuideProvidePreparedDisk";
 
 interface Prop{
     button: JSX.Element,
@@ -19,6 +20,7 @@ function SupplierNodeMenu({button, statusIcon, statusText, diskIsAlreadyConnecte
     const [reconnectModalVisible, setReconnectModalVisible] = useState<boolean>(false)
     const [replaceModalVisible, setReplaceModalVisible] = useState<boolean>(false)
     const [addDiskModalVisible, setAddDiskModalVisible] = useState<boolean>(false)
+    const [addPreparedDiskModalVisible, setPreparedDiskModalVisible] = useState<boolean>(false)
 
     return (
         <>
@@ -28,7 +30,7 @@ function SupplierNodeMenu({button, statusIcon, statusText, diskIsAlreadyConnecte
                 title='Provide a disk for a friend'
                 onClose={() => setAddDiskModalVisible(false)}
                 content={
-                <GuideProvideDisk
+                <GuideProvideEmptyDisk
                     supplierNodeId={supplierNodeID}
                     onFinish={() => {
                             setAddDiskModalVisible(false)
@@ -36,6 +38,20 @@ function SupplierNodeMenu({button, statusIcon, statusText, diskIsAlreadyConnecte
                         }
                     }
                 />}
+            />
+
+            <ModalTemplate
+                visible={addPreparedDiskModalVisible}
+                title='Provide a prepared disk for a friend'
+                onClose={() => setPreparedDiskModalVisible(false)}
+                content={(
+                    <GuideProvidePreparedDisk
+                        onFinish={() => {
+                            setPreparedDiskModalVisible(false)
+                            afterAction()
+                        }}
+                    />
+                )}
             />
 
 
@@ -47,28 +63,40 @@ function SupplierNodeMenu({button, statusIcon, statusText, diskIsAlreadyConnecte
                 >
                     {statusText}
                 </Menu.Item>
-                <Divider/>
+                <Divider />
+                <Menu.Label>Provide Disk</Menu.Label>
 
                 <Menu.Item
                     icon={<Plus size={18}/>}
                     onClick={() => setAddDiskModalVisible(true)}
                     disabled={diskIsAlreadyConnected}
                 >
-                    Add storage device
+                    Add empty storage
                 </Menu.Item>
+
+                <Menu.Item
+                    icon={<PackgeImport size={18}/>}
+                    onClick={() => setPreparedDiskModalVisible(true)}
+                    disabled={diskIsAlreadyConnected}
+                >
+                    Use prepared disk
+                </Menu.Item>
+
+                <Divider />
+                <Menu.Label>Maintain Disk</Menu.Label>
 
                 <Menu.Item
                     icon={<PlugConnected size={18}/>}
                     disabled={!diskIsAlreadyConnected}
                 >
-                    Reconnect drive
+                    Reconnect disk
                 </Menu.Item>
 
                 <Menu.Item
                     icon={<Activity size={18}/>}
                     disabled={!diskIsAlreadyConnected}
                 >
-                    Replace drive
+                    Replace disk
                 </Menu.Item>
             </Menu>
         </>

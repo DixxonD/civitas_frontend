@@ -15,7 +15,7 @@ function StateIndicator({pool}:Prop){
         if(!disks){return <Text>No disks found</Text>}
         return (
             <>
-                {disks.map(disk => <KeyValueRow description={disk.name} value={disk.state}/>)}
+                {disks.map(disk => <KeyValueRow description={disk.name} value={disk.state} key={disk.name}/>)}
             </>
         )
     }
