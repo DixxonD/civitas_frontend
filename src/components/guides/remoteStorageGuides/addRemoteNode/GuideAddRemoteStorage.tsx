@@ -1,5 +1,5 @@
-import React, {useState} from "react";
-import { Stepper, Text, Button } from "@mantine/core";
+import React, {useEffect, useState} from "react";
+import { Stepper, Text, Button, Alert } from "@mantine/core";
 import AppStep from "../../localStorageGuides/AppStep";
 import {Node} from "../../../../config/types";
 import deviceInitialisationStrings from "../../localStorageGuides/deviceInitialisationStrings";
@@ -7,8 +7,9 @@ import StepSearchNodes from "./StepSearchNodes";
 import StepSelectNode from "./StepSelectNode";
 import {useNavigate} from "react-router-dom";
 import StepComplete from "../../localStorageGuides/StepComplete";
-import {setAsBackupProvider} from "../../../../services/NodeAPI";
+import {getLocalStorage, setAsBackupProvider} from "../../../../services/NodeAPI";
 import {showErrorNotification} from "../../../../services/AppNotificationProvider";
+import {AlertCircle} from "tabler-icons-react";
 const START_STEP = 0
 const SEARCH_STEP = 1
 const SELECT_STEP = 2
@@ -19,8 +20,15 @@ function GuideAddRemoteStorage() {
     const [active, setActive] = useState<number>(START_STEP)
     const [isLoading, setIsLoading] = useState<boolean>(false)
     const [nodes, setNodes] = useState<Node[]>([])
+    const [primaryStorageIsMissing, setPrimaryStorageIsMissing] = useState<boolean>(true)
     const navigate = useNavigate()
 
+    useEffect(() => {
+        getLocalStorage().then(poolStates => {
+            const isMissing = !poolStates.some(state => state.exists)
+            setPrimaryStorageIsMissing(isMissing)
+        })
+    }, [])
 
     function goToNextStep(){
         setActive(active => active + 1)
@@ -47,6 +55,17 @@ function GuideAddRemoteStorage() {
 
     }
 
+    function primaryStorageMissingAlert(isMissing: boolean){
+        return !isMissing? <></> : (
+            <Alert
+                icon={<AlertCircle size={22}/>}
+                color={'red'}
+            >
+                {deviceInitialisationStrings.localStorageMissing}
+            </Alert>
+        )
+    }
+
     function onFinish(){
         navigate('/')
     }
@@ -59,8 +78,11 @@ function GuideAddRemoteStorage() {
                     onNext={goToNextStep}
                     isLoading={isLoading}
                     buttonText="Search for nodes"
-                >
+                    buttonDisabled={primaryStorageIsMissing}
+                ><>
                     <Text>{deviceInitialisationStrings.welcomeTextAddRemoteStorage}</Text>
+                    {primaryStorageMissingAlert(primaryStorageIsMissing)}
+                </>
                 </AppStep>
             </Stepper.Step>
 
