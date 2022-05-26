@@ -16,6 +16,7 @@ import {showErrorNotification} from "../services/AppNotificationProvider";
 import SupplierNode from "../components/cockpit/supplierNode/SupplierNode";
 import ProviderNode from "../components/cockpit/providerNode/ProviderNode";
 import {FiRefreshCw} from "react-icons/fi";
+import SyncProgress from "../components/cockpit/SyncProgress";
 
 function Home(){
 
@@ -40,7 +41,6 @@ function Home(){
         fetchStorageSuppliers();
         fetchStorageProvider();
         fetchOwnNode();
-        //fetchRemoteDiskStatus(ownNode.nodeID)
     }
 
     function fetchLocalPools(){
@@ -85,15 +85,25 @@ function Home(){
             return <AddStorageBox title='Add local storage' onClick={() => {navigate('addLocalStorage')}}/>
         }
 
-        return pools.map(pool => <LocalNode pool={pool} onRefresh={() => fetchLocalPools()}/>)
+        return pools.map(pool => (
+            <LocalNode
+                key={pool.path}
+                pool={pool}
+                onRefresh={() => fetchLocalPools()}
+            />))
     }
 
     function renderStorageProviders(storageProviders: StorageProvider[], diskStates: StringMap ){
         if(storageProviders.length === 0){
-            return <AddStorageBox title='Add remote storage' onClick={() => {navigate('addRemoteStorage')}}/>
+            return (<AddStorageBox title='Add remote storage' onClick={() => {navigate('addRemoteStorage')}}/>)
         }
 
-        return storageProviders.map(storageProvider => <ProviderNode provider={storageProvider} diskState={diskStates[storageProvider.ip]}/>)
+        return storageProviders.map(storageProvider => (
+            <ProviderNode
+                key={storageProvider.nodeID}
+                provider={storageProvider}
+                diskState={diskStates[storageProvider.ip]}
+            />))
     }
 
     function renderStorageSuppliers(storageSuppliers: StorageSupplier[]){
@@ -121,6 +131,7 @@ function Home(){
             </div>
 
             <NodeName ownNode={ownNode}/>
+            <SyncProgress emptyIfNoSync={true}/>
             <Title order={2}>My Data</Title>
             <SimpleGrid
                 cols={4}

@@ -74,3 +74,12 @@ export interface ObjWithNodeName{
 export interface StringMap{
     [key: string]: string
 }
+
+export interface RsyncProgressState{
+    running: boolean,
+    job: string | null,
+    progress: number, // percentage
+    speed: number, // in mb/s
+    remaining: number // in seconds
+
+}

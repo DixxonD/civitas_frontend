@@ -27,6 +27,8 @@ function GuideAddRemoteStorage() {
         getLocalStorage().then(poolStates => {
             const isMissing = !poolStates.some(state => state.exists)
             setPrimaryStorageIsMissing(isMissing)
+        }).catch(() => {
+            setPrimaryStorageIsMissing(true)
         })
     }, [])
 

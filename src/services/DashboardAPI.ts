@@ -1,6 +1,7 @@
 import {server} from "../config/config";
 import axios from "axios";
 import {handleAxiosError} from "./utils";
+import {RsyncProgressState} from "../config/types";
 
 const baseURL = `${server.prefix}${server.addr}:${server.port}`
 
@@ -30,6 +31,15 @@ export async function replaceDrive(pool: string, diskId: string): Promise<boolea
 export async function restoreRemoteBackup(): Promise<void>{
     try{
         await axios.get(`${baseURL}/api/pool/restore`)
+    }catch (error) {
+        throw handleAxiosError(error)
+    }
+}
+
+export async function getRsyncProgress(): Promise<RsyncProgressState>{
+    try{
+        const {data: result} = await axios.get(`${baseURL}/api/sync/progress`)
+        return result
     }catch (error) {
         throw handleAxiosError(error)
     }
