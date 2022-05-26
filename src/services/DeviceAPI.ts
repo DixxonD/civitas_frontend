@@ -33,6 +33,16 @@ export async function registerDisk(selectedDisk: StorageDeviceDescription){
 
 }
 
+
+export async function prepareOffsiteBackup(diskID: string): Promise<boolean>{
+    try{
+        const {data: result} = await axios.post(`${baseURL}/api/addDrive/prepareOffsiteBackup`, {diskID: diskID})
+        return result.success
+    }catch (error){
+        throw handleAxiosError(error)
+    }
+}
+
 export async function getRegisteredDisks(): Promise<StorageDeviceDescription[]>{
     try{
         const {data: result}  = await axios.get(`${baseURL}/api/localRaid/disks`)
