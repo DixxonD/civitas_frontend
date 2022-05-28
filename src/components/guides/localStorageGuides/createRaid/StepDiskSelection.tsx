@@ -1,7 +1,9 @@
 import React, {useEffect, useState} from "react";
-import {Box, Text, Stack, Grid, Center} from "@mantine/core";
+import {Box, Text, Stack, Grid, Center, SimpleGrid} from "@mantine/core";
 import {StorageDeviceDescription} from "../../../../config/types";
 import deviceInitialisationStrings from "../deviceInitialisationStrings";
+import SimpleBoxTemplate from "../../../SimpleBoxTemplate";
+import DiskListElement from "../../../DiskListElement";
 
 interface Prop{
     registeredDisks: StorageDeviceDescription[],
@@ -26,9 +28,7 @@ function StepDiskSelection({onSelectionUpdate, registeredDisks}: Prop){
             return ([<Text key={0} style={{margin: '10px'}}>{deviceInitialisationStrings.atLeastToDevices} </Text>])
         }
         return registeredDisks.map(disk => (
-            <Grid.Col span={4} key={disk.id}>
-                <DiskSelectionBox diskDescription={disk} selectedDisks={selectedDiskIDs} onSelect={onSelectDisk} onUnselect={onUnselectDisk}/>
-            </Grid.Col>
+            <DiskSelectionBox diskDescription={disk} selectedDisks={selectedDiskIDs} onSelect={onSelectDisk} onUnselect={onUnselectDisk}/>
         ))
     }
 
@@ -44,9 +44,17 @@ function StepDiskSelection({onSelectionUpdate, registeredDisks}: Prop){
     }
 
     return (
-        <Grid>
+        <SimpleGrid
+            cols={4}
+            spacing='lg'
+            breakpoints={[
+                {maxWidth: 780, cols: 1, spacing: 'sm'},
+                {maxWidth: 1100, cols: 2, spacing: 'md'},
+                {maxWidth: 1800, cols: 3, spacing: 'md'},
+            ]}
+        >
             {renderDisks(registeredDisks, selectedDiskIDs)}
-        </Grid>
+        </SimpleGrid>
     )
 
 }
@@ -62,8 +70,8 @@ interface PropSelectionBox{
 
 function DiskSelectionBox({diskDescription, onSelect, onUnselect, selectedDisks}: PropSelectionBox){
 
-    const selectedColor = 'gray'
-    const defaultColor = 'gainsboro'
+    const selectedColor = 'gainsboro'
+    const defaultColor = 'white'
 
     const [selected, setSelected] = useState<boolean>(false)
     const [color, setColor] = useState<string>(defaultColor)
@@ -93,23 +101,7 @@ function DiskSelectionBox({diskDescription, onSelect, onUnselect, selectedDisks}
     }
 
     return (
-        <Box
-            onClick={onClick}
-            sx={{
-            backgroundColor: color,
-            cursor: 'pointer',
-
-        }}>
-            <Center>
-                <Stack  spacing='xs' style={{margin: '20px'}}>
-                    <Text>{disk.name}</Text>
-                    <Text>{disk.size}</Text>
-                    <Text>{disk.mountPoint}</Text>
-                </Stack>
-
-            </Center>
-
-        </Box>
+       <DiskListElement disk={disk} onClick={onClick} backgroundColor={color} hover={false}/>
     )
 }
 
@@ -150,28 +142,3 @@ class DiskPair{
     }
 
 }
-
-/*
-            <Grid.Col span={4}>
-                <DiskSelectionBox
-                    onSelect={onSelectDisk}
-                    onUnselect={onUnselectDisk}
-                    selectedDisks={selectedDiskIDs}
-                    diskDescription={{name: "numero uno", mountPoint: '/blah', id: '1', size: '300GB'}}/>
-            </Grid.Col>
-            <Grid.Col span={4}>
-                <DiskSelectionBox
-                    onSelect={onSelectDisk}
-                    onUnselect={onUnselectDisk}
-                    selectedDisks={selectedDiskIDs}
-                    diskDescription={{name: "numero due", mountPoint: '/blah', id: '2', size: '300GB'}}/>
-            </Grid.Col>
-
-            <Grid.Col span={4}>
-                <DiskSelectionBox
-                    onSelect={onSelectDisk}
-                    onUnselect={onUnselectDisk}
-                    selectedDisks={selectedDiskIDs}
-                    diskDescription={{name: "numero drüüü", mountPoint: '/blah', id: '3', size: '300GB'}}/>
-            </Grid.Col>
- */

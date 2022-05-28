@@ -1,13 +1,18 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import {PreparedDisk, StorageDeviceDescription} from "../config/types";
 import {Group, Paper, Text} from "@mantine/core";
 
 interface Prop {
     disk: StorageDeviceDescription | PreparedDisk,
-    onClick(deviceID: string): void
+    onClick(deviceID: string): void,
+    backgroundColor?: string,
+    hover?: boolean
 }
 
-function DiskListElement({disk, onClick}: Prop){
+function DiskListElement({disk, onClick, backgroundColor='white', hover=true}: Prop){
+
+    const [color, setColor] = useState<string>(backgroundColor)
+    useEffect(() => {setColor(backgroundColor)}, [backgroundColor])
 
     function renderStorageDevice(disk: StorageDeviceDescription){
         return (
@@ -38,9 +43,10 @@ function DiskListElement({disk, onClick}: Prop){
         sx={(theme) => ({
             marginTop: '5px',
             cursor: 'pointer',
-            '&:hover': {
+            backgroundColor: color,
+            '&:hover': hover ? {
                 backgroundColor: theme.colors.gray[1],
-            },
+            }: {},
         })}
         shadow="xs"
         p='md'
