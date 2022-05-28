@@ -5,7 +5,7 @@ import {Text} from "@mantine/core";
 
 import '../../styles/App.css';
 import 'bootstrap/dist/css/bootstrap.css'
-import logo from "../../res/images/logo.svg";
+import logo from "../../res/images/logo.png";
 
 import {useUploader} from "../upload/UploadContext";
 
@@ -31,8 +31,8 @@ function AppMenu(){
                 collapseOnSelect
             >
                 <Navbar.Brand>
-                    <img src={logo} width="40px" height="40px"  />{' '}
-                    Logo
+                    <img src={logo}  style={{marginLeft: 15, marginRight: 5}}width="30px" height="30px"  />{' '}
+                    civitas
                 </Navbar.Brand>
                 <Navbar.Toggle/>
                 <Navbar.Collapse>
