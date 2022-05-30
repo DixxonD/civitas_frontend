@@ -47,19 +47,19 @@ export interface RaidStatus{
 export interface Node{
     nodeID: string,
     ip: string,
-    name: string | undefined
+    nodeName: string | undefined
 }
 
 export interface StorageSupplier {
     nodeID: string,
-    name: string | undefined,
+    nodeName: string | undefined,
     disk: string | undefined,
     lastSeen: Date | null
 }
 
 export interface StorageProvider {
     nodeID: string,
-    name: string | undefined,
+    nodeName: string | undefined,
     ip: string,
     frequency: number,
     lastBackup: Date,
@@ -69,7 +69,7 @@ export interface StorageProvider {
 
 export interface ObjWithNodeName{
     nodeID: string,
-    name: string | undefined
+    nodeName: string | undefined
 }
 export interface StringMap{
     [key: string]: string

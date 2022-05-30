@@ -19,7 +19,7 @@ function NodeName({ownNode}:Prop){
     useEffect(() => {setNode(ownNode)}, [ownNode])
 
     function updateNodeName(newName: string){
-        const newNode = {nodeID: node.nodeID, name: newName, ip: node.ip}
+        const newNode = {nodeID: node.nodeID, nodeName: newName, ip: node.ip}
         updateNodeInformation(newNode).then(() => {
             setNode(newNode)
         }).catch((error) => {
@@ -53,7 +53,7 @@ function NodeName({ownNode}:Prop){
                     }
                 >
                     <NodeNameForm
-                        nodeName={node.name? node.name : node.nodeID}
+                        nodeName={node.nodeName? node.nodeName : node.nodeID}
                         onChange={(values) =>{
                             updateNodeName(values.nodeName)
                             setOpened(false)

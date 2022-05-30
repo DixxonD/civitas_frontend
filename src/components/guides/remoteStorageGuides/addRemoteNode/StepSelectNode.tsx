@@ -31,7 +31,7 @@ function StepSelectNode({availableNodes, onSelect}: Prop){
                 onClick={() => onSelect(node, syncInterval)}
                 customTitle={(
                     <Group>
-                        {node.name && <Text>{node.name}</Text>}
+                        {node.nodeName && <Text>{node.nodeName}</Text>}
                         <Text>{node.nodeID}</Text>
                         <Text>{node.ip}</Text>
                     </Group>

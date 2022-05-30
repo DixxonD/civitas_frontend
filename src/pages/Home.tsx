@@ -21,7 +21,7 @@ import SyncProgress from "../components/cockpit/SyncProgress";
 function Home(){
 
     const [localPools, setLocalPools] = useState<RaidStatus[]>([])
-    const [ownNode, setOwnNode] = useState<Node>({nodeID: '', ip: "", name: undefined})
+    const [ownNode, setOwnNode] = useState<Node>({nodeID: '', ip: "", nodeName: undefined})
     const [storageProviders, setStorageProviders] = useState<StorageProvider[]>([])
     const [storageSuppliers, setStorageSuppliers] = useState<StorageSupplier[]>([])
     const [remoteDiskStates, setRemoteDiskStates] = useState<StringMap>({})

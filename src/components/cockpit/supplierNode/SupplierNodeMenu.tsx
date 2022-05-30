@@ -1,6 +1,6 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {Divider, Menu, Text} from "@mantine/core";
-import {Activity, PackgeImport, PlugConnected, Plus} from "tabler-icons-react";
+import {PackgeImport, Plus} from "tabler-icons-react";
 import ModalTemplate from "../../ModalTemplate";
 import GuideProvideEmptyDisk from "../../guides/remoteStorageGuides/provideDisk/GuideProvideEmptyDisk";
 import GuideProvidePreparedDisk from "../../guides/remoteStorageGuides/provideDisk/GuideProvidePreparedDisk";
@@ -12,15 +12,14 @@ interface Prop{
     diskIsAlreadyConnected: boolean,
     supplierNodeID: string,
     afterAction(): void,
-
 }
 
 function SupplierNodeMenu({button, statusIcon, statusText, diskIsAlreadyConnected, supplierNodeID, afterAction}: Prop) {
 
-    const [reconnectModalVisible, setReconnectModalVisible] = useState<boolean>(false)
-    const [replaceModalVisible, setReplaceModalVisible] = useState<boolean>(false)
     const [addDiskModalVisible, setAddDiskModalVisible] = useState<boolean>(false)
     const [addPreparedDiskModalVisible, setPreparedDiskModalVisible] = useState<boolean>(false)
+    const [diskIsConnected, setDiskIsConnected] = useState<boolean>(diskIsAlreadyConnected)
+    useEffect(() => {setDiskIsConnected(diskIsAlreadyConnected)}, [diskIsAlreadyConnected])
 
     return (
         <>
@@ -54,7 +53,6 @@ function SupplierNodeMenu({button, statusIcon, statusText, diskIsAlreadyConnecte
                 )}
             />
 
-
             <Menu size='lg' control={button}>
                 <Menu.Item
                     component={Text}
@@ -69,7 +67,7 @@ function SupplierNodeMenu({button, statusIcon, statusText, diskIsAlreadyConnecte
                 <Menu.Item
                     icon={<Plus size={18}/>}
                     onClick={() => setAddDiskModalVisible(true)}
-                    disabled={diskIsAlreadyConnected}
+                    disabled={diskIsConnected}
                 >
                     Add empty storage
                 </Menu.Item>
@@ -77,27 +75,11 @@ function SupplierNodeMenu({button, statusIcon, statusText, diskIsAlreadyConnecte
                 <Menu.Item
                     icon={<PackgeImport size={18}/>}
                     onClick={() => setPreparedDiskModalVisible(true)}
-                    disabled={diskIsAlreadyConnected}
+                    disabled={diskIsConnected}
                 >
                     Use prepared disk
                 </Menu.Item>
 
-                <Divider />
-                <Menu.Label>Maintain Disk</Menu.Label>
-
-                <Menu.Item
-                    icon={<PlugConnected size={18}/>}
-                    disabled={!diskIsAlreadyConnected}
-                >
-                    Reconnect disk
-                </Menu.Item>
-
-                <Menu.Item
-                    icon={<Activity size={18}/>}
-                    disabled={!diskIsAlreadyConnected}
-                >
-                    Replace disk
-                </Menu.Item>
             </Menu>
         </>
     )

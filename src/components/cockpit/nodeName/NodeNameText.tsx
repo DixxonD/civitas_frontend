@@ -11,8 +11,8 @@ function NodeNameText({node}:Prop){
     useEffect(() => {setNode(node)}, [node])
 
     function getNodeName(node: ObjWithNodeName){
-        if(node.name){
-            return `${node.name} | ${node.nodeID}`
+        if(node.nodeName){
+            return `${node.nodeName} | ${node.nodeID}`
         }
         return node.nodeID
     }
