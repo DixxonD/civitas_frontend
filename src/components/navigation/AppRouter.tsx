@@ -7,7 +7,6 @@ import {
     Routes,
     Route,
 } from "react-router-dom";
-import UploadCenter from "../../pages/UploadCenter";
 import LocalStorageGuides from "../../pages/LocalStorageGuides";
 import RemoteStorageGuides from "../../pages/RemoteStorageGuides";
 
@@ -17,7 +16,6 @@ function AppRouter(){
         <Routes>
             <Route  path='/' element={<Home/>}/>
             <Route  path='/files' element={<Files/>}/>
-            <Route  path='/upload' element={<UploadCenter/>}/>
             <Route  path='/addLocalStorage' element={<LocalStorageGuides/>}/>
             <Route  path='/addRemoteStorage' element={<RemoteStorageGuides/>}/>
             <Route  path='*' element={<NotFound/>}/>

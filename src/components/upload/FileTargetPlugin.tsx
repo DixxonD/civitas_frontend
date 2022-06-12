@@ -12,10 +12,8 @@ export default class FileTargetPlugin extends BasePlugin<{}>{
     }
 
     async setFileTarget(){
-        console.log("before upload!")
-        console.log(getPathForUpload())
         setUploadDirectory(getPathForUpload()).catch(() => {
-            console.log('Error: Could not set new UploadDir... :/')
+            console.log('Error: Could not set new UploadDirectory')
         })
     }
 

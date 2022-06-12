@@ -26,7 +26,6 @@ export function UploadProvider({children}: Props){
         })
             .use(FileTargetPlugin, {})
             .use(Tus, { endpoint: `${server.prefix}${server.addr}:${server.port}${tus.endpoint}` })
-            //.use(GoldenRetriever, {serviceWorker: false})
     })
 
     return (
