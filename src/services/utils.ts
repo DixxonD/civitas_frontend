@@ -1,4 +1,5 @@
 import axios from "axios";
+import * as https from "https";
 
 export function handleAxiosError(error: unknown): Error{
     if(axios.isAxiosError(error)){
@@ -11,4 +12,12 @@ export function handleAxiosError(error: unknown): Error{
     }
     return new Error('The node could not be reached.')
 }
+
+
+const enableSelfSignedSSL = {httpsAgent: new https.Agent({
+    rejectUnauthorized: false
+})}
+
+export {enableSelfSignedSSL}
+
 
