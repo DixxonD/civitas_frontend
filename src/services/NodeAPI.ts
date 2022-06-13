@@ -1,14 +1,14 @@
 import {server} from "../config/config";
 import {Node, RaidStatus, StorageProvider, StorageSupplier} from "../config/types";
 import axios from "axios";
-import {enableSelfSignedSSL, handleAxiosError} from "./utils";
+import {handleAxiosError} from "./utils";
 
 const baseURL = `${server.prefix}${server.addr}:${server.port}`
 const remoteURL = (remoteIP: string) => `${server.prefix}${remoteIP}:${server.port}`
 
 export async function getOwnNodeInformation(): Promise<Node>{
     try{
-        const {data: result} = await axios.get(`${baseURL}/api/discover`, enableSelfSignedSSL)
+        const {data: result} = await axios.get(`${baseURL}/api/discover`)
         return result
     }catch (error){
         throw handleAxiosError(error)
@@ -17,7 +17,7 @@ export async function getOwnNodeInformation(): Promise<Node>{
 
 export async function updateNodeInformation(node: Node): Promise<void>{
     try{
-        await axios.post(`${baseURL}/api/node`, node, enableSelfSignedSSL)
+        await axios.post(`${baseURL}/api/node`, node)
     }catch (error) {
         throw handleAxiosError(error)
     }
@@ -25,7 +25,7 @@ export async function updateNodeInformation(node: Node): Promise<void>{
 
 export async function getLocalStorage(): Promise<RaidStatus[]>{
     try{
-        const {data: result} = await axios.get(`${baseURL}/api/node/local`, enableSelfSignedSSL)
+        const {data: result} = await axios.get(`${baseURL}/api/node/local`)
         return result
     }catch (error){
         throw handleAxiosError(error)
@@ -34,7 +34,7 @@ export async function getLocalStorage(): Promise<RaidStatus[]>{
 
 export async function getStorageProviders(): Promise<StorageProvider[]>{
     try{
-        const {data: result} = await axios.get(`${baseURL}/api/node/providers`, enableSelfSignedSSL)
+        const {data: result} = await axios.get(`${baseURL}/api/node/providers`)
         return result.map((node: any) => {
             node.lastBackup = new Date(node.lastBackup)
             return node

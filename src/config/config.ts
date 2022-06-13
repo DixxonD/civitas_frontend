@@ -5,7 +5,7 @@ interface ServerConfig {
 }
 
 const server: ServerConfig = {
-    prefix: 'https://',
+    prefix: 'http://',
     addr: process.env.REACT_APP_BACKEND_IP || 'localhost',
     port: 5000
 }
