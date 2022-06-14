@@ -22,7 +22,9 @@ const DeleteFileVisibleUpdateContext = React.createContext<Function>(() => {})
 const SelectedDirectoryUpdate = React.createContext<Function>(() => {})
 
 
-
+/**
+ * Allows the different explorer functionalities such as adding a folder to be called from different React components.
+ */
 export function ExplorerModalProvider({children}: Prop){
     const path = useSelectedPath()
     const setFiles = useFileStructureUpdate()

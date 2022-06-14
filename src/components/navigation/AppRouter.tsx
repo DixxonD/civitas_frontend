@@ -10,7 +10,9 @@ import {
 import LocalStorageGuides from "../../pages/LocalStorageGuides";
 import RemoteStorageGuides from "../../pages/RemoteStorageGuides";
 
-
+/**
+ * Manages Routing
+ */
 function AppRouter(){
     return (
         <Routes>

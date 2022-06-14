@@ -12,6 +12,14 @@ interface Prop {
     basePath: string
 }
 
+/**
+ * Dialogue to create a folder
+ * @param basePath Defines in which directory a folder is to be created.
+ * @param label Labeling of the text field
+ * @param placeholder Placeholder in the text field
+ * @param onSubmit Function to create folders
+ * @param onAbort Function to cancel
+ */
 function FromAddDirectory({basePath, label, placeholder, onSubmit, onAbort}: Prop){
     const form = useForm({
         initialValues: {

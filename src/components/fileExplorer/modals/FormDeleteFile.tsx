@@ -9,6 +9,13 @@ interface Prop{
     onAbort(): void
 }
 
+/**
+ * Dialogue to delete a file
+ * @param basePath Defines in which directory a folder is to be created.
+ * @param onDelete Function to delete file
+ * @param onAbort Function to cancel
+ * @param isDirectory
+ */
 function FormDeleteFile({basePath, onDelete, onAbort, isDirectory}: Prop){
     const type = isDirectory? 'Directory' : 'File'
 

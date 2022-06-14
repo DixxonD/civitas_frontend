@@ -9,6 +9,9 @@ import {useFileStructure, useFileStructureUpdate,} from "../components/fileExplo
 import {fetchFileStructure, isStorageInitialized} from "../services/FileAPI";
 import {AlertCircle} from "tabler-icons-react";
 
+/**
+ * Page to display the File Explorer.
+ */
 function Files(){
     const [isUpdating, setIsUpdating] = useState<boolean>(false)
     const [isInitialized, setIsInitialized] = useState<boolean>(true)

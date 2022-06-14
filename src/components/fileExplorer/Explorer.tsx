@@ -14,6 +14,12 @@ interface Props  {
 
 }
 
+/**
+ * Basic structure of the File Explorer. Consists of header (buttons, navigation bar, etc) and body ( files and folders).
+ * From the list of all files and folders, a sub-list of those objects is created which are to be effectively displayed.
+ * @param files List of all files and folders
+ * @param onRefresh Function when the explorer is to be updated (e.g. to request an updated list of files and folders).
+ */
 function Explorer({files, onRefresh}: Props){
     const path = useSelectedPath()
     const setPath = useSelectedPathUpdate()

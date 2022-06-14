@@ -7,6 +7,9 @@ import {getPrimaryRaidStatus} from "../services/DeviceAPI";
 import {showErrorNotification} from "../services/AppNotificationProvider";
 import SimpleBoxTemplate from "../components/SimpleBoxTemplate";
 
+/**
+ * Page for Guides to add locale storage
+ */
 function LocalStorageGuides(){
 
     const [raidIsDone, setRaidIsDone] = useState<boolean>(false)

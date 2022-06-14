@@ -5,11 +5,14 @@ import {Text} from "@mantine/core";
 
 import '../../styles/App.css';
 import 'bootstrap/dist/css/bootstrap.css'
+// @ts-ignore
 import logo from "../../res/images/logo.png";
 
 import {useUploader} from "../upload/UploadContext";
 
-
+/**
+ * Menu. Adapts to the size of the display.
+ */
 function AppMenu(){
 
     const uploader = useUploader()

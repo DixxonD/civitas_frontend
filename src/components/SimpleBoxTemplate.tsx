@@ -12,6 +12,17 @@ interface Prop{
     customTitle?: JSX.Element,
 }
 
+/**
+ * Reusable component to represent a box with shading.
+ * @param title Title to be displayed at the top
+ * @param menu React component which is displayed at the top right
+ * @param onClick Function when clicking on the box
+ * @param hovering Change the appearance when the mouse moves over the box, default is false.
+ * @param maxWidth Maximum width of the box
+ * @param titleSize Size of the title, default is font size 3
+ * @param customTitle Instead of a string title, a React component can be defined
+ * @param children Content of the box
+ */
 function SimpleBoxTemplate({title='', menu = <></>, onClick = () => {}, hovering=false, maxWidth='', titleSize=3, customTitle, children}: Prop) {
 
     return (

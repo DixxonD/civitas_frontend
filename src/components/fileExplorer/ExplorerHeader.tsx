@@ -19,6 +19,10 @@ interface Prop {
 
 }
 
+/**
+ * Header of the File Explorer.
+ * Contains permanently displayed elements such as current directory, refresh button, etc.
+ */
 function ExplorerHeader({onBack, onClick, onRefresh, showBackButton, path}: Prop){
 
     const setAddDirVisible = useAddDirVisibleUpdate()

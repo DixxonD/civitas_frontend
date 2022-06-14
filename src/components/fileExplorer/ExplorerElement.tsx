@@ -28,6 +28,9 @@ interface PropDir {
 const styleIcon = {marginRight: '1em', cursor: 'pointer'}
 const iconSize = '1.8em'
 
+/**
+ * Represents a folder or file in Explorer with all its specific icons and menus
+ */
 function ExplorerElement({fileDescription, onClick, onDownload, onDelete}: Prop){
 
     const [file, setFile] = useState<FileDescription>(fileDescription)

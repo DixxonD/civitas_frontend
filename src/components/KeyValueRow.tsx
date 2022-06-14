@@ -7,6 +7,9 @@ interface Prop{
     delimiter?: string
 }
 
+/**
+ * Reusable component to display two values separated by a delimiter.
+ */
 function KeyValueRow({description, value, delimiter=''}: Prop){
     return (
         <Group position='left'>

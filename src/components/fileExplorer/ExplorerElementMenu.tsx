@@ -16,6 +16,9 @@ interface Prop {
     dirName: string,
 }
 
+/**
+ * Menu of an item in the Explorer
+ */
 function ExplorerElementMenu({ dirName}: Prop){
 
     const [opened, handlers] = useDisclosure(false)

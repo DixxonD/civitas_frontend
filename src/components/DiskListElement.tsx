@@ -9,6 +9,9 @@ interface Prop {
     hover?: boolean
 }
 
+/**
+ * Reusable component for displaying a disk in a list
+ */
 function DiskListElement({disk, onClick, backgroundColor='white', hover=true}: Prop){
 
     const [color, setColor] = useState<string>(backgroundColor)
@@ -32,7 +35,8 @@ function DiskListElement({disk, onClick, backgroundColor='white', hover=true}: P
     }
 
     function render(disk: PreparedDisk | StorageDeviceDescription){
-        if('hasSupplier' in disk){ //is PreparedDisk
+        //check if it from type 'PreparedDisk'
+        if('hasSupplier' in disk){
             return renderPreparedDisk(disk)
         }
         return renderStorageDevice(disk)

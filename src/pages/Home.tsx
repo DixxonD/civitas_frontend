@@ -18,6 +18,9 @@ import ProviderNode from "../components/cockpit/providerNode/ProviderNode";
 import {FiRefreshCw} from "react-icons/fi";
 import SyncProgress from "../components/cockpit/SyncProgress";
 
+/**
+ * Page to display the Dashboard
+ */
 function Home(){
 
     const [localPools, setLocalPools] = useState<RaidStatus[]>([])

@@ -6,6 +6,9 @@ interface Prop{
     basePath: string
 }
 
+/**
+ * Reusable component to display the current directory
+ */
 function PathView({title, basePath}: Prop){
 
     return (

@@ -11,6 +11,9 @@ interface Props{
     children: JSX.Element
 }
 
+/**
+ * Global context, so that the list of all files/folders and the selected directory can be accessed by all components and the lists can be kept in memory during the entire runtime.
+ */
 export function ExplorerProvider({children}: Props){
 
     const [fileStructure, setFileStructure] = useState<FileDescription[]>([])
