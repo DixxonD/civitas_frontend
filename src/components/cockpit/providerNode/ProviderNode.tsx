@@ -15,9 +15,11 @@ interface Prop{
 function ProviderNode({provider, diskState}:Prop){
 
     function getTime(date: Date) {
-        if(!date){
-            return 'unknown'
+
+        if(!date || !isValidDate(date)){
+            return 'never'
         }
+
         return date.toLocaleString("en-GB", {
             day: "numeric",
             month: "short",
@@ -25,6 +27,10 @@ function ProviderNode({provider, diskState}:Prop){
             hour: "numeric",
             minute: "2-digit"
         })
+    }
+
+    function isValidDate(date: Date) {
+        return date instanceof Date && !isNaN(date.getTime());
     }
 
     function renderRingState(){
